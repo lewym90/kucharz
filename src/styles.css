@@ -106,6 +106,17 @@ input[type=range]{accent-color:var(--gold);width:100%}
 .cook-top{display:flex;align-items:center;gap:6px;padding:calc(8px + env(safe-area-inset-top,0px)) 8px 8px}.cook-title{flex:1;font-family:Georgia,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .progress{height:4px;background:#222}.progress div{height:100%;background:var(--gold);transition:width .3s}
 .cook-body{flex:1;overflow:auto;padding:20px 18px}
+.cook-body.stage{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(120% 70% at 50% 0%,#1d1809 0%,var(--bg) 60%)}
+.stepcard{position:relative;width:100%;max-width:560px;margin-top:22px;padding:46px 22px 28px;text-align:center;background:linear-gradient(160deg,#1b1b1b,#121212);border:1px solid #3a2f12;border-radius:26px;box-shadow:0 18px 50px #000a,inset 0 1px 0 #ffffff10;animation:cardin .28s ease}
+@keyframes cardin{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.stepbadge{position:absolute;top:-24px;left:50%;transform:translateX(-50%);width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#f0d27a,#c99a3b);color:#151515;font:700 24px Georgia,serif;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px #c99a3b55}
+.stepcard .stepno{margin-bottom:14px}
+.stepcard .steptext{margin:0;font-family:Georgia,serif;font-size:24px;line-height:1.5}
+.cook.big .stepcard .steptext{font-size:32px}
+.cook-body.stage .timer-add{justify-content:center;margin:0}
+.donepill{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:99px;border:1px solid #444;color:var(--mut);font-size:16px}
+.donepill input{display:none}.donepill.on{background:var(--gold);color:#151515;border-color:var(--gold);font-weight:600}
+.tipc{max-width:560px;text-align:left;margin:0}
 .stepno{color:var(--gold);font-size:14px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
 .steptext{font-size:22px;line-height:1.5;margin:0 0 18px}.cook.big .steptext{font-size:32px}
 .timer-add{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}.timer-add .btn{padding:10px 14px;font-size:14px}

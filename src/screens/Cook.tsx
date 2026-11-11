@@ -21,6 +21,7 @@ export default function Cook() {
   const [showIng, setShowIng] = useState(false)
   const [big, setBig] = useState(false)
   const nextId = useRef(1)
+  const sx = useRef(0)
   useEffect(() => { loadRecipe(id).then(x => setR(x ?? null)) }, [id])
   useEffect(() => { // ekran nie gaśnie podczas gotowania
     let lock: any = null
@@ -59,15 +60,18 @@ export default function Cook() {
         <div className="cook-body"><h2>Składniki ({serv} porcji)</h2>
           <ul className="ings">{r.ing.map((x, k) => <li key={k}><label><input type="checkbox" /><span className="in">{x.n}</span><span className="iq">{x.u === 'do smaku' || x.u === 'do podania' ? x.u : fmtIng(x.q, x.u, f)}</span></label></li>)}</ul></div>
       ) : (
-        <div className="cook-body">
-          <div className="stepno">Krok {i + 1} z {r.steps.length}</div>
-          <p className="steptext">{step}</p>
+        <div className="cook-body stage" onTouchStart={e => { sx.current = e.touches[0].clientX }} onTouchEnd={e => { const d = e.changedTouches[0].clientX - sx.current; if (d < -60 && !last) setI(i + 1); else if (d > 60 && i > 0) setI(i - 1) }}>
+          <div className="stepcard" key={i}>
+            <div className="stepbadge">{i + 1}</div>
+            <div className="stepno">Krok {i + 1} z {r.steps.length}</div>
+            <p className="steptext">{step}</p>
+          </div>
           <div className="timer-add">
             {found.map((t, k) => <button key={k} className="btn ghost" onClick={() => addTimer(t.label, t.sec)}><Timer size={16} /> Minutnik: {t.label}</button>)}
             <button className="btn ghost" onClick={() => addTimer('Własny 5 min', 300)}><Timer size={16} /> +5 min</button>
           </div>
-          <label className="chk big"><input type="checkbox" checked={done.has(i)} onChange={() => setDone(d => { const n = new Set(d); n.has(i) ? n.delete(i) : n.add(i); return n })} /> Zrobione</label>
-          {last && r.tip && <p className="tip small">💡 {r.tip}</p>}
+          <label className={'donepill' + (done.has(i) ? ' on' : '')}><input type="checkbox" checked={done.has(i)} onChange={() => setDone(d => { const n = new Set(d); n.has(i) ? n.delete(i) : n.add(i); return n })} /><Check size={18} /> Zrobione</label>
+          {last && r.tip && <p className="tip small tipc">💡 {r.tip}</p>}
         </div>
       )}
       {timers.length > 0 && (

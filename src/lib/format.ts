@@ -20,7 +20,7 @@ const PL: Record<string, [string, string, string]> = {
   'główka': ['główka', 'główki', 'główek'], 'kawałek': ['kawałek', 'kawałki', 'kawałków'],
   'arkusz': ['arkusz', 'arkusze', 'arkuszy'], 'opakowanie': ['opakowanie', 'opakowania', 'opakowań'],
   'gałka': ['gałka', 'gałki', 'gałek'], 'laska': ['laska', 'laski', 'lasek'], 'porcja': ['porcja', 'porcje', 'porcji'],
-  'torebka': ['torebka', 'torebki', 'torebek'], 'kostka': ['kostka', 'kostki', 'kostek'],
+  'dash': ['kropla', 'krople', 'kropli'], 'torebka': ['torebka', 'torebki', 'torebek'], 'kostka': ['kostka', 'kostki', 'kostek'],
 }
 export function unitLabel(u: string | null, q: number | null): string {
   if (!u) return ''
