@@ -14,6 +14,7 @@ export default function Library() {
   const demoted = useDemoted()
   const [q, setQ] = useState(sp.get('q') ?? '')
   const [cat, setCat] = useState(sp.get('cat') ?? '')
+  const quick = sp.get('max') !== null
   const [maxMin, setMaxMin] = useState(Number(sp.get('max')) || 999)
   const [maxDiff, setMaxDiff] = useState(4)
   const [diets, setDiets] = useState<string[]>([])
@@ -31,14 +32,14 @@ export default function Library() {
   useEffect(() => setLimit(40), [q, cat, maxMin, maxDiff, diets, sig, sort])
   const list = useMemo(() => {
     if (!ix) return []
-    let l = ix.filter(r => (!cat || r.cat === cat) && r.min <= maxMin && r.diff <= maxDiff && (!sig || (r.tags.includes('signature') && !demoted.has(r.id))) && diets.every(d => r.tags.includes(d)))
+    let l = ix.filter(r => (!cat || r.cat === cat) && r.min <= maxMin && !(quick && maxMin <= 15 && ['napoj', 'sos', 'drink'].includes(r.cat)) && r.diff <= maxDiff && (!sig || (r.tags.includes('signature') && !demoted.has(r.id))) && diets.every(d => r.tags.includes(d)))
     if (hits) l = l.filter(r => hits.has(r.id))
     if (sort === 'time') l = [...l].sort((a, b) => a.min - b.min)
     else if (sort === 'diff') l = [...l].sort((a, b) => a.diff - b.diff)
     else if (sort === 'ing') l = [...l].sort((a, b) => a.ni - b.ni)
     else if (sort === 'az') l = [...l].sort((a, b) => a.title.localeCompare(b.title, 'pl'))
     return l
-  }, [ix, cat, maxMin, maxDiff, diets, sig, sort, hits, demoted])
+  }, [ix, cat, quick, maxMin, maxDiff, diets, sig, sort, hits, demoted])
   const toggleDiet = (d: string) => setDiets(x => x.includes(d) ? x.filter(y => y !== d) : [...x, d])
   return (
     <div className="page">

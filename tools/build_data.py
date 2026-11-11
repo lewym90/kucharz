@@ -64,7 +64,7 @@ for r in raw:
 # kanoniczny skrót: pierwszy token klucza 'sol', 'pieprz'...
 def staple(key):
     first = key.split(' ')[0]
-    return first in ('sol', 'pieprz', 'woda', 'olej', 'oliwa', 'oliw', 'cukier')
+    return first in ('sol', 'pieprz', 'woda', 'olej', 'oliwa', 'oliw', 'cukier') or key in ('kost lodu', 'lod kruszon', 'lod')
 
 cats = collections.defaultdict(list)
 index = []

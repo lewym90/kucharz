@@ -46,7 +46,7 @@ html,body{touch-action:manipulation;-webkit-text-size-adjust:100%;overscroll-beh
 .sig.big{position:static;margin-bottom:8px}
 .pct{background:rgba(0,0,0,.75);color:var(--gold2);border:1px solid var(--gold);font-weight:700;font-size:13px;padding:3px 9px;border-radius:99px}
 .cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
-.cat{height:92px;border-radius:var(--r);background-size:cover;background-position:center;display:flex;align-items:flex-end;padding:10px;font-family:Georgia,serif;font-size:17px;border:1px solid var(--line)}
+.cat{background-color:#1d1a12;height:92px;border-radius:var(--r);background-size:cover;background-position:center;display:flex;align-items:flex-end;padding:10px;font-family:Georgia,serif;font-size:17px;border:1px solid var(--line)}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px}.chips::-webkit-scrollbar{display:none}
 .chips.wrap{flex-wrap:wrap;overflow:visible}
 .chips button{white-space:nowrap;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:7px 14px;font-size:13px;color:var(--tx);display:inline-flex;align-items:center;gap:6px}

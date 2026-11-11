@@ -97026,63 +97026,6 @@
   "rest_minutes": 0
  },
  {
-  "title": "Grzane wino z przyprawami",
-  "category": "napoj",
-  "minutes": 25,
-  "difficulty": 1,
-  "servings": 6,
-  "cuisine": "niemiecka",
-  "tags": [
-   "klasyka",
-   "wegetariańskie",
-   "bezglutenowe"
-  ],
-  "summary": "Czerwone wino podgrzewane z cynamonem, goździkami i pomarańczą. Klasyczny zimowy napój.",
-  "ingredients": [
-   {
-    "name": "czerwone wino wytrawne",
-    "qty": 750.0,
-    "unit": "ml"
-   },
-   {
-    "name": "miód",
-    "qty": 3.0,
-    "unit": "łyżka"
-   },
-   {
-    "name": "laska cynamonu",
-    "qty": 1.0,
-    "unit": "szt."
-   },
-   {
-    "name": "goździki",
-    "qty": 4.0,
-    "unit": "szt."
-   },
-   {
-    "name": "pomarańcza",
-    "qty": 1.0,
-    "unit": "szt."
-   },
-   {
-    "name": "gwiazdki anyżu",
-    "qty": 2.0,
-    "unit": "szt."
-   }
-  ],
-  "steps": [
-   "Wino wlej do garnka i dodaj cynamon, goździki, anyż, plasterki pomarańczy i miód.",
-   "Podgrzewaj na małym ogniu 15 minut, aż napój będzie gorący, ale nie zagotuje się.",
-   "Odstaw na 5 minut pod przykryciem, aby przyprawy oddały aromat.",
-   "Przecedź do kubków i podawaj gorące."
-  ],
-  "tip": "Gotowanie odparowuje alkohol i sprawia, że wino jest gorzkie.",
-  "source": "Własny przepis (Książka Kucharska)",
-  "license": "własny",
-  "id": "own:grzane-wino-z-przyprawami",
-  "rest_minutes": 5
- },
- {
   "title": "Mojito bezalkoholowe z limonką",
   "category": "napoj",
   "minutes": 10,
@@ -101477,362 +101420,6 @@
   "license": "własny",
   "id": "own:sangria-bezalkoholowa-z-owocami",
   "rest_minutes": 60
- },
- {
-  "title": "Sangria czerwona klasyczna",
-  "category": "napoj",
-  "minutes": 20,
-  "difficulty": 1,
-  "servings": 8,
-  "cuisine": "hiszpańska",
-  "tags": [
-   "klasyka",
-   "wegetariańskie",
-   "bezglutenowe",
-   "wegańskie"
-  ],
-  "summary": "Hiszpański napój z czerwonego wina, owoców i cukru. Owocowy, lekki i idealny na letnie przyjęcia.",
-  "ingredients": [
-   {
-    "name": "czerwone wino wytrawne",
-    "qty": 750.0,
-    "unit": "ml"
-   },
-   {
-    "name": "pomarańcze",
-    "qty": 2.0,
-    "unit": "szt."
-   },
-   {
-    "name": "cytryna",
-    "qty": 1.0,
-    "unit": "szt."
-   },
-   {
-    "name": "brzoskwinie",
-    "qty": 2.0,
-    "unit": "szt."
-   },
-   {
-    "name": "cukier",
-    "qty": 3.0,
-    "unit": "łyżka"
-   },
-   {
-    "name": "woda gazowana",
-    "qty": 200.0,
-    "unit": "ml"
-   }
-  ],
-  "steps": [
-   "Pomarańcze, cytrynę i brzoskwinie pokrój w plastry.",
-   "Wlej wino do dzbanka i dodaj owoce oraz cukier, mieszając, aż się rozpuści.",
-   "Schłodź w lodówce 3 godziny, aż owoce nasiąkną winem.",
-   "Dolej wodę gazową i podawaj z lodem."
-  ],
-  "tip": "Im dłużej sangria się chłodzi, tym smaczniejsza, do 12 godzin.",
-  "source": "Własny przepis (Książka Kucharska)",
-  "license": "własny",
-  "id": "own:sangria-czerwona-klasyczna",
-  "rest_minutes": 180
- },
- {
-  "title": "Mimoza z pomarańczą",
-  "category": "napoj",
-  "minutes": 5,
-  "difficulty": 1,
-  "servings": 1,
-  "cuisine": "francuska",
-  "tags": [
-   "klasyka",
-   "wegetariańskie",
-   "wegańskie",
-   "bezglutenowe"
-  ],
-  "summary": "Klasyczny koktajl z prosecco i soku pomarańczowego. Lekki, musujący i idealny na śniadanie z okazji.",
-  "ingredients": [
-   {
-    "name": "prosecco schłodzone",
-    "qty": 100.0,
-    "unit": "ml"
-   },
-   {
-    "name": "sok pomarańczowy świeży",
-    "qty": 100.0,
-    "unit": "ml"
-   },
-   {
-    "name": "pomarańcza",
-    "qty": 1.0,
-    "unit": "plaster"
-   },
-   {
-    "name": "kostki lodu",
-    "qty": 4.0,
-    "unit": "szt."
-   }
-  ],
-  "steps": [
-   "Kieliszek do szampana schłodź w zamrażarce przez 10 minut.",
-   "Wlej sok pomarańczowy do połowy kieliszka.",
-   "Dolej schłodzone prosecco, aż kieliszek będzie pełny.",
-   "Udekoruj plasterkiem pomarańczy i podawaj od razu."
-  ],
-  "tip": "Proporcja 1:1 daje lekki smak, a więcej prosecco bardziej wytrawny.",
-  "source": "Własny przepis (Książka Kucharska)",
-  "license": "własny",
-  "id": "own:mimoza-z-pomarancza",
-  "rest_minutes": 10
- },
- {
-  "title": "Pina colada klasyczna z rumem",
-  "category": "napoj",
-  "minutes": 8,
-  "difficulty": 2,
-  "servings": 2,
-  "cuisine": "portorykańska",
-  "tags": [
-   "klasyka",
-   "wegetariańskie",
-   "bezglutenowe",
-   "wegańskie"
-  ],
-  "summary": "Koktajl z rumu, mleka kokosowego i ananasa. Kremowy, tropikalny i bardzo słodki.",
-  "ingredients": [
-   {
-    "name": "rum biały",
-    "qty": 60.0,
-    "unit": "ml"
-   },
-   {
-    "name": "mleko kokosowe",
-    "qty": 100.0,
-    "unit": "ml"
-   },
-   {
-    "name": "sok ananasowy",
-    "qty": 150.0,
-    "unit": "ml"
-   },
-   {
-    "name": "ananas",
-    "qty": 100.0,
-    "unit": "g"
-   },
-   {
-    "name": "kostki lodu",
-    "qty": 8.0,
-    "unit": "szt."
-   }
-  ],
-  "steps": [
-   "Ananasa pokrój w kawałki i wrzuć do blendera.",
-   "Dodaj rum, mleko kokosowe, sok ananasowy i lód.",
-   "Zblenduj całość na wysokich obrotach przez minutę, aż nie będzie widać kawałków.",
-   "Rozlej do dwóch szklanek i udekoruj kawałkiem ananasa."
-  ],
-  "tip": "Mrożony ananas da bardziej lodowy efekt.",
-  "source": "Własny przepis (Książka Kucharska)",
-  "license": "własny",
-  "id": "own:pina-colada-klasyczna-z-rumem",
-  "rest_minutes": 0
- },
- {
-  "title": "Caipirinha z limonką",
-  "category": "napoj",
-  "minutes": 5,
-  "difficulty": 2,
-  "servings": 1,
-  "cuisine": "brazylijska",
-  "tags": [
-   "klasyka",
-   "wegetariańskie",
-   "wegańskie",
-   "bezglutenowe"
-  ],
-  "summary": "Brazylijski koktajl z cachaçy, limonki i cukru trzcinowego. Kwaśny, mocny i bardzo orzeźwiający.",
-  "ingredients": [
-   {
-    "name": "cachaça",
-    "qty": 60.0,
-    "unit": "ml"
-   },
-   {
-    "name": "limonka",
-    "qty": 1.0,
-    "unit": "szt."
-   },
-   {
-    "name": "cukier trzcinowy",
-    "qty": 2.0,
-    "unit": "łyżeczka"
-   },
-   {
-    "name": "kostki lodu",
-    "qty": 8.0,
-    "unit": "szt."
-   }
-  ],
-  "steps": [
-   "Limonkę pokrój w ósemki i rozgnieć w szklance z cukrem, aż puści sok.",
-   "Rozgniataj 30 sekund, aż cukier się rozpuści.",
-   "Wypełnij szklankę lodem i wlej cachaçę.",
-   "Zamieszaj łyżką 10 sekund, aż szklanka się zaszroni, i podawaj od razu."
-  ],
-  "tip": "Białą część limonki odetnij, bo jest gorzka.",
-  "source": "Własny przepis (Książka Kucharska)",
-  "license": "własny",
-  "id": "own:caipirinha-z-limonka",
-  "rest_minutes": 0
- },
- {
-  "title": "Moscow mule z imbirem",
-  "category": "napoj",
-  "minutes": 5,
-  "difficulty": 1,
-  "servings": 1,
-  "cuisine": "amerykańska",
-  "tags": [
-   "klasyka",
-   "wegetariańskie",
-   "bezglutenowe",
-   "wegańskie"
-  ],
-  "summary": "Koktajl z wódki, piwa imbirowego i limonki. Orzeźwiający, lekko pikantny i bardzo zimny.",
-  "ingredients": [
-   {
-    "name": "wódka",
-    "qty": 50.0,
-    "unit": "ml"
-   },
-   {
-    "name": "piwo imbirowe",
-    "qty": 100.0,
-    "unit": "ml"
-   },
-   {
-    "name": "limonka",
-    "qty": 1.0,
-    "unit": "szt."
-   },
-   {
-    "name": "kostki lodu",
-    "qty": 8.0,
-    "unit": "szt."
-   }
-  ],
-  "steps": [
-   "Szklankę lub kubek wypełnij lodem aż do brzegu.",
-   "Wlej wódkę i sok z połowy limonki.",
-   "Dolej piwo imbirowe i delikatnie zamieszaj łyżką raz.",
-   "Udekoruj kółkiem limonki i podawaj od razu."
-  ],
-  "tip": "Najlepiej smakuje w miedzianym kubku, który utrzymuje chłód.",
-  "source": "Własny przepis (Książka Kucharska)",
-  "license": "własny",
-  "id": "own:moscow-mule-z-imbirem",
-  "rest_minutes": 0
- },
- {
-  "title": "Margarita klasyczna",
-  "category": "napoj",
-  "minutes": 8,
-  "difficulty": 2,
-  "servings": 1,
-  "cuisine": "meksykańska",
-  "tags": [
-   "klasyka",
-   "wegetariańskie",
-   "wegańskie",
-   "bezglutenowe"
-  ],
-  "summary": "Koktajl z tequili, likieru pomarańczowego i soku z limonki. Kwaśny, słony na brzegu i bardzo orzeźwiający.",
-  "ingredients": [
-   {
-    "name": "tequila",
-    "qty": 50.0,
-    "unit": "ml"
-   },
-   {
-    "name": "likier pomarańczowy",
-    "qty": 25.0,
-    "unit": "ml"
-   },
-   {
-    "name": "sok z limonki",
-    "qty": 25.0,
-    "unit": "ml"
-   },
-   {
-    "name": "sól gruba",
-    "qty": 1.0,
-    "unit": "łyżka"
-   },
-   {
-    "name": "kostki lodu",
-    "qty": 8.0,
-    "unit": "szt."
-   }
-  ],
-  "steps": [
-   "Brzeg kieliszka zwilż limonką i obtocz w soli.",
-   "Do shakera wlej tequilę, likier, sok z limonki i dodaj lód.",
-   "Wstrząsaj energicznie 15 sekund, aż shaker zaparuje.",
-   "Przecedź do przygotowanego kieliszka i podawaj od razu."
-  ],
-  "tip": "Sok z limonki wyciskaj świeży, bo butelkowany jest gorzki.",
-  "source": "Własny przepis (Książka Kucharska)",
-  "license": "własny",
-  "id": "own:margarita-klasyczna",
-  "rest_minutes": 0
- },
- {
-  "title": "Gin z tonikiem i ogórkiem",
-  "category": "napoj",
-  "minutes": 5,
-  "difficulty": 1,
-  "servings": 1,
-  "cuisine": "brytyjska",
-  "tags": [
-   "klasyka",
-   "wegetariańskie",
-   "wegańskie",
-   "bezglutenowe"
-  ],
-  "summary": "Klasyczny drink z ginu, toniku i plastra ogórka. Wytrawny, orzeźwiający i bardzo prosty.",
-  "ingredients": [
-   {
-    "name": "gin",
-    "qty": 50.0,
-    "unit": "ml"
-   },
-   {
-    "name": "tonik",
-    "qty": 150.0,
-    "unit": "ml"
-   },
-   {
-    "name": "ogórek",
-    "qty": 3.0,
-    "unit": "plaster"
-   },
-   {
-    "name": "kostki lodu",
-    "qty": 8.0,
-    "unit": "szt."
-   }
-  ],
-  "steps": [
-   "Duży kieliszek wypełnij lodem do 3/4 wysokości.",
-   "Wlej gin i dodaj plasterki ogórka.",
-   "Dolej schłodzony tonik i zamieszaj raz łyżką.",
-   "Podawaj od razu, gdy bąbelki są jeszcze żywe."
-  ],
-  "tip": "Tonik powinien być zimny i świeżo otwarty.",
-  "source": "Własny przepis (Książka Kucharska)",
-  "license": "własny",
-  "id": "own:gin-z-tonikiem-i-ogorkiem",
-  "rest_minutes": 0
  },
  {
   "title": "Espresso tonic z pomarańczą",
@@ -110784,6 +110371,7401 @@
   "source": "Własny przepis (Książka Kucharska)",
   "license": "własny",
   "id": "own:sos-kurkumowo-tahini",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Old Fashioned",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "klasyczna",
+  "tags": [
+   "signature",
+   "wegańskie",
+   "wegetariańskie"
+  ],
+  "summary": "Bourbon, cukier i angostura w najprostszej, najbardziej męskiej formie. Mocny, aromatyczny i bardzo elegancki.",
+  "ingredients": [
+   {
+    "name": "bourbon",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cukier",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "angostura",
+    "qty": 3.0,
+    "unit": "dash"
+   },
+   {
+    "name": "woda",
+    "qty": 1.0,
+    "unit": "łyżka"
+   },
+   {
+    "name": "skórka pomarańczy",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 3.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "W niskiej szklance rozpuść cukier z angosturą i wodą, mieszając łyżką barmańską.",
+   "Dodaj lód i bourbon, a następnie mieszaj 20 sekund, aż drink się schłodzi.",
+   "Skórkę pomarańczy ściśnij nad szklanką, aby wydobyć olejki, i wrzuć do środka."
+  ],
+  "tip": "Używaj jednej dużej kostki lodu, bo wolniej się topi i nie rozwadnia drinka.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:old-fashioned",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Manhattan",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "klasyczna",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Whiskey żytnie z wermutem i angosturą. Głęboki, lekko słodki klasyk z Nowego Jorku.",
+  "ingredients": [
+   {
+    "name": "whiskey żytnie",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "czerwony wermut słodki",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "angostura",
+    "qty": 2.0,
+    "unit": "dash"
+   },
+   {
+    "name": "wiśnia koktajlowa",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do szklanicy barmańskiej wlej whiskey, wermut i angosturę, a następnie dodaj lód.",
+   "Mieszaj 30 sekund, aż szklanica zacznie się mocno chłodzić.",
+   "Przecedź do schłodzonej kupety i udekoruj wiśnią."
+  ],
+  "tip": "Mieszaj, a nie wstrząsaj, bo drink ma być klarowny i jedwabisty.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:manhattan",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Negroni",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "włoska",
+  "tags": [
+   "signature",
+   "wegańskie",
+   "wegetariańskie"
+  ],
+  "summary": "Równe części ginu, Campari i wermutu. Gorzki, ziołowy i pomarańczowy aperitif.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Campari",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "czerwony wermut słodki",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek pomarańczy",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 4.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do niskiej szklanki z lodem wlej gin, Campari i wermut.",
+   "Mieszaj 20 sekund, aż składniki się połączą i schłodzą.",
+   "Udekoruj plasterkiem pomarańczy."
+  ],
+  "tip": "Dobra proporcja 1:1:1 jest podstawą, więc odmierzaj składniki dokładnie.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:negroni",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Dry Martini",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "klasyczna",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin z odrobiną wytrawnego wermutu. Suchy, zimny i bardzo aromatyczny.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 70.0,
+    "unit": "ml"
+   },
+   {
+    "name": "wermut wytrawny",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "oliwka",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Szklanicę wypełnij lodem, wlej wermut i gin.",
+   "Mieszaj 30 sekund, a następnie przecedź do mocno schłodzonego kieliszka.",
+   "Nadziej oliwkę na wykałaczkę i włóż do drinka."
+  ],
+  "tip": "Kieliszek schłodź wcześniej lodem, bo ciepłe szkło psuje całą precyzję drinka.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:dry-martini",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Vodka Martini",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "klasyczna",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka z wermutem, podana bardzo zimna. Czysty i wytrawny w smaku.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 70.0,
+    "unit": "ml"
+   },
+   {
+    "name": "wermut wytrawny",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "skórka cytryny",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do szklanicy z lodem wlej wódkę i wermut.",
+   "Mieszaj 30 sekund, aż drink będzie lodowaty.",
+   "Przecedź do kieliszka i ściśnij nad nim skórkę cytryny."
+  ],
+  "tip": "Skórkę wycinaj obieraczką bez białej części, bo ta jest gorzka.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:vodka-martini",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Daiquiri",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "kubańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Biały rum, limonka i syrop cukrowy. Trzy składniki w idealnej równowadze.",
+  "ingredients": [
+   {
+    "name": "biały rum",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do shakera wlej rum, sok z limonki i syrop, a następnie dodaj lód.",
+   "Wstrząsaj energicznie 12 sekund, aż shaker pokryje się szronem.",
+   "Przecedź przez sitko do schłodzonego kieliszka."
+  ],
+  "tip": "Zawsze używaj świeżo wyciśniętego soku z limonki.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:daiquiri",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Mojito",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "kubańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Rum, mięta, limonka i woda gazowana. Orzeźwiający drink na upał.",
+  "ingredients": [
+   {
+    "name": "biały rum",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "liście mięty",
+    "qty": 8.0,
+    "unit": "szt."
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cukier",
+    "qty": 2.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "W wysokiej szklance lekko rozgnieć miętę z cukrem i sokiem z limonki.",
+   "Wsyp lód, wlej rum i zamieszaj od dołu do góry.",
+   "Dolej wodę gazowaną i udekoruj gałązką mięty."
+  ],
+  "tip": "Miętę tylko delikatnie dociskaj, bo rozdrobniona oddaje gorycz.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:mojito",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Margarita",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "meksykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Tequila, triple sec i limonka z solną krawędzią. Kwaśna, słona i wytrawna.",
+  "ingredients": [
+   {
+    "name": "tequila",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "triple sec",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sól",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Brzeg kieliszka zwilż limonką i obtocz w soli.",
+   "W shakerze z lodem wstrząsaj tequilę, triple sec i sok z limonki 12 sekund.",
+   "Przecedź do kieliszka."
+  ],
+  "tip": "Sól nałóż tylko na zewnętrzną stronę brzegu, żeby nie wpadała do drinka.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:margarita",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Cosmopolitan",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka cytrynowa z żurawiną i triple sec. Różowy, lekko kwaśny drink miejski.",
+  "ingredients": [
+   {
+    "name": "wódka cytrynowa",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "triple sec",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok żurawinowy",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do shakera wlej wszystkie składniki i dodaj lód.",
+   "Wstrząsaj 12 sekund, a następnie przecedź do kieliszka koktajlowego.",
+   "Udekoruj skórką pomarańczy."
+  ],
+  "tip": "Sok żurawinowy powinien być bez dodatku cukru, wtedy drink jest bardziej wytrawny.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:cosmopolitan",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Whisky Sour",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Bourbon z cytryną i syropem, z białkiem dla puszystej piany. Kwaśny, kremowy i szlachetny.",
+  "ingredients": [
+   {
+    "name": "bourbon",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "białko jaja",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki bez lodu przez 10 sekund, aby spienić białko.",
+   "Dodaj lód i wstrząsaj ponownie 12 sekund.",
+   "Przecedź do szklanki z lodem i udekoruj wiśnią."
+  ],
+  "tip": "Białko jaja jest opcjonalne, ale daje drinkowi aksamitną teksturę.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:whisky-sour",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Moscow Mule",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka, imbirowe piwo i limonka w miedzianym kubku. Pikantna, zimna i orzeźwiająca.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "piwo imbirowe",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek limonki",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Kubek wypełnij lodem i wlej wódkę oraz sok z limonki.",
+   "Dolej piwo imbirowe i delikatnie zamieszaj.",
+   "Udekoruj plasterkiem limonki."
+  ],
+  "tip": "Im ostrzejsze piwo imbirowe, tym lepszy drink.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:moscow-mule",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Dark 'n' Stormy",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "bermudzka",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Ciemny rum z piwem imbirowym i limonką. Burzowy kolor i ostry imbir.",
+  "ingredients": [
+   {
+    "name": "ciemny rum",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "piwo imbirowe",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wysoką szklankę wypełnij lodem i wlej piwo imbirowe z sokiem z limonki.",
+   "Rum wlej delikatnie na wierzch, aby powstała warstwa.",
+   "Podawaj z plasterkiem limonki."
+  ],
+  "tip": "Nie mieszaj od razu, bo efekt wizualny jest połową przyjemności.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:dark-n-stormy",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Gin Fizz",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin, cytryna i woda gazowana z lekką pianką. Lekki, kwaśny i bąbelkowy.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij gin, sok z cytryny i syrop z lodem przez 12 sekund.",
+   "Przecedź do szklanki bez lodu.",
+   "Dolej wodę gazowaną i delikatnie zamieszaj."
+  ],
+  "tip": "Podawaj od razu, dopóki bąbelki są drobne i żywe.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:gin-fizz",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Tom Collins",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "angielska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wysoka wersja ginu z cytryną i wodą gazowaną. Lekka i długa.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 90.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do wysokiej szklanki wsyp lód i wlej gin, sok z cytryny oraz syrop.",
+   "Zamieszaj, a następnie dolej wodę gazowaną.",
+   "Udekoruj plasterkiem cytryny i wiśnią."
+  ],
+  "tip": "Szklanka collinsa powinna być wypełniona lodem po brzegi, bo drink dłużej zostanie zimny.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:tom-collins",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Aperol Spritz",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "włoska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Prosecco, Aperol i woda gazowana. Lekki, lekko gorzki i pomarańczowy aperitif.",
+  "ingredients": [
+   {
+    "name": "prosecco",
+    "qty": 90.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Aperol",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek pomarańczy",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Duży kieliszek wypełnij lodem.",
+   "Wlej prosecco, a następnie Aperol i dolej wodę gazowaną.",
+   "Zamieszaj raz i udekoruj plasterkiem pomarańczy."
+  ],
+  "tip": "Proporcja 3:2:1 daje najlepszy balans słodyczy i goryczy.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:aperol-spritz",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Bellini",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 2,
+  "cuisine": "włoska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Prosecco z puree z białych brzoskwiń. Delikatny, kwiatowy i bardzo elegancki.",
+  "ingredients": [
+   {
+    "name": "brzoskwinie dojrzałe",
+    "qty": 2.0,
+    "unit": "szt."
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "prosecco schłodzone",
+    "qty": 200.0,
+    "unit": "ml"
+   }
+  ],
+  "steps": [
+   "Brzoskwinie obierz i zmiksuj z sokiem z cytryny na gładkie puree.",
+   "Do dwóch flet wlej po 2 łyżki puree.",
+   "Dolej powoli prosecco i delikatnie zamieszaj."
+  ],
+  "tip": "Puree i prosecco powinny być bardzo zimne, żeby drink mocno nie pienił się podczas nalewania.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:bellini",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Mimosa",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 2,
+  "cuisine": "francuska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Szampan lub prosecco z sokiem pomarańczowym. Idealna na śniadanie.",
+  "ingredients": [
+   {
+    "name": "świeży sok z pomarańczy",
+    "qty": 100.0,
+    "unit": "ml"
+   },
+   {
+    "name": "prosecco schłodzone",
+    "qty": 100.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterki pomarańczy",
+    "qty": 2.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do dwóch flet wlej po 50 ml soku pomarańczowego.",
+   "Dolej powoli po 50 ml prosecco.",
+   "Udekoruj plasterkiem pomarańczy."
+  ],
+  "tip": "Sok pomarańczowy najlepiej wycisnąć tuż przed podaniem.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:mimosa",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Kir Royal",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "francuska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Szampan z likierem z czarnej porzeczki. Rubinowy i musujący.",
+  "ingredients": [
+   {
+    "name": "likier z czarnej porzeczki",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "szampan schłodzony",
+    "qty": 100.0,
+    "unit": "ml"
+   },
+   {
+    "name": "jagoda",
+    "qty": 1.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do fletu wlej likier.",
+   "Dolej powoli szampan, aby powstała lekka piana.",
+   "Dodaj jagodę na dno."
+  ],
+  "tip": "Im lepszy szampan, tym bardziej drink zasługuje na swoją nazwę.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:kir-royal",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Espresso Martini",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "angielska",
+  "tags": [
+   "signature",
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka, kawa i likier kawowy z gęstą pianką. Mocny, słodko-gorzki i orzeźwiający.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier kawowy",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "espresso świeże",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "kawa",
+    "qty": 3.0,
+    "unit": "ziarna"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Przygotuj espresso i od razu wlej do shakera z wódką, likierem i syropem.",
+   "Dodaj lód i wstrząsaj 15 sekund, aż powstanie gęsta pianka.",
+   "Przecedź do kieliszka i połóż na wierzchu trzy ziarna kawy."
+  ],
+  "tip": "Świeże, gorące espresso daje najlepszą pianę.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:espresso-martini",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Bloody Mary",
+  "category": "drink",
+  "minutes": 8,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [],
+  "summary": "Wódka z sokiem pomidorowym i przyprawami. Pikantna i sycąca.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok pomidorowy",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sos Worcestershire",
+    "qty": 3.0,
+    "unit": "dash"
+   },
+   {
+    "name": "tabasco",
+    "qty": 3.0,
+    "unit": "dash"
+   },
+   {
+    "name": "sól",
+    "qty": 1.0,
+    "unit": "szczypta"
+   },
+   {
+    "name": "pieprz czarny",
+    "qty": 1.0,
+    "unit": "szczypta"
+   },
+   {
+    "name": "seler naciowy łodyga",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do wysokiej szklanki z lodem wlej wódkę, sok pomidorowy i sok z cytryny.",
+   "Dodaj sos Worcestershire, tabasco, sól i pieprz, a następnie zamieszaj.",
+   "Udekoruj łodygą selera."
+  ],
+  "tip": "Dopasuj ostrość do własnego gustu, dodając tabasco stopniowo.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:bloody-mary",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Piña Colada",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "portorykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Rum z ananasem i kremem kokosowym. Tropikalna i kremowa.",
+  "ingredients": [
+   {
+    "name": "biały rum",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok ananasowy",
+    "qty": 90.0,
+    "unit": "ml"
+   },
+   {
+    "name": "krem kokosowy",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   },
+   {
+    "name": "plaster ananasa",
+    "qty": 1.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wszystkie składniki oprócz dekoracji zmiksuj w blenderze na gładką masę.",
+   "Przelej do wysokiej szklanki.",
+   "Udekoruj plastrem ananasa."
+  ],
+  "tip": "Krem kokosowy musi być dobrze wymieszany przed użyciem, bo tłuszcz zbiera się na wierzchu.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:pina-colada",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Caipirinha",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "brazylijska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Cachaça z limonką i cukrem. Mocna, kwaśna i prosta.",
+  "ingredients": [
+   {
+    "name": "cachaça",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "limonka",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "cukier trzcinowy",
+    "qty": 2.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Limonkę pokrój na ósemki i rozgnieć z cukrem na dnie niskiej szklanki.",
+   "Wsyp lód kruszony i wlej cachaçę.",
+   "Zamieszaj dokładnie od dołu."
+  ],
+  "tip": "Białą część limonki usuń, bo dodaje goryczy.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:caipirinha",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Sidecar",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "francuska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Koniak z pomarańczowym likierem i cytryną. Kwaśny i ciepły w smaku.",
+  "ingredients": [
+   {
+    "name": "koniak",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "triple sec",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wlej składniki do shakera i dodaj lód.",
+   "Wstrząsaj 12 sekund i przecedź do schłodzonego kieliszka.",
+   "Opcjonalnie obtocz brzeg kieliszka w cukrze."
+  ],
+  "tip": "Jeśli drink jest zbyt kwaśny, dodaj 5 ml syropu cukrowego.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:sidecar",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Mai Tai",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "polinezyjska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Dwa rumy z limonką i migdałowym syropem orgeat. Tiki w klasycznym wydaniu.",
+  "ingredients": [
+   {
+    "name": "rum jasny",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "rum ciemny",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "triple sec",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop orgeat",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do shakera wlej jasny rum, triple sec, orgeat i sok z limonki, a następnie dodaj lód.",
+   "Wstrząsaj 12 sekund i przecedź do szklanki z lodem kruszonym.",
+   "Na wierzch wlej ciemny rum i udekoruj miętą."
+  ],
+  "tip": "Orgeat to migdałowy syrop, który odróżnia Mai Tai od zwykłego rumowego kwaśnego drinka.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:mai-tai",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Paloma",
+  "category": "drink",
+  "minutes": 4,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "meksykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Tequila z grejpfrutem i wodą gazowaną. Lekka i orzeźwiająca.",
+  "ingredients": [
+   {
+    "name": "tequila",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z grejpfruta",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sól",
+    "qty": 1.0,
+    "unit": "szczypta"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wysoką szklankę napełnij lodem i wsyp szczyptę soli.",
+   "Wlej tequilę, sok z limonki i sok z grejpfruta.",
+   "Dolej wodę gazowaną i delikatnie zamieszaj."
+  ],
+  "tip": "Świeży sok z grejpfruta robi ogromną różnicę.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:paloma",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Gimlet",
+  "category": "drink",
+  "minutes": 4,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "angielska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin z limonką i cukrem. Ostry, kwaśny i bardzo czysty.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do schłodzonego kieliszka.",
+   "Udekoruj plasterkiem limonki."
+  ],
+  "tip": "Odrobina syropu więcej złagodzi kwaśność.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:gimlet",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Americano",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "włoska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Campari z wermutem i wodą gazowaną. Gorzki i lekki, z niską zawartością alkoholu.",
+  "ingredients": [
+   {
+    "name": "Campari",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "czerwony wermut słodki",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek pomarańczy",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do szklanki z lodem wlej Campari i wermut.",
+   "Dolej wodę gazowaną i zamieszaj.",
+   "Udekoruj plasterkiem pomarańczy."
+  ],
+  "tip": "To prekursor Negroni, więc dobrze sprawdza się jako lżejsza wersja.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:americano",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Pisco Sour",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "peruwiańska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Pisco z limonką i białkiem. Kwaśny, kremowy i aromatyczny.",
+  "ingredients": [
+   {
+    "name": "pisco",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "białko jaja",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "angostura",
+    "qty": 3.0,
+    "unit": "dash"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij pisco, sok, syrop i białko bez lodu przez 10 sekund.",
+   "Dodaj lód i wstrząsaj ponownie 12 sekund, a następnie przecedź do szklanki.",
+   "Na pianie połóż trzy krople angostury."
+  ],
+  "tip": "Dobrze spieniona piana jest największą ozdobą tego drinka.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:pisco-sour",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Mint Julep",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Bourbon z miętą i cukrem na kruszonym lodzie. Klasyk z Kentucky.",
+  "ingredients": [
+   {
+    "name": "bourbon",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "liście mięty",
+    "qty": 10.0,
+    "unit": "szt."
+   },
+   {
+    "name": "cukier",
+    "qty": 2.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "woda",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "lód kruszony",
+    "qty": 1.0,
+    "unit": "szklanka"
+   }
+  ],
+  "steps": [
+   "Miętę lekko rozgnieć z cukrem i wodą na dnie metalowego kubka.",
+   "Dodaj połowę lodu kruszonego i wlej bourbon, a następnie zamieszaj.",
+   "Dosyp resztę lodu tak, aby utworzył kopiec, i udekoruj gałązką mięty."
+  ],
+  "tip": "Podawaj w zmrożonym kubku, aby drink dłużej pozostał lodowaty.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:mint-julep",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Sazerac",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Whiskey żytnie z peychaud i absyntem. Aromatyczny klasyk z Nowego Orleanu.",
+  "ingredients": [
+   {
+    "name": "whiskey żytnie",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cukier",
+    "qty": 1.0,
+    "unit": "kostka"
+   },
+   {
+    "name": "peychaud bitters",
+    "qty": 3.0,
+    "unit": "dash"
+   },
+   {
+    "name": "absynt",
+    "qty": 5.0,
+    "unit": "ml"
+   },
+   {
+    "name": "skórka cytryny",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Kieliszek przepłucz absyntem i wylej nadmiar.",
+   "W szklanicy rozgnieć cukier z bittersem, dodaj whiskey i lód, a następnie mieszaj 25 sekund.",
+   "Przecedź do kieliszka i ściśnij nad nim skórkę cytryny."
+  ],
+  "tip": "Absynt służy tylko do aromatyzowania szkła, więc nie wlewaj go do drinka.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:sazerac",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Boulevardier",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "francuska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Negroni z bourbonem zamiast ginu. Głębszy, cieplejszy i słodszy.",
+  "ingredients": [
+   {
+    "name": "bourbon",
+    "qty": 45.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Campari",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "czerwony wermut słodki",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "skórka pomarańczy",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wlej bourbon, Campari i wermut do szklanicy z lodem.",
+   "Mieszaj 25 sekund i przecedź do szklanki z dużą kostką lodu.",
+   "Ściśnij nad drinkiem skórkę pomarańczy."
+  ],
+  "tip": "Bardziej alkoholowa wersja jest oparta na proporcji 3:2:2.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:boulevardier",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Rob Roy",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "szkocka",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Szkocka whisky z wermutem i angosturą. Szkocka odpowiedź na Manhattan.",
+  "ingredients": [
+   {
+    "name": "whisky szkocka",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "czerwony wermut słodki",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "angostura",
+    "qty": 2.0,
+    "unit": "dash"
+   },
+   {
+    "name": "wiśnia koktajlowa",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do szklanicy z lodem wlej whisky, wermut i angosturę.",
+   "Mieszaj 30 sekund, a następnie przecedź do kupety.",
+   "Dodaj wiśnię."
+  ],
+  "tip": "Łagodna whisky blended sprawdzi się tu lepiej niż mocno torfowa.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:rob-roy",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Rusty Nail",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "szkocka",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Szkocka whisky z likierem Drambuie. Słodki, miodowy i mocny.",
+  "ingredients": [
+   {
+    "name": "whisky szkocka",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Drambuie",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "skórka cytryny",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 4.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do niskiej szklanki z lodem wlej whisky i Drambuie.",
+   "Zamieszaj 15 sekund.",
+   "Ściśnij nad drinkiem skórkę cytryny."
+  ],
+  "tip": "Mniej Drambuie da bardziej wytrawny efekt.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:rusty-nail",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Irish Coffee",
+  "category": "drink",
+  "minutes": 8,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "irlandzka",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Gorąca kawa z irlandzką whiskey i bitą śmietaną. Rozgrzewający deser w szklance.",
+  "ingredients": [
+   {
+    "name": "irlandzka whiskey",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kawa gorąca",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cukier trzcinowy",
+    "qty": 2.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "śmietanka kremówka",
+    "qty": 40.0,
+    "unit": "ml"
+   }
+  ],
+  "steps": [
+   "Kawę wlej do szklanki z uchem, rozpuść w niej cukier i dodaj whiskey.",
+   "Kremówkę ubij lekko, aby była gęsta, ale nadal płynna.",
+   "Łyżką wyłóż śmietankę na wierzch kawy."
+  ],
+  "tip": "Nie mieszaj, tylko pij kawę przez warstwę śmietanki.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:irish-coffee",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Hot Toddy",
+  "category": "drink",
+  "minutes": 8,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "szkocka",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Gorąca whisky z miodem, cytryną i przyprawami. Ulubiony drink na przeziębienie.",
+  "ingredients": [
+   {
+    "name": "whisky szkocka",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "miód",
+    "qty": 1.0,
+    "unit": "łyżka"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gorąca",
+    "qty": 150.0,
+    "unit": "ml"
+   },
+   {
+    "name": "goździk",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "laska cynamonu",
+    "qty": 1.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do kubka wlej miód, sok z cytryny i gorącą wodę, a następnie mieszaj aż miód się rozpuści.",
+   "Dodaj whisky, goździk i cynamon.",
+   "Poczekaj 2 minuty, aż przyprawy oddadzą aromat, i podawaj."
+  ],
+  "tip": "Woda nie powinna być wrząca, bo ulatniają się aromaty whisky.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:hot-toddy",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Godfather",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Whisky z likierem migdałowym amaretto. Słodki i gładki.",
+  "ingredients": [
+   {
+    "name": "whisky szkocka",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "amaretto",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 4.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do niskiej szklanki z lodem wlej whisky i amaretto.",
+   "Mieszaj 15 sekund, aż drink się schłodzi.",
+   "Podawaj bez dodatków."
+  ],
+  "tip": "Zamień proporcje na 2:1 w stronę whisky, jeśli wolisz mniej słodki drink.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:godfather",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Penicillin",
+  "category": "drink",
+  "minutes": 8,
+  "difficulty": 3,
+  "servings": 1,
+  "cuisine": "współczesna",
+  "tags": [
+   "signature",
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Szkocka whisky z imbirem, miodem i cytryną oraz dymną nutą torfowej whisky. Nowoczesny klasyk.",
+  "ingredients": [
+   {
+    "name": "whisky blended",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop miodowo-imbirowy",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "whisky torfowa",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij blended, sok z cytryny i syrop miodowo-imbirowy z lodem przez 12 sekund.",
+   "Przecedź do szklanki z dużą kostką lodu.",
+   "Na wierzch wlej torfową whisky i udekoruj kandyzowanym imbirem."
+  ],
+  "tip": "Syrop zrobisz, gotując równe części miodu, wody i startego imbiru 5 minut.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:penicillin",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Paper Plane",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "współczesna",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Równe części bourbona, Aperolu, Amaro Nonino i cytryny. Gorzki, kwaśny i zbalansowany.",
+  "ingredients": [
+   {
+    "name": "bourbon",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Aperol",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Amaro Nonino",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do schłodzonej kupety.",
+   "Podawaj bez dekoracji."
+  ],
+  "tip": "Jeśli nie masz Amaro Nonino, użyj innego łagodnego amaro.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:paper-plane",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Gold Rush",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Bourbon z miodem i cytryną. Miodowa wersja Whisky Sour.",
+  "ingredients": [
+   {
+    "name": "bourbon",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop miodowy",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij bourbon, sok z cytryny i syrop miodowy z lodem przez 12 sekund.",
+   "Przecedź do niskiej szklanki z lodem.",
+   "Udekoruj skórką cytryny."
+  ],
+  "tip": "Syrop miodowy to miód rozcieńczony wodą w proporcji 3:1.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:gold-rush",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Whisky Highball",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "japońska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Whisky z bardzo zimną wodą gazowaną. Lekki i orzeźwiający.",
+  "ingredients": [
+   {
+    "name": "whisky",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana schłodzona",
+    "qty": 150.0,
+    "unit": "ml"
+   },
+   {
+    "name": "skórka cytryny",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wysoką szklankę napełnij lodem po brzegi i wlej whisky.",
+   "Powoli dolej wodę gazowaną, aby zachować bąbelki.",
+   "Zamieszaj raz i ściśnij nad szklanką skórkę cytryny."
+  ],
+  "tip": "Woda gazowana powinna być maksymalnie zimna.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:whisky-highball",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Vieux Carré",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Whiskey żytnie, koniak i wermut w jednym kieliszku. Bogaty i aromatyczny.",
+  "ingredients": [
+   {
+    "name": "whiskey żytnie",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "koniak",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "czerwony wermut słodki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Bénédictine",
+    "qty": 5.0,
+    "unit": "ml"
+   },
+   {
+    "name": "angostura",
+    "qty": 2.0,
+    "unit": "dash"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wszystkie składniki wlej do szklanicy z lodem.",
+   "Mieszaj 30 sekund, aż będą dobrze schłodzone.",
+   "Przecedź do niskiej szklanki z lodem."
+  ],
+  "tip": "Bénédictine dodaje ziołowej głębi, więc nie zastępuj go innym likierem.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:vieux-carre",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Brooklyn",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Whiskey żytnie z wermutem, Amer Picon i maraskino. Cierpki i ziołowy.",
+  "ingredients": [
+   {
+    "name": "whiskey żytnie",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "wermut wytrawny",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier maraskino",
+    "qty": 5.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Amer Picon",
+    "qty": 5.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wlej składniki do szklanicy z lodem.",
+   "Mieszaj 30 sekund i przecedź do kupety.",
+   "Udekoruj wiśnią."
+  ],
+  "tip": "Amer Picon można zastąpić odrobiną Campari.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:brooklyn",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Bourbon Smash",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Bourbon z cytryną, miętą i cukrem. Orzeźwiający i owocowy.",
+  "ingredients": [
+   {
+    "name": "bourbon",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cytryna",
+    "qty": 3.0,
+    "unit": "ćwiartki"
+   },
+   {
+    "name": "liście mięty",
+    "qty": 8.0,
+    "unit": "szt."
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "W shakerze rozgnieć cytrynę z miętą i syropem.",
+   "Dodaj bourbon i lód, a następnie wstrząsaj 10 sekund.",
+   "Przecedź do szklanki z lodem i udekoruj miętą."
+  ],
+  "tip": "Rozgniataj cytrynę z miąższem, aby uzyskać więcej olejków.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:bourbon-smash",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Ward Eight",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Whiskey żytnie z cytryną, pomarańczą i grenadyną. Cytrusowa klasyka z Bostonu.",
+  "ingredients": [
+   {
+    "name": "whiskey żytnie",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z pomarańczy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "grenadyna",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wlej wszystkie składniki do shakera z lodem.",
+   "Wstrząsaj 12 sekund i przecedź do kupety.",
+   "Udekoruj wiśnią."
+  ],
+  "tip": "Prawdziwa grenadyna z granatu daje inny smak niż sztuczny syrop.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:ward-eight",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Last Word",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Równe części ginu, Chartreuse, maraskino i limonki. Ziołowy i kwaśny.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "zielony Chartreuse",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier maraskino",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do schłodzonego kieliszka.",
+   "Podawaj bez dekoracji."
+  ],
+  "tip": "Zawsze odmierzaj równo, bo przy tak mocnych likierach różnica kilku mililitrów jest odczuwalna.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:last-word",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Aviation",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin z maraskino, likierem fiołkowym i cytryną. Kwiatowy, jasnoniebieski i elegancki.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier maraskino",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier fiołkowy",
+    "qty": 7.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do schłodzonego kieliszka koktajlowego.",
+   "Udekoruj wiśnią."
+  ],
+  "tip": "Likier fiołkowy dodawaj ostrożnie, bo łatwo przeszarżować.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:aviation",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Corpse Reviver No. 2",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "angielska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin z Lillet, triple sec, cytryną i absyntem. Lekki, cytrusowy i rześki.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Lillet Blanc",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "triple sec",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "absynt",
+    "qty": 1.0,
+    "unit": "dash"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Kieliszek przepłucz absyntem i wylej nadmiar.",
+   "Wstrząśnij pozostałe składniki z lodem przez 12 sekund.",
+   "Przecedź do kieliszka."
+  ],
+  "tip": "Nazwa wzięła się stąd, że drink ma stawiać na nogi po nocy pełnej wrażeń.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:corpse-reviver-no-2",
+  "rest_minutes": 0
+ },
+ {
+  "title": "French 75",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "francuska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin z cytryną dopełniony szampanem. Elegancki i musujący.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "szampan schłodzony",
+    "qty": 70.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij gin, sok z cytryny i syrop z lodem przez 12 sekund.",
+   "Przecedź do fletu.",
+   "Dolej powoli szampan i udekoruj skórką cytryny."
+  ],
+  "tip": "Prosecco sprawdzi się równie dobrze jak szampan i jest tańsze.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:french-75",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Clover Club",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Gin z malinami, cytryną i białkiem. Różowy i kremowy.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop malinowy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "białko jaja",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki bez lodu przez 10 sekund.",
+   "Dodaj lód i wstrząsaj dalej 12 sekund, a następnie przecedź do kupety.",
+   "Udekoruj trzema malinami."
+  ],
+  "tip": "Syrop malinowy łatwo zrobisz z malin, cukru i odrobiny wody.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:clover-club",
+  "rest_minutes": 0
+ },
+ {
+  "title": "White Lady",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "angielska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Gin z triple sec i cytryną. Wytrawny, jasny i bardzo klasyczny.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "triple sec",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "białko jaja",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij składniki bez lodu przez 10 sekund.",
+   "Dodaj lód i wstrząsaj 12 sekund, a następnie przecedź do kieliszka.",
+   "Podawaj bez dekoracji."
+  ],
+  "tip": "Białko nadaje drinkowi puszystość, ale można je pominąć.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:white-lady",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Cuba Libre",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "kubańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Rum z colą i limonką. Prosty i bardzo popularny.",
+  "ingredients": [
+   {
+    "name": "rum",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cola",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wysoką szklankę napełnij lodem i wlej rum z sokiem z limonki.",
+   "Dolej colę i delikatnie zamieszaj.",
+   "Wrzuć do środka ćwiartkę limonki."
+  ],
+  "tip": "Świeża limonka wyraźnie poprawia smak.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:cuba-libre",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Hemingway Daiquiri",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "kubańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Rum z grejpfrutem, limonką i maraskino. Wytrawny i cierpki.",
+  "ingredients": [
+   {
+    "name": "biały rum",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier maraskino",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z grejpfruta",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do schłodzonego kieliszka.",
+   "Udekoruj skórką grejpfruta."
+  ],
+  "tip": "Nie dodawaj cukru, bo maraskino wystarczająco słodzi.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:hemingway-daiquiri",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Jungle Bird",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "malezyjska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Ciemny rum z Campari, ananasem i limonką. Tropikalny z gorzką nutą.",
+  "ingredients": [
+   {
+    "name": "ciemny rum",
+    "qty": 45.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Campari",
+    "qty": 22.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok ananasowy",
+    "qty": 45.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do niskiej szklanki z lodem.",
+   "Udekoruj plastrem ananasa."
+  ],
+  "tip": "Gorycz Campari świetnie równoważy słodycz ananasa.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:jungle-bird",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Zombie",
+  "category": "drink",
+  "minutes": 8,
+  "difficulty": 3,
+  "servings": 1,
+  "cuisine": "tiki",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Trzy rumy z cytrusami i przyprawami. Bardzo mocny drink tiki.",
+  "ingredients": [
+   {
+    "name": "rum jasny",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "rum ciemny",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "rum 151",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z grejpfruta",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cynamonowy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "grenadyna",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wlej wszystkie składniki do shakera z lodem.",
+   "Wstrząsaj 12 sekund i przecedź do wysokiej szklanki z lodem kruszonym.",
+   "Udekoruj miętą i plastrem limonki."
+  ],
+  "tip": "Zombie jest bardzo mocny, więc nie podawaj więcej niż jednego na osobę.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:zombie",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Painkiller",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "brytyjska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Rum z ananasem, pomarańczą i kremem kokosowym. Słodki i tropikalny.",
+  "ingredients": [
+   {
+    "name": "ciemny rum",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok ananasowy",
+    "qty": 90.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok pomarańczowy",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "krem kokosowy",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "gałka muszkatołowa",
+    "qty": 1.0,
+    "unit": "szczypta"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij rum, soki i krem kokosowy z lodem przez 12 sekund.",
+   "Przelej do wysokiej szklanki z lodem.",
+   "Posyp świeżo startą gałką muszkatołową."
+  ],
+  "tip": "Gałka muszkatołowa świeżo starta daje pełny aromat.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:painkiller",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Rum Punch",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 4,
+  "cuisine": "karaibska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Rum z owocowymi sokami i grenadyną. Imprezowy drink dla większej grupy.",
+  "ingredients": [
+   {
+    "name": "rum",
+    "qty": 200.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok pomarańczowy",
+    "qty": 200.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok ananasowy",
+    "qty": 200.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "grenadyna",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "gałka muszkatołowa",
+    "qty": 1.0,
+    "unit": "szczypta"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 16.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "W dzbanku wymieszaj rum, soki i grenadynę.",
+   "Dodaj lód i posyp gałką muszkatołową.",
+   "Rozlej do szklanek z lodem i udekoruj plasterkami pomarańczy."
+  ],
+  "tip": "Zrób wcześniej bazę i dodaj lód dopiero przed podaniem.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:rum-punch",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Planter's Punch",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "jamajska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Ciemny rum z cytrusami i grenadyną. Owocowy i lekko korzenny.",
+  "ingredients": [
+   {
+    "name": "ciemny rum",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok pomarańczowy",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok ananasowy",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "grenadyna",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "angostura",
+    "qty": 3.0,
+    "unit": "dash"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij rum, soki i grenadynę z lodem przez 12 sekund.",
+   "Przelej do wysokiej szklanki z lodem.",
+   "Na wierzch dodaj angosturę i plasterek pomarańczy."
+  ],
+  "tip": "Angostura na wierzchu dodaje aromatu i ładny efekt wizualny.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:planter-s-punch",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Mary Pickford",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "kubańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Biały rum z ananasem, grenadyną i maraskino. Lekki i owocowy.",
+  "ingredients": [
+   {
+    "name": "biały rum",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok ananasowy",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier maraskino",
+    "qty": 5.0,
+    "unit": "ml"
+   },
+   {
+    "name": "grenadyna",
+    "qty": 5.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do schłodzonego kieliszka.",
+   "Udekoruj wiśnią."
+  ],
+  "tip": "Świeży sok z ananasa daje piankę na wierzchu.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:mary-pickford",
+  "rest_minutes": 0
+ },
+ {
+  "title": "El Presidente",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "kubańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Rum z wermutem i pomarańczowym curaçao. Elegancki drink mieszany łyżką.",
+  "ingredients": [
+   {
+    "name": "rum złoty",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "wermut wytrawny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "curaçao pomarańczowe",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "grenadyna",
+    "qty": 5.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wlej wszystkie składniki do szklanicy z lodem.",
+   "Mieszaj 30 sekund i przecedź do kupety.",
+   "Ściśnij nad drinkiem skórkę pomarańczy."
+  ],
+  "tip": "Wersja z wytrawnym wermutem jest delikatniejsza od tej ze słodkim.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:el-presidente",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Rum Old Fashioned",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "karaibska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Starzony rum z cukrem i angosturą. Aksamitny i karmelowy.",
+  "ingredients": [
+   {
+    "name": "rum starzony",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cukier trzcinowy",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "angostura",
+    "qty": 3.0,
+    "unit": "dash"
+   },
+   {
+    "name": "skórka pomarańczy",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 3.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Rozpuść cukier z angosturą i odrobiną wody w niskiej szklance.",
+   "Dodaj rum i lód, a następnie mieszaj 20 sekund.",
+   "Ściśnij nad drinkiem skórkę pomarańczy."
+  ],
+  "tip": "Dobry starzony rum nie potrzebuje wiele dodatków.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:rum-old-fashioned",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Tequila Sunrise",
+  "category": "drink",
+  "minutes": 4,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "meksykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Tequila z sokiem pomarańczowym i grenadyną. Warstwowy drink o kolorze wschodu słońca.",
+  "ingredients": [
+   {
+    "name": "tequila",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok pomarańczowy",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "grenadyna",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Szklankę napełnij lodem i wlej tequilę oraz sok pomarańczowy.",
+   "Grenadynę wlej powoli po wewnętrznej ściance szklanki.",
+   "Nie mieszaj, aby powstał efekt gradientu."
+  ],
+  "tip": "Grenadyna jest ciężka, więc opadnie na dno i zrobi piękny kolor.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:tequila-sunrise",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Tommy's Margarita",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "meksykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Tequila z limonką i syropem z agawy, bez triple sec. Czystsza i bardziej agawowa wersja klasyka.",
+  "ingredients": [
+   {
+    "name": "tequila",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop z agawy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do niskiej szklanki z lodem.",
+   "Udekoruj plasterkiem limonki."
+  ],
+  "tip": "Używaj tequili w 100% z agawy, bo to ona gra tu główną rolę.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:tommy-s-margarita",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Margarita jalapeño",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "meksykańska",
+  "tags": [
+   "signature",
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Margarita z plasterkami jalapeño. Słodka, kwaśna i pikantna.",
+  "ingredients": [
+   {
+    "name": "tequila",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "triple sec",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "papryczka jalapeño",
+    "qty": 3.0,
+    "unit": "plaster"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "W shakerze rozgnieć plasterki jalapeño z sokiem z limonki.",
+   "Dodaj tequilę, triple sec i lód, a następnie wstrząsaj 12 sekund.",
+   "Przecedź do szklanki z lodem i udekoruj plasterkiem jalapeño."
+  ],
+  "tip": "Usuń nasiona, jeśli wolisz łagodniejszy drink.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:margarita-jalapeno",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Oaxaca Old Fashioned",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "meksykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Tequila i mezcal z syropem z agawy. Dymny i głęboki.",
+  "ingredients": [
+   {
+    "name": "tequila reposado",
+    "qty": 45.0,
+    "unit": "ml"
+   },
+   {
+    "name": "mezcal",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop z agawy",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "angostura",
+    "qty": 2.0,
+    "unit": "dash"
+   },
+   {
+    "name": "skórka pomarańczy",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 3.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "W szklance wymieszaj syrop z agawy i angosturę.",
+   "Dodaj tequilę, mezcal i lód, a następnie mieszaj 20 sekund.",
+   "Ściśnij nad drinkiem skórkę pomarańczy."
+  ],
+  "tip": "Mezcal dodaje dymu, więc zacznij od małej ilości, jeśli go nie znasz.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:oaxaca-old-fashioned",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Batanga",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "meksykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Tequila z colą, limonką i solą. Mieszana nożem w szklance z solnym brzegiem.",
+  "ingredients": [
+   {
+    "name": "tequila",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cola",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sól",
+    "qty": 1.0,
+    "unit": "szczypta"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Brzeg szklanki zwilż limonką i obtocz w soli.",
+   "Napełnij szklankę lodem, wlej tequilę i sok z limonki.",
+   "Dolej colę i zamieszaj."
+  ],
+  "tip": "Tradycyjnie miesza się nożem, który służył do krojenia limonki.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:batanga",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Matador",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "meksykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Tequila z ananasem i limonką. Lekki i soczysty.",
+  "ingredients": [
+   {
+    "name": "tequila",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok ananasowy",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do szklanki z lodem.",
+   "Udekoruj plastrem ananasa."
+  ],
+  "tip": "Sok ananasowy najlepiej użyć świeży, żeby uzyskać piankę.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:matador",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Tequila Sour",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "meksykańska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Tequila z cytryną, syropem i białkiem. Kwaśna i kremowa.",
+  "ingredients": [
+   {
+    "name": "tequila",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop z agawy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "białko jaja",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij bez lodu przez 10 sekund.",
+   "Dodaj lód i wstrząsaj 12 sekund, a następnie przecedź do szklanki z lodem.",
+   "Podawaj bez dekoracji."
+  ],
+  "tip": "Białko można zastąpić aquafabą, jeśli drink ma być wegański.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:tequila-sour",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Margarita mrożona truskawkowa",
+  "category": "drink",
+  "minutes": 8,
+  "difficulty": 1,
+  "servings": 2,
+  "cuisine": "meksykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Blendowana margarita z truskawkami. Słodka i orzeźwiająca.",
+  "ingredients": [
+   {
+    "name": "tequila",
+    "qty": 100.0,
+    "unit": "ml"
+   },
+   {
+    "name": "triple sec",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "truskawki",
+    "qty": 200.0,
+    "unit": "g"
+   },
+   {
+    "name": "cukier",
+    "qty": 2.0,
+    "unit": "łyżka"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 12.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wszystkie składniki wrzuć do blendera.",
+   "Miksuj 30 sekund, aż uzyskasz gładką, gęstą masę.",
+   "Rozlej do szklanek i udekoruj truskawkami."
+  ],
+  "tip": "Mrożone truskawki zastąpią część lodu i dadzą intensywniejszy smak.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:margarita-mrozona-truskawkowa",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Mezcal Mule",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "meksykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Mezcal z piwem imbirowym i limonką. Dymna wersja Moscow Mule.",
+  "ingredients": [
+   {
+    "name": "mezcal",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "piwo imbirowe",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Kubek lub szklankę napełnij lodem.",
+   "Wlej mezcal i sok z limonki, a następnie dolej piwo imbirowe.",
+   "Zamieszaj i udekoruj limonką."
+  ],
+  "tip": "Dymny smak mezcalu świetnie łączy się z ostrym imbirem.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:mezcal-mule",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Naked and Famous",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "współczesna",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Mezcal, Aperol, żółty Chartreuse i limonka. Dymny, gorzki i ziołowy.",
+  "ingredients": [
+   {
+    "name": "mezcal",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Aperol",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "żółty Chartreuse",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do schłodzonego kieliszka.",
+   "Podawaj bez dekoracji."
+  ],
+  "tip": "To odmiana Last Word, w której dym zastępuje ginową szorstkość.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:naked-and-famous",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Daiquiri truskawkowe mrożone",
+  "category": "drink",
+  "minutes": 8,
+  "difficulty": 1,
+  "servings": 2,
+  "cuisine": "kubańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Blendowane daiquiri z truskawkami. Gęste i bardzo owocowe.",
+  "ingredients": [
+   {
+    "name": "biały rum",
+    "qty": 100.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "truskawki",
+    "qty": 200.0,
+    "unit": "g"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 12.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wszystkie składniki wrzuć do blendera.",
+   "Miksuj 30 sekund, aż drink będzie gęsty i jednolity.",
+   "Rozlej do kieliszków i udekoruj truskawką."
+  ],
+  "tip": "Jeśli drink jest zbyt płynny, dodaj kilka kostek lodu i zmiksuj ponownie.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:daiquiri-truskawkowe-mrozone",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Ti' Punch",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "martynikańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Rum rolniczy z limonką i syropem trzcinowym. Prosty, mocny drink z Martyniki.",
+  "ingredients": [
+   {
+    "name": "rum rolniczy",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cząstka limonki",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "syrop z trzciny cukrowej",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   }
+  ],
+  "steps": [
+   "W niskiej szklance wciśnij cząstkę limonki.",
+   "Dodaj syrop trzcinowy i rum.",
+   "Zamieszaj i podawaj bez lodu lub z jedną kostką."
+  ],
+  "tip": "Jakość rumu rolniczego decyduje o całym smaku drinka.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:ti-punch",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Bahama Mama",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "karaibska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Rum z likierem kokosowym i sokami owocowymi. Słodki, tropikalny i orzeźwiający.",
+  "ingredients": [
+   {
+    "name": "rum ciemny",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "rum kokosowy",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier kawowy",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok ananasowy",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok pomarańczowy",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przelej do wysokiej szklanki z lodem.",
+   "Udekoruj plastrem pomarańczy."
+  ],
+  "tip": "Likier kawowy daje subtelną głębię w tropikalnych smakach.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:bahama-mama",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Mojito truskawkowe",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "kubańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Mojito z truskawkami. Letnia, słodsza wersja klasyka.",
+  "ingredients": [
+   {
+    "name": "biały rum",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "truskawki",
+    "qty": 4.0,
+    "unit": "szt."
+   },
+   {
+    "name": "liście mięty",
+    "qty": 8.0,
+    "unit": "szt."
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cukier",
+    "qty": 2.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "W szklance rozgnieć truskawki z miętą, cukrem i sokiem z limonki.",
+   "Dodaj lód i rum, a następnie zamieszaj.",
+   "Dolej wodę gazowaną i udekoruj truskawką."
+  ],
+  "tip": "Dojrzałe truskawki dają najlepszy kolor i słodycz.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:mojito-truskawkowe",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Rum Sour",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "karaibska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Rum z cytryną i cukrem. Kwaśny i zaokrąglony.",
+  "ingredients": [
+   {
+    "name": "rum złoty",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do niskiej szklanki z lodem.",
+   "Udekoruj plasterkiem cytryny."
+  ],
+  "tip": "Użyj rumu starzonego, a drink zyska głębię.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:rum-sour",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Gin Basil Smash",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "niemiecka",
+  "tags": [
+   "signature",
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin z bazylią, cytryną i syropem. Zielony, świeży i ziołowy.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "liście bazylii",
+    "qty": 10.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "W shakerze rozgnieć bazylię z syropem i sokiem z cytryny.",
+   "Dodaj gin i lód, a następnie wstrząsaj 12 sekund.",
+   "Przecedź przez drobne sitko do szklanki z lodem."
+  ],
+  "tip": "Drobne sitko usunie zielone kawałki i zostawi czysty kolor.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:gin-basil-smash",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Bramble",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "angielska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin z cytryną i likierem jeżynowym. Owocowy i lekko cierpki.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 12.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier jeżynowy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "lód kruszony",
+    "qty": 1.0,
+    "unit": "szklanka"
+   }
+  ],
+  "steps": [
+   "Wstrząśnij gin, sok z cytryny i syrop z lodem, a następnie przecedź do szklanki z lodem kruszonym.",
+   "Powoli polej wierzch likierem jeżynowym.",
+   "Udekoruj jeżyną i plasterkiem cytryny."
+  ],
+  "tip": "Likier wlany na końcu tworzy ładny gradient koloru.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:bramble",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Southside",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin z limonką i miętą. Lekki i orzeźwiający.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "liście mięty",
+    "qty": 8.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź przez drobne sitko do schłodzonego kieliszka.",
+   "Udekoruj liściem mięty."
+  ],
+  "tip": "To praktycznie mojito w wersji ginowej, podawane bez wody gazowanej.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:southside",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Singapore Sling",
+  "category": "drink",
+  "minutes": 8,
+  "difficulty": 3,
+  "servings": 1,
+  "cuisine": "singapurska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin z likierem wiśniowym, Bénédictine i ananasem. Owocowy i skomplikowany.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier wiśniowy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Bénédictine",
+    "qty": 7.0,
+    "unit": "ml"
+   },
+   {
+    "name": "triple sec",
+    "qty": 7.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok ananasowy",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "grenadyna",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do wysokiej szklanki z lodem.",
+   "Udekoruj plastrem ananasa i wiśnią."
+  ],
+  "tip": "Świeży sok ananasowy z pianką jest tu kluczowy.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:singapore-sling",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Gin Rickey",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin z limonką i wodą gazowaną, bez cukru. Wytrawny i orzeźwiający.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wysoką szklankę napełnij lodem i wlej gin oraz sok z limonki.",
+   "Dolej wodę gazowaną.",
+   "Zamieszaj i wrzuć do środka połówkę limonki."
+  ],
+  "tip": "Bez cukru drink jest bardzo wytrawny, co lubią miłośnicy ginu.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:gin-rickey",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Gin z tonikiem klasyczny",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "angielska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin z dobrym tonikiem i cytryną. Najprostszy z długich drinków.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "tonik",
+    "qty": 150.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek cytryny",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Duży kieliszek lub szklankę napełnij lodem.",
+   "Wlej gin i powoli dolej tonik.",
+   "Zamieszaj raz i dodaj plasterek cytryny."
+  ],
+  "tip": "Proporcja 1:3 jest dobrym punktem wyjścia, a jakość toniku jest równie ważna co gin.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:gin-z-tonikiem-klasyczny",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Negroni Sbagliato",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "włoska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Negroni z proseccem zamiast ginu. Lżejszy i bardziej musujący.",
+  "ingredients": [
+   {
+    "name": "Campari",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "czerwony wermut słodki",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "prosecco",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek pomarańczy",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do szklanki z lodem wlej Campari i wermut.",
+   "Dolej prosecco i delikatnie zamieszaj.",
+   "Udekoruj plasterkiem pomarańczy."
+  ],
+  "tip": "Nazwa oznacza po włosku pomyłkę, która okazała się świetna.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:negroni-sbagliato",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Martinez",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Prekursor Martini: gin z wermutem i maraskino. Słodszy i bardziej aromatyczny.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "czerwony wermut słodki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier maraskino",
+    "qty": 5.0,
+    "unit": "ml"
+   },
+   {
+    "name": "angostura",
+    "qty": 2.0,
+    "unit": "dash"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wlej składniki do szklanicy z lodem.",
+   "Mieszaj 30 sekund i przecedź do kupety.",
+   "Ściśnij nad drinkiem skórkę pomarańczy."
+  ],
+  "tip": "Gin Old Tom jest tradycyjnym wyborem do tego drinka.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:martinez",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Bee's Knees",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin z miodem i cytryną. Delikatny i słodki.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop miodowy",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do schłodzonego kieliszka.",
+   "Udekoruj skórką cytryny."
+  ],
+  "tip": "Syrop miodowy przygotuj, mieszając miód z ciepłą wodą w proporcji 3:1.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:bee-s-knees",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Elderflower Collins",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "angielska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin z syropem z czarnego bzu i cytryną. Kwiatowy i lekki.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop z czarnego bzu",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 90.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do wysokiej szklanki z lodem wlej gin, sok z cytryny i syrop z czarnego bzu.",
+   "Zamieszaj i dolej wodę gazowaną.",
+   "Udekoruj plasterkiem cytryny i miętą."
+  ],
+  "tip": "Syrop z czarnego bzu dobrze łączy się z ginem o cytrusowym profilu.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:elderflower-collins",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Salty Dog",
+  "category": "drink",
+  "minutes": 4,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka z grejpfrutem i solą na brzegu. Wytrawny i orzeźwiający.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z grejpfruta",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sól",
+    "qty": 1.0,
+    "unit": "szczypta"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Brzeg szklanki zwilż grejpfrutem i obtocz w soli.",
+   "Napełnij szklankę lodem i wlej wódkę oraz sok.",
+   "Zamieszaj delikatnie."
+  ],
+  "tip": "Sól wyrównuje gorycz grejpfruta.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:salty-dog",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Sex on the Beach",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka z brzoskwiniowym likierem, pomarańczą i żurawiną. Owocowy i słodki.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier brzoskwiniowy",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok pomarańczowy",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok żurawinowy",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do wysokiej szklanki z lodem.",
+   "Udekoruj plasterkiem pomarańczy."
+  ],
+  "tip": "Likier brzoskwiniowy jest tu kluczowy, więc nie zastępuj go zwykłym syropem.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:sex-on-the-beach",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Sea Breeze",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka z żurawiną i grejpfrutem. Lekki i rześki.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok żurawinowy",
+    "qty": 90.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z grejpfruta",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wysoką szklankę napełnij lodem i wlej wódkę.",
+   "Dodaj sok żurawinowy i grejpfrutowy.",
+   "Zamieszaj i udekoruj limonką."
+  ],
+  "tip": "Używaj soków bez dodatku cukru, wtedy drink będzie świeższy.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:sea-breeze",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Cape Codder",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka z sokiem żurawinowym. Najprostszy z owocowych drinków.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok żurawinowy",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cząstka limonki",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Szklankę napełnij lodem i wlej wódkę.",
+   "Dolej sok żurawinowy i zamieszaj.",
+   "Udekoruj cząstką limonki."
+  ],
+  "tip": "Odrobina soku z limonki dobrze równoważy słodycz soku.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:cape-codder",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Screwdriver",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka z sokiem pomarańczowym. Prosty i szybki.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "świeży sok z pomarańczy",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek pomarańczy",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Szklankę napełnij lodem i wlej wódkę.",
+   "Dolej sok pomarańczowy i zamieszaj.",
+   "Udekoruj plasterkiem pomarańczy."
+  ],
+  "tip": "Świeżo wyciśnięty sok to ogromna różnica w porównaniu z kartonowym.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:screwdriver",
+  "rest_minutes": 0
+ },
+ {
+  "title": "White Russian",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "belgijska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Wódka z likierem kawowym i śmietanką. Kremowy i słodki.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier kawowy",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "śmietanka 18%",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do niskiej szklanki z lodem wlej wódkę i likier kawowy.",
+   "Śmietankę wlej delikatnie na wierzch.",
+   "Zamieszaj przed piciem lub zostaw warstwy."
+  ],
+  "tip": "Zamiast śmietanki można użyć mleka owsianego.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:white-russian",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Black Russian",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "belgijska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka z likierem kawowym. Gęsty i mocny.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier kawowy",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do niskiej szklanki z lodem wlej wódkę.",
+   "Dodaj likier kawowy.",
+   "Zamieszaj 10 sekund."
+  ],
+  "tip": "To po prostu White Russian bez śmietanki.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:black-russian",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Lemon Drop",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka z cytryną i cukrem na brzegu. Kwaśny i słodki jak cukierek.",
+  "ingredients": [
+   {
+    "name": "wódka cytrynowa",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "triple sec",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cukier",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Brzeg kieliszka zwilż cytryną i obtocz w cukrze.",
+   "Wstrząśnij pozostałe składniki z lodem przez 12 sekund.",
+   "Przecedź do kieliszka."
+  ],
+  "tip": "Cukrowy brzeg powinien być cienki, żeby nie zdominował drinka.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:lemon-drop",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Kamikaze",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka z triple sec i limonką. Prosty, kwaśny i mocny.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "triple sec",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do kieliszka lub szklanki.",
+   "Udekoruj plasterkiem limonki."
+  ],
+  "tip": "Podawany w małych kieliszkach może być też shotem.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:kamikaze",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Porn Star Martini",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "angielska",
+  "tags": [
+   "signature",
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka waniliowa z marakują i szampanem na boku. Owocowy i bardzo aromatyczny.",
+  "ingredients": [
+   {
+    "name": "wódka waniliowa",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier z marakui",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "marakuja",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "prosecco",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wódkę, likier, sok z limonki i miąższ połowy marakui z lodem przez 12 sekund.",
+   "Przecedź do kieliszka i udekoruj połówką marakui.",
+   "Prosecco podaj w osobnym kieliszku."
+  ],
+  "tip": "Prosecco pije się obok drinka jako popitkę.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:porn-star-martini",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Appletini",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka z jabłkiem i cytryną. Kwaśny, zielony i słodki.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier jabłkowy",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do kieliszka koktajlowego.",
+   "Udekoruj cienkim plasterkiem jabłka."
+  ],
+  "tip": "Użyj kwaśnych jabłek do dekoracji, aby zachować kontrast.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:appletini",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Greyhound",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka lub gin z grejpfrutem. Wytrawny i gorzkawy.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z grejpfruta",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek grejpfruta",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Szklankę napełnij lodem i wlej wódkę.",
+   "Dolej świeży sok grejpfrutowy i zamieszaj.",
+   "Udekoruj plasterkiem grejpfruta."
+  ],
+  "tip": "Różowy grejpfrut jest słodszy i łagodniejszy.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:greyhound",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Vesper",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "angielska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin, wódka i Lillet Blanc. Drink Jamesa Bonda, mocny i wytrawny.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 45.0,
+    "unit": "ml"
+   },
+   {
+    "name": "wódka",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Lillet Blanc",
+    "qty": 7.0,
+    "unit": "ml"
+   },
+   {
+    "name": "skórka cytryny",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wlej wszystkie składniki do shakera z lodem.",
+   "Wstrząsaj 10 sekund i przecedź do schłodzonego kieliszka.",
+   "Ściśnij nad drinkiem długą skórkę cytryny."
+  ],
+  "tip": "W oryginale drink jest wstrząsany, choć klasyczne martini miesza się łyżką.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:vesper",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Szarlotka z wódką",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "polska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka z mętnym sokiem jabłkowym, cynamonem i odrobiną cytryny. Polski drink o smaku szarlotki.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok jabłkowy tłoczony",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cynamon mielony",
+    "qty": 1.0,
+    "unit": "szczypta"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Szklankę napełnij lodem i wlej wódkę oraz sok z cytryny.",
+   "Dolej sok jabłkowy i zamieszaj.",
+   "Posyp cynamonem i udekoruj plasterkiem jabłka."
+  ],
+  "tip": "Mętny sok tłoczony daje pełniejszy smak niż klarowny.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:szarlotka-z-wodka",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Tatanka",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "polska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka żubrówka z sokiem jabłkowym. Najpopularniejszy polski drink z trawą żubrową.",
+  "ingredients": [
+   {
+    "name": "wódka żubrówka",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok jabłkowy",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek jabłka",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Szklankę napełnij lodem i wlej żubrówkę.",
+   "Dolej sok jabłkowy i zamieszaj.",
+   "Udekoruj plasterkiem jabłka lub źdźbłem trawy."
+  ],
+  "tip": "Mętny sok jabłkowy lepiej pasuje do trawy żubrowej.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:tatanka",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Hugo Spritz",
+  "category": "drink",
+  "minutes": 4,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "włoska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Prosecco z syropem z czarnego bzu, miętą i limonką. Kwiatowy i lekki.",
+  "ingredients": [
+   {
+    "name": "prosecco",
+    "qty": 90.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop z czarnego bzu",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "liście mięty",
+    "qty": 6.0,
+    "unit": "szt."
+   },
+   {
+    "name": "limonka",
+    "qty": 2.0,
+    "unit": "plaster"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Duży kieliszek wypełnij lodem i dodaj miętę oraz limonkę.",
+   "Wlej syrop z czarnego bzu i prosecco.",
+   "Dolej wodę gazowaną i delikatnie zamieszaj."
+  ],
+  "tip": "Miętę klepnij w dłoniach przed wrzuceniem, aby uwolnić aromat.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:hugo-spritz",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Sangria czerwona",
+  "category": "drink",
+  "minutes": 15,
+  "difficulty": 1,
+  "servings": 6,
+  "cuisine": "hiszpańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Czerwone wino z owocami, brandy i pomarańczą. Letni napój na imprezę.",
+  "ingredients": [
+   {
+    "name": "wino czerwone wytrawne",
+    "qty": 750.0,
+    "unit": "ml"
+   },
+   {
+    "name": "brandy",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "pomarańcze",
+    "qty": 2.0,
+    "unit": "szt."
+   },
+   {
+    "name": "cytryna",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "brzoskwinia",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "cukier",
+    "qty": 3.0,
+    "unit": "łyżka"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 200.0,
+    "unit": "ml"
+   }
+  ],
+  "steps": [
+   "Owoce pokrój w plastry i wrzuć do dzbanka z cukrem.",
+   "Wlej wino i brandy, a następnie schładzaj w lodówce 2 godziny.",
+   "Przed podaniem dolej wodę gazowaną i dodaj lód."
+  ],
+  "tip": "Im dłużej owoce stoją w winie, tym lepiej oddają smak.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:sangria-czerwona",
+  "rest_minutes": 120
+ },
+ {
+  "title": "Sangria biała",
+  "category": "drink",
+  "minutes": 15,
+  "difficulty": 1,
+  "servings": 6,
+  "cuisine": "hiszpańska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Białe wino z brzoskwiniami, jabłkiem i winogronami. Lżejsza i owocowa.",
+  "ingredients": [
+   {
+    "name": "wino białe wytrawne",
+    "qty": 750.0,
+    "unit": "ml"
+   },
+   {
+    "name": "brandy",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "brzoskwinie",
+    "qty": 2.0,
+    "unit": "szt."
+   },
+   {
+    "name": "jabłko",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "winogrona",
+    "qty": 150.0,
+    "unit": "g"
+   },
+   {
+    "name": "miód",
+    "qty": 2.0,
+    "unit": "łyżka"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 200.0,
+    "unit": "ml"
+   }
+  ],
+  "steps": [
+   "Owoce pokrój w kawałki i wrzuć do dzbanka z miodem.",
+   "Wlej wino i brandy, a następnie schładzaj w lodówce 2 godziny.",
+   "Przed podaniem dolej wodę gazowaną i dodaj lód."
+  ],
+  "tip": "Wybierz wino wytrawne, aby sangria nie była zbyt słodka.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:sangria-biala",
+  "rest_minutes": 120
+ },
+ {
+  "title": "Kalimotxo",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "baskijska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Czerwone wino z colą. Prosty hiszpański drink na upał.",
+  "ingredients": [
+   {
+    "name": "wino czerwone",
+    "qty": 100.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cola",
+    "qty": 100.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek cytryny",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wysoką szklankę napełnij lodem.",
+   "Wlej w równych częściach wino i colę.",
+   "Zamieszaj i dodaj plasterek cytryny."
+  ],
+  "tip": "Tanie, młode wino czerwone sprawdza się tu najlepiej.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:kalimotxo",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Tinto de verano",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "hiszpańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Czerwone wino z lemoniadą cytrynową. Lekki, letni i niezbyt mocny.",
+  "ingredients": [
+   {
+    "name": "wino czerwone",
+    "qty": 100.0,
+    "unit": "ml"
+   },
+   {
+    "name": "lemoniada gazowana",
+    "qty": 100.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek cytryny",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Szklankę napełnij lodem i wlej wino.",
+   "Dolej lemoniadę i delikatnie zamieszaj.",
+   "Dodaj plasterek cytryny."
+  ],
+  "tip": "Użyj lemoniady o wyraźnym cytrynowym smaku, bez nadmiaru cukru.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:tinto-de-verano",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Spritz Campari",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "włoska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Prosecco z Campari i wodą gazowaną. Gorzki i wytrawny wariant spritza.",
+  "ingredients": [
+   {
+    "name": "prosecco",
+    "qty": 90.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Campari",
+    "qty": 45.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek pomarańczy",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Kieliszek wypełnij lodem.",
+   "Wlej prosecco, Campari i dolej wodę gazowaną.",
+   "Zamieszaj i dodaj plasterek pomarańczy."
+  ],
+  "tip": "Campari jest gorzkie, więc zacznij od mniejszej ilości, jeśli go nie znasz.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:spritz-campari",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Limoncello Spritz",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "włoska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Prosecco z limoncello i wodą gazowaną. Cytrynowy i lekki.",
+  "ingredients": [
+   {
+    "name": "prosecco",
+    "qty": 90.0,
+    "unit": "ml"
+   },
+   {
+    "name": "limoncello",
+    "qty": 45.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek cytryny",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Kieliszek wypełnij lodem i wlej limoncello.",
+   "Dolej prosecco i wodę gazowaną.",
+   "Dodaj plasterek cytryny i gałązkę mięty."
+  ],
+  "tip": "Limoncello dobrze schłodź, bo drink jest bardzo słodki.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:limoncello-spritz",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Select Spritz",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "wenecka",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Prosecco z Select i oliwką. Wenecki aperitif o ziołowym smaku.",
+  "ingredients": [
+   {
+    "name": "prosecco",
+    "qty": 90.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Select",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "oliwka zielona",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Kieliszek wypełnij lodem.",
+   "Wlej Select i prosecco, a następnie dolej wodę gazowaną.",
+   "Wrzuć do środka oliwkę."
+  ],
+  "tip": "Oliwka dodaje słonej nuty, która równoważy goryczkę.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:select-spritz",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Sgroppino",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 2,
+  "cuisine": "włoska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Sorbet cytrynowy ubity z proseccem i wódką. Deser i drink w jednym.",
+  "ingredients": [
+   {
+    "name": "sorbet cytrynowy",
+    "qty": 200.0,
+    "unit": "g"
+   },
+   {
+    "name": "prosecco",
+    "qty": 100.0,
+    "unit": "ml"
+   },
+   {
+    "name": "wódka",
+    "qty": 30.0,
+    "unit": "ml"
+   }
+  ],
+  "steps": [
+   "Sorbet przełóż do miski i rozmącz trzepaczką na kremową masę.",
+   "Dodaj prosecco i wódkę, a następnie ubij na jednolitą, lekko pienistą konsystencję.",
+   "Rozlej do dwóch kieliszków i podawaj od razu."
+  ],
+  "tip": "Składniki muszą być bardzo zimne, aby sgroppino nie rozpłynął się zbyt szybko.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:sgroppino",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Rossini",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 2,
+  "cuisine": "włoska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Prosecco z puree z truskawek. Różowy i delikatny.",
+  "ingredients": [
+   {
+    "name": "truskawki",
+    "qty": 150.0,
+    "unit": "g"
+   },
+   {
+    "name": "cukier puder",
+    "qty": 1.0,
+    "unit": "łyżka"
+   },
+   {
+    "name": "prosecco schłodzone",
+    "qty": 200.0,
+    "unit": "ml"
+   }
+  ],
+  "steps": [
+   "Truskawki zmiksuj z cukrem na gładkie puree.",
+   "Do dwóch flet wlej po 2 łyżki puree.",
+   "Dolej powoli prosecco i delikatnie zamieszaj."
+  ],
+  "tip": "To truskawkowy kuzyn Bellini.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:rossini",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Poinsettia",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Szampan z sokiem żurawinowym i likierem pomarańczowym. Świąteczny i czerwony.",
+  "ingredients": [
+   {
+    "name": "szampan",
+    "qty": 100.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok żurawinowy",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "triple sec",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "żurawina",
+    "qty": 3.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do fletu wlej sok żurawinowy i triple sec.",
+   "Dolej powoli szampan.",
+   "Dodaj kilka żurawin."
+  ],
+  "tip": "Sok żurawinowy dobrze schłodź, aby szampan się nie pienił.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:poinsettia",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Black Velvet",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "irlandzka",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Stout z szampanem w proporcji 1:1. Czarny, kremowy i musujący.",
+  "ingredients": [
+   {
+    "name": "piwo stout",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "szampan",
+    "qty": 120.0,
+    "unit": "ml"
+   }
+  ],
+  "steps": [
+   "Wysoką szklankę lub flet przechyl i wlej do połowy szampan.",
+   "Delikatnie wlej stout po odwróconej łyżce, aby warstwy się nie zmieszały.",
+   "Podawaj od razu."
+  ],
+  "tip": "Odwrócona łyżka rozprasza strumień i zapobiega wymieszaniu.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:black-velvet",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Shandy",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "angielska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Piwo jasne z lemoniadą. Lekki napój na upalne dni.",
+  "ingredients": [
+   {
+    "name": "piwo jasne",
+    "qty": 200.0,
+    "unit": "ml"
+   },
+   {
+    "name": "lemoniada gazowana",
+    "qty": 200.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek cytryny",
+    "qty": 1.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wysoką szklankę przechyl i wlej piwo.",
+   "Dolej lemoniadę i zamieszaj raz.",
+   "Dodaj plasterek cytryny."
+  ],
+  "tip": "Proporcję dostosuj do własnego gustu, od 1:1 do 2:1.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:shandy",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Radler",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "niemiecka",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Piwo z sokiem cytrynowym lub grejpfrutowym. Orzeźwiający i niskoprocentowy.",
+  "ingredients": [
+   {
+    "name": "piwo jasne",
+    "qty": 250.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z grejpfruta",
+    "qty": 150.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek grejpfruta",
+    "qty": 1.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Szklankę przechyl i wlej piwo.",
+   "Dolej sok grejpfrutowy.",
+   "Udekoruj plasterkiem grejpfruta."
+  ],
+  "tip": "Zimne składniki są kluczowe w tym drinku.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:radler",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Michelada",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "meksykańska",
+  "tags": [],
+  "summary": "Piwo z limonką, sosem Worcestershire i ostrym sosem. Pikantny i słony.",
+  "ingredients": [
+   {
+    "name": "piwo jasne",
+    "qty": 330.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sos Worcestershire",
+    "qty": 3.0,
+    "unit": "dash"
+   },
+   {
+    "name": "ostry sos",
+    "qty": 3.0,
+    "unit": "dash"
+   },
+   {
+    "name": "sól",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Brzeg szklanki zwilż limonką i obtocz w soli.",
+   "Wlej do szklanki sok z limonki, sos Worcestershire, ostry sos i lód.",
+   "Dolej piwo i zamieszaj delikatnie."
+  ],
+  "tip": "Dobrze smakuje z lekkim piwem w stylu lagera.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:michelada",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Piwo z sokiem malinowym",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "polska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Jasne piwo z syropem malinowym. Polski klasyk barowy.",
+  "ingredients": [
+   {
+    "name": "piwo jasne",
+    "qty": 400.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok malinowy",
+    "qty": 30.0,
+    "unit": "ml"
+   }
+  ],
+  "steps": [
+   "Do szklanki wlej syrop malinowy.",
+   "Dolej powoli piwo, aby nie powstało zbyt dużo piany.",
+   "Zamieszaj raz łyżką."
+  ],
+  "tip": "Dobry sok malinowy z dużą ilością owoców jest ważniejszy niż piwo.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:piwo-z-sokiem-malinowym",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Piwo grzane",
+  "category": "drink",
+  "minutes": 12,
+  "difficulty": 1,
+  "servings": 2,
+  "cuisine": "polska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Gorące piwo z miodem, goździkami i cynamonem. Zimowy rozgrzewacz.",
+  "ingredients": [
+   {
+    "name": "piwo jasne",
+    "qty": 500.0,
+    "unit": "ml"
+   },
+   {
+    "name": "miód",
+    "qty": 2.0,
+    "unit": "łyżka"
+   },
+   {
+    "name": "goździki",
+    "qty": 4.0,
+    "unit": "szt."
+   },
+   {
+    "name": "laska cynamonu",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "pomarańcza",
+    "qty": 2.0,
+    "unit": "plaster"
+   }
+  ],
+  "steps": [
+   "W garnku podgrzej piwo z miodem i przyprawami na małym ogniu 8 minut, aż będzie gorące, ale nie wrzące.",
+   "Wyjmij goździki i cynamon.",
+   "Rozlej do kubków i dodaj plasterek pomarańczy."
+  ],
+  "tip": "Nie doprowadzaj do wrzenia, bo piwo zrobi się gorzkie.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:piwo-grzane",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Grzane wino",
+  "category": "drink",
+  "minutes": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "cuisine": "zimowa",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Czerwone wino z przyprawami, pomarańczą i miodem. Klasyczny zimowy napój.",
+  "ingredients": [
+   {
+    "name": "wino czerwone",
+    "qty": 750.0,
+    "unit": "ml"
+   },
+   {
+    "name": "miód",
+    "qty": 3.0,
+    "unit": "łyżka"
+   },
+   {
+    "name": "pomarańcza",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "goździki",
+    "qty": 3.0,
+    "unit": "szt."
+   },
+   {
+    "name": "laski cynamonu",
+    "qty": 2.0,
+    "unit": "szt."
+   },
+   {
+    "name": "anyż gwiazdkowy",
+    "qty": 2.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Pomarańczę pokrój w plastry i włóż do garnka z winem, miodem i przyprawami.",
+   "Podgrzewaj na małym ogniu 15 minut, nie dopuszczając do wrzenia.",
+   "Rozlej do kubków i podawaj gorące."
+  ],
+  "tip": "Wrzenie niszczy aromat i ulatnia alkohol.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:grzane-wino",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Biały grzaniec z miodem",
+  "category": "drink",
+  "minutes": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "cuisine": "zimowa",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Białe wino z miodem, jabłkiem i cytryną. Delikatniejsza wersja grzańca.",
+  "ingredients": [
+   {
+    "name": "wino białe półwytrawne",
+    "qty": 750.0,
+    "unit": "ml"
+   },
+   {
+    "name": "miód",
+    "qty": 3.0,
+    "unit": "łyżka"
+   },
+   {
+    "name": "jabłko",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "cytryna",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "laski cynamonu",
+    "qty": 2.0,
+    "unit": "szt."
+   },
+   {
+    "name": "goździki",
+    "qty": 3.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Jabłko i cytrynę pokrój w plastry i włóż do garnka z winem, miodem i przyprawami.",
+   "Podgrzewaj na małym ogniu 15 minut, nie dopuszczając do wrzenia.",
+   "Rozlej do kubków."
+  ],
+  "tip": "Wino półwytrawne łagodzi smak i nie potrzebuje wiele miodu.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:bialy-grzaniec-z-miodem",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Mojito Royale",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "kubańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Mojito dopełnione proseccem zamiast wody gazowanej. Musujące i eleganckie.",
+  "ingredients": [
+   {
+    "name": "biały rum",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "liście mięty",
+    "qty": 8.0,
+    "unit": "szt."
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cukier",
+    "qty": 2.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "prosecco",
+    "qty": 80.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "W szklance lekko rozgnieć miętę z cukrem i sokiem z limonki.",
+   "Dodaj lód i rum, a następnie zamieszaj.",
+   "Dolej prosecco i udekoruj miętą."
+  ],
+  "tip": "Prosecco dodaj na końcu, aby zachować bąbelki.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:mojito-royale",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Amaretto Sour",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Amaretto z cytryną i białkiem. Migdałowy, kwaśny i kremowy.",
+  "ingredients": [
+   {
+    "name": "amaretto",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "białko jaja",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij bez lodu przez 10 sekund.",
+   "Dodaj lód i wstrząsaj 12 sekund, a następnie przecedź do szklanki z lodem.",
+   "Udekoruj wiśnią."
+  ],
+  "tip": "Dodaj 10 ml bourbona, aby drink był mniej słodki.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:amaretto-sour",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Limoncello Tonic",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "włoska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Limoncello z tonikiem i miętą. Lekki i cytrynowy.",
+  "ingredients": [
+   {
+    "name": "limoncello",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "tonik",
+    "qty": 100.0,
+    "unit": "ml"
+   },
+   {
+    "name": "liście mięty",
+    "qty": 6.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Szklankę napełnij lodem i wlej limoncello.",
+   "Dolej tonik i delikatnie zamieszaj.",
+   "Udekoruj miętą."
+  ],
+  "tip": "Tonik o suchym charakterze równoważy słodkie limoncello.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:limoncello-tonic",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Mudslide",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Wódka z likierem kawowym, Baileys i lodami. Deserowy drink o czekoladowym smaku.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier kawowy",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Baileys",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "lody waniliowe",
+    "qty": 100.0,
+    "unit": "g"
+   },
+   {
+    "name": "syrop czekoladowy",
+    "qty": 1.0,
+    "unit": "łyżka"
+   }
+  ],
+  "steps": [
+   "Wlej wszystkie składniki do blendera.",
+   "Miksuj 20 sekund, aż drink będzie gładki.",
+   "Przelej do szklanki wysmarowanej syropem czekoladowym."
+  ],
+  "tip": "Pokrój w szklance czekoladę, aby udekorować wierzch.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:mudslide",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Grasshopper",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Likier miętowy z kremem kakaowym i śmietanką. Zielony i deserowy.",
+  "ingredients": [
+   {
+    "name": "likier miętowy zielony",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier kakaowy biały",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "śmietanka 18%",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do schłodzonego kieliszka.",
+   "Udekoruj liściem mięty."
+  ],
+  "tip": "Podawaj jako deser po obiedzie.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:grasshopper",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Brandy Alexander",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Brandy z likierem kakaowym i śmietanką. Gładki i kremowy.",
+  "ingredients": [
+   {
+    "name": "brandy",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier kakaowy ciemny",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "śmietanka 18%",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do schłodzonego kieliszka.",
+   "Posyp startą gałką muszkatołową."
+  ],
+  "tip": "Świeżo starta gałka muszkatołowa podkreśla smak brandy.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:brandy-alexander",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Stinger",
+  "category": "drink",
+  "minutes": 4,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Koniak z likierem miętowym. Mocny i orzeźwiający.",
+  "ingredients": [
+   {
+    "name": "koniak",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier miętowy biały",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wlej koniak i likier do szklanicy z lodem.",
+   "Mieszaj 25 sekund i przecedź do kieliszka.",
+   "Udekoruj gałązką mięty."
+  ],
+  "tip": "Mięta w likierze powinna być wyraźna, ale nie dominować.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:stinger",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Jack Rose",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Calvados z limonką i grenadyną. Jabłkowy, kwaśny i rubinowy.",
+  "ingredients": [
+   {
+    "name": "calvados",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "grenadyna",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 12 sekund.",
+   "Przecedź do schłodzonego kieliszka.",
+   "Udekoruj cienkim plasterkiem jabłka."
+  ],
+  "tip": "Dobra grenadyna z prawdziwego granatu jest tu ważniejsza niż calvados premium.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:jack-rose",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Kawa z koniakiem",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "francuska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Gorąca kawa z koniakiem i śmietanką. Rozgrzewający dodatek do deseru.",
+  "ingredients": [
+   {
+    "name": "koniak",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kawa gorąca",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cukier trzcinowy",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "śmietanka kremówka",
+    "qty": 30.0,
+    "unit": "ml"
+   }
+  ],
+  "steps": [
+   "Do filiżanki wlej gorącą kawę i rozpuść w niej cukier.",
+   "Dodaj koniak i zamieszaj.",
+   "Połóż na wierzchu lekko ubitą śmietankę."
+  ],
+  "tip": "Nie mieszaj po dodaniu śmietanki, a smak będzie warstwowy.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:kawa-z-koniakiem",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Wiśniówka Sour",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "polska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Nalewka wiśniowa z cytryną i białkiem. Słodko-kwaśny polski drink.",
+  "ingredients": [
+   {
+    "name": "nalewka wiśniowa",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "białko jaja",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij bez lodu przez 10 sekund.",
+   "Dodaj lód i wstrząsaj 12 sekund, a następnie przecedź do szklanki z lodem.",
+   "Udekoruj wiśnią."
+  ],
+  "tip": "Przy słodkiej nalewce zmniejsz ilość syropu.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:wisniowka-sour",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Spritz z miodem pitnym",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "polska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Miód pitny z proseccem i wodą gazowaną. Słodko-musujący polski spritz.",
+  "ingredients": [
+   {
+    "name": "miód pitny półtorak",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "prosecco",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "plasterek cytryny",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Kieliszek wypełnij lodem.",
+   "Wlej miód pitny i prosecco, a następnie dolej wodę gazowaną.",
+   "Udekoruj plasterkiem cytryny i gałązką rozmarynu."
+  ],
+  "tip": "Cytryna równoważy słodycz miodu pitnego.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:spritz-z-miodem-pitnym",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Krupnik na gorąco",
+  "category": "drink",
+  "minutes": 12,
+  "difficulty": 1,
+  "servings": 2,
+  "cuisine": "polska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Wódka miodowa z przyprawami, podawana gorąca. Staropolski rozgrzewacz.",
+  "ingredients": [
+   {
+    "name": "krupnik",
+    "qty": 100.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda",
+    "qty": 200.0,
+    "unit": "ml"
+   },
+   {
+    "name": "miód",
+    "qty": 1.0,
+    "unit": "łyżka"
+   },
+   {
+    "name": "laska cynamonu",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "goździki",
+    "qty": 3.0,
+    "unit": "szt."
+   },
+   {
+    "name": "cytryna",
+    "qty": 2.0,
+    "unit": "plaster"
+   }
+  ],
+  "steps": [
+   "W rondelku podgrzej wodę z miodem i przyprawami na małym ogniu 5 minut.",
+   "Dodaj krupnik i podgrzewaj jeszcze 2 minuty bez wrzenia.",
+   "Rozlej do kubków i dodaj plasterek cytryny."
+  ],
+  "tip": "Nie gotuj po dodaniu krupniku, aby alkohol nie wyparował.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:krupnik-na-goraco",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Gorąca czekolada z rumem",
+  "category": "drink",
+  "minutes": 10,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "karaibska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Ciemna czekolada na mleku z rumem. Gęsta i rozgrzewająca.",
+  "ingredients": [
+   {
+    "name": "mleko",
+    "qty": 200.0,
+    "unit": "ml"
+   },
+   {
+    "name": "czekolada ciemna",
+    "qty": 40.0,
+    "unit": "g"
+   },
+   {
+    "name": "cukier",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "rum ciemny",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cynamon mielony",
+    "qty": 1.0,
+    "unit": "szczypta"
+   }
+  ],
+  "steps": [
+   "Mleko podgrzej w rondelku, a następnie dodaj posiekaną czekoladę i cukier.",
+   "Mieszaj 3 minuty, aż czekolada się rozpuści i napój będzie gęsty.",
+   "Dodaj rum i cynamon, wymieszaj i przelej do kubka."
+  ],
+  "tip": "Zamiast mleka krowiego możesz użyć mleka kokosowego.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:goraca-czekolada-z-rumem",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Egg Nog",
+  "category": "drink",
+  "minutes": 15,
+  "difficulty": 2,
+  "servings": 4,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Kremowy ponczu z żółtek, śmietanki, rumu i brandy. Świąteczny klasyk.",
+  "ingredients": [
+   {
+    "name": "żółtka",
+    "qty": 4.0,
+    "unit": "szt."
+   },
+   {
+    "name": "cukier",
+    "qty": 80.0,
+    "unit": "g"
+   },
+   {
+    "name": "mleko",
+    "qty": 250.0,
+    "unit": "ml"
+   },
+   {
+    "name": "śmietanka kremówka",
+    "qty": 250.0,
+    "unit": "ml"
+   },
+   {
+    "name": "rum",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "brandy",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "gałka muszkatołowa",
+    "qty": 1.0,
+    "unit": "szczypta"
+   }
+  ],
+  "steps": [
+   "Żółtka ubij z cukrem na jasną masę.",
+   "Mleko i śmietankę podgrzej do momentu parowania, a następnie wlej cienkim strumieniem do żółtek, ciągle mieszając, i podgrzewaj na małym ogniu 5 minut, aż masa lekko zgęstnieje.",
+   "Ostudź, dodaj rum i brandy, a następnie schłodź w lodówce 2 godziny i podawaj posypany gałką muszkatołową."
+  ],
+  "tip": "Nie dopuść do zagotowania, bo żółtka się zetną.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:egg-nog",
+  "rest_minutes": 120
+ },
+ {
+  "title": "Cydr z rumem na ciepło",
+  "category": "drink",
+  "minutes": 12,
+  "difficulty": 1,
+  "servings": 2,
+  "cuisine": "zimowa",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Gorący cydr jabłkowy z rumem i cynamonem. Jabłkowy rozgrzewacz.",
+  "ingredients": [
+   {
+    "name": "cydr",
+    "qty": 400.0,
+    "unit": "ml"
+   },
+   {
+    "name": "rum ciemny",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "miód",
+    "qty": 1.0,
+    "unit": "łyżka"
+   },
+   {
+    "name": "laska cynamonu",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "goździki",
+    "qty": 2.0,
+    "unit": "szt."
+   },
+   {
+    "name": "jabłko",
+    "qty": 2.0,
+    "unit": "plaster"
+   }
+  ],
+  "steps": [
+   "Cydr podgrzej w rondelku z miodem i przyprawami na małym ogniu 8 minut.",
+   "Dodaj rum i zamieszaj.",
+   "Rozlej do kubków i dodaj plasterki jabłka."
+  ],
+  "tip": "Nie gotuj cydru, bo straci aromat.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:cydr-z-rumem-na-cieplo",
+  "rest_minutes": 0
+ },
+ {
+  "title": "B-52",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 3,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Warstwowy shot z likieru kawowego, Baileys i Grand Marnier. Słodki i kremowy.",
+  "ingredients": [
+   {
+    "name": "likier kawowy",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Baileys",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Grand Marnier",
+    "qty": 20.0,
+    "unit": "ml"
+   }
+  ],
+  "steps": [
+   "Do kieliszka na shoty wlej likier kawowy.",
+   "Po odwróconej łyżce powoli wlej Baileys, a następnie Grand Marnier.",
+   "Podawaj bez mieszania."
+  ],
+  "tip": "Kolejne warstwy wlewaj bardzo powoli, bo różnica gęstości jest niewielka.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:b-52",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Tequila z solą i cytryną",
+  "category": "drink",
+  "minutes": 2,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "meksykańska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Tradycyjny shot tequili z solą i cytryną. Prosty rytuał.",
+  "ingredients": [
+   {
+    "name": "tequila srebrna",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sól",
+    "qty": 1.0,
+    "unit": "szczypta"
+   },
+   {
+    "name": "cząstka cytryny",
+    "qty": 1.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Szczyptę soli posyp na dłoni.",
+   "Zlizaj sól, wypij tequilę i od razu przegryź cytryną.",
+   "Podawaj schłodzoną tequilę."
+  ],
+  "tip": "Dobrej tequili lepiej nie zagryzać, tylko pić powoli.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:tequila-z-sola-i-cytryna",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Hot Buttered Rum",
+  "category": "drink",
+  "minutes": 10,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "amerykańska",
+  "tags": [
+   "wegetariańskie"
+  ],
+  "summary": "Gorący rum z masłem i przyprawami. Zimowy, kremowy rozgrzewacz.",
+  "ingredients": [
+   {
+    "name": "rum ciemny",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "masło",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "cukier trzcinowy",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "woda gorąca",
+    "qty": 150.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cynamon mielony",
+    "qty": 1.0,
+    "unit": "szczypta"
+   },
+   {
+    "name": "gałka muszkatołowa",
+    "qty": 1.0,
+    "unit": "szczypta"
+   }
+  ],
+  "steps": [
+   "W kubku rozpuść masło z cukrem i przyprawami w odrobinie gorącej wody.",
+   "Dodaj rum i dolej resztę gorącej wody.",
+   "Zamieszaj i podawaj od razu."
+  ],
+  "tip": "Użyj dobrego masła, bo jego smak jest wyraźny.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:hot-buttered-rum",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Snowball",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "angielska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Advocaat z lemoniadą i limonką. Kremowy drink świąteczny.",
+  "ingredients": [
+   {
+    "name": "advocaat",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "lemoniada gazowana",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Szklankę napełnij lodem i wlej advocaat.",
+   "Dodaj sok z limonki i powoli dolej lemoniadę.",
+   "Delikatnie zamieszaj i udekoruj wiśnią."
+  ],
+  "tip": "Lemoniada powinna być bardzo zimna, aby advocaat się nie zważył.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:snowball",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Cranberry Gin Fizz",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "współczesna",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Gin z żurawiną i wodą gazowaną. Rubinowy i orzeźwiający.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok żurawinowy",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij gin, sok żurawinowy i sok z cytryny z lodem przez 12 sekund.",
+   "Przecedź do szklanki z lodem.",
+   "Dolej wodę gazowaną i udekoruj żurawiną."
+  ],
+  "tip": "Świeże lub mrożone żurawiny są ładną dekoracją.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:cranberry-gin-fizz",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Rozmarynowy Gin Sour",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "współczesna",
+  "tags": [
+   "signature",
+   "wegetariańskie"
+  ],
+  "summary": "Gin z syropem rozmarynowym i cytryną. Ziołowy i kwaśny.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop rozmarynowy",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "białko jaja",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij bez lodu przez 10 sekund.",
+   "Dodaj lód i wstrząsaj 12 sekund, a następnie przecedź do szklanki z lodem.",
+   "Udekoruj gałązką rozmarynu."
+  ],
+  "tip": "Syrop przygotuj, gotując równe części cukru i wody z gałązką rozmarynu 5 minut.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:rozmarynowy-gin-sour",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Dymny Old Fashioned",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 3,
+  "servings": 1,
+  "cuisine": "współczesna",
+  "tags": [
+   "signature",
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Old Fashioned z dymem drzewnym. Aromatyczny pokaz w szklance.",
+  "ingredients": [
+   {
+    "name": "bourbon",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "angostura",
+    "qty": 3.0,
+    "unit": "dash"
+   },
+   {
+    "name": "skórka pomarańczy",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "gałązka rozmarynu",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 3.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Rozmaryn podpal palnikiem i szybko przykryj nim szklankę, aby wypełnić ją dymem.",
+   "Do szklanicy wlej bourbon, syrop i angosturę, dodaj lód i mieszaj 20 sekund.",
+   "Przecedź do zadymionej szklanki i ściśnij skórkę pomarańczy."
+  ],
+  "tip": "Zachowaj ostrożność z ogniem i nie dopuszczaj do niego nikogo w pobliżu.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:dymny-old-fashioned",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Whisky z gruszką i imbirem",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "współczesna",
+  "tags": [
+   "signature",
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Whisky z sokiem gruszkowym, imbirem i cytryną. Owocowy i lekko ostry.",
+  "ingredients": [
+   {
+    "name": "whisky",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok gruszkowy",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z cytryny",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "piwo imbirowe",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij whisky, sok gruszkowy i sok z cytryny z lodem przez 12 sekund.",
+   "Przecedź do szklanki z lodem.",
+   "Dolej piwo imbirowe i udekoruj cienkim plasterkiem gruszki."
+  ],
+  "tip": "Dojrzałe gruszki wyciśnięte w sokowniku dają najlepszy smak.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:whisky-z-gruszka-i-imbirem",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Mojito z maliną i bazylią",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "współczesna",
+  "tags": [
+   "signature",
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Mojito z malinami i bazylią zamiast mięty. Owocowo-ziołowy twist.",
+  "ingredients": [
+   {
+    "name": "biały rum",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "maliny",
+    "qty": 8.0,
+    "unit": "szt."
+   },
+   {
+    "name": "liście bazylii",
+    "qty": 6.0,
+    "unit": "szt."
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "cukier",
+    "qty": 2.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "W szklance lekko rozgnieć maliny z bazylią, cukrem i sokiem z limonki.",
+   "Dodaj lód i rum, a następnie zamieszaj.",
+   "Dolej wodę gazowaną i udekoruj malinami."
+  ],
+  "tip": "Bazylia ma mocniejszy aromat niż mięta, więc użyj mniejszej ilości.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:mojito-z-malina-i-bazylia",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Chili Margarita z mango",
+  "category": "drink",
+  "minutes": 8,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "współczesna",
+  "tags": [
+   "signature",
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Margarita z mango i szczyptą chili na brzegu. Słodka, kwaśna i ostra.",
+  "ingredients": [
+   {
+    "name": "tequila",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "triple sec",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "mango dojrzałe",
+    "qty": 60.0,
+    "unit": "g"
+   },
+   {
+    "name": "chili mielone",
+    "qty": 1.0,
+    "unit": "szczypta"
+   },
+   {
+    "name": "sól",
+    "qty": 1.0,
+    "unit": "łyżeczka"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Mango zmiksuj z sokiem z limonki na gładkie puree.",
+   "Brzeg szklanki zwilż limonką i obtocz w mieszance soli z chili.",
+   "Wstrząśnij puree z tequilą, triple sec i lodem przez 12 sekund, a następnie przecedź do szklanki z lodem."
+  ],
+  "tip": "Chili na brzegu dozuj ostrożnie, bo szybko robi się za ostre.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:chili-margarita-z-mango",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Espresso Martini z solonym karmelem",
+  "category": "drink",
+  "minutes": 8,
+  "difficulty": 2,
+  "servings": 1,
+  "cuisine": "współczesna",
+  "tags": [
+   "signature",
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Espresso Martini z solonym karmelem. Słodko-słony, kawowy i kremowy.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier kawowy",
+    "qty": 20.0,
+    "unit": "ml"
+   },
+   {
+    "name": "espresso świeże",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sos solony karmel",
+    "qty": 1.0,
+    "unit": "łyżka"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Przygotuj espresso i wlej od razu do shakera z wódką, likierem i karmelem.",
+   "Dodaj lód i wstrząsaj 15 sekund.",
+   "Przecedź do kieliszka i posyp wierzch szczyptą soli morskiej."
+  ],
+  "tip": "Użyj gęstego karmelu, który łatwo się rozpuści w gorącej kawie.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:espresso-martini-z-solonym-karmelem",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Kokosowy Daiquiri",
+  "category": "drink",
+  "minutes": 6,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "karaibska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Biały rum z kremem kokosowym i limonką. Gładki i tropikalny.",
+  "ingredients": [
+   {
+    "name": "biały rum",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z limonki",
+    "qty": 25.0,
+    "unit": "ml"
+   },
+   {
+    "name": "krem kokosowy",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "syrop cukrowy",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Wstrząśnij wszystkie składniki z lodem przez 15 sekund.",
+   "Przecedź do schłodzonego kieliszka.",
+   "Posyp wiórkami kokosowymi."
+  ],
+  "tip": "Krem kokosowy wymieszaj przed odmierzeniem.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:kokosowy-daiquiri",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Aperol z grejpfrutem i rozmarynem",
+  "category": "drink",
+  "minutes": 4,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "włoska",
+  "tags": [
+   "signature",
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Aperol z proseccem, sokiem grejpfrutowym i rozmarynem. Gorzko-cytrusowy spritz.",
+  "ingredients": [
+   {
+    "name": "Aperol",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "prosecco",
+    "qty": 60.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z grejpfruta",
+    "qty": 40.0,
+    "unit": "ml"
+   },
+   {
+    "name": "woda gazowana",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "gałązka rozmarynu",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 6.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Duży kieliszek wypełnij lodem i wlej Aperol oraz sok grejpfrutowy.",
+   "Dolej prosecco i wodę gazowaną.",
+   "Zamieszaj i udekoruj gałązką rozmarynu."
+  ],
+  "tip": "Rozmaryn lekko ściśnij w dłoni przed użyciem, aby wydobyć aromat.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:aperol-z-grejpfrutem-i-rozmarynem",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Wódka z tonikiem, ogórkiem i koperkiem",
+  "category": "drink",
+  "minutes": 4,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "polska",
+  "tags": [
+   "signature",
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Wódka z tonikiem, ogórkiem i koperkiem. Świeży i ziołowy, trochę po polsku.",
+  "ingredients": [
+   {
+    "name": "wódka",
+    "qty": 50.0,
+    "unit": "ml"
+   },
+   {
+    "name": "tonik",
+    "qty": 120.0,
+    "unit": "ml"
+   },
+   {
+    "name": "ogórek",
+    "qty": 4.0,
+    "unit": "plaster"
+   },
+   {
+    "name": "gałązka koperku",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 8.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Szklankę wypełnij lodem i plasterkami ogórka.",
+   "Wlej wódkę i dolej tonik.",
+   "Zamieszaj i udekoruj koperkiem."
+  ],
+  "tip": "Ogórek gruntowy ma więcej aromatu niż szklarniowy.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:wodka-z-tonikiem-ogorkiem-i-koperkiem",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Zimowy Negroni",
+  "category": "drink",
+  "minutes": 5,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "współczesna",
+  "tags": [
+   "signature",
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Negroni z soczystą pomarańczą i rozmarynem. Rozgrzewający aperitif na zimę.",
+  "ingredients": [
+   {
+    "name": "gin",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "Campari",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "czerwony wermut słodki",
+    "qty": 30.0,
+    "unit": "ml"
+   },
+   {
+    "name": "sok z pomarańczy",
+    "qty": 15.0,
+    "unit": "ml"
+   },
+   {
+    "name": "gałązka rozmarynu",
+    "qty": 1.0,
+    "unit": "szt."
+   },
+   {
+    "name": "kostki lodu",
+    "qty": 4.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do niskiej szklanki z lodem wlej gin, Campari, wermut i sok pomarańczowy.",
+   "Zamieszaj 20 sekund.",
+   "Udekoruj gałązką rozmarynu i skórką pomarańczy."
+  ],
+  "tip": "Przypal lekko rozmaryn palnikiem, aby dodać drinkowi dymnej nuty.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:zimowy-negroni",
+  "rest_minutes": 0
+ },
+ {
+  "title": "Kir",
+  "category": "drink",
+  "minutes": 3,
+  "difficulty": 1,
+  "servings": 1,
+  "cuisine": "francuska",
+  "tags": [
+   "wegetariańskie",
+   "wegańskie"
+  ],
+  "summary": "Białe wino wytrawne z likierem z czarnej porzeczki. Prosty francuski aperitif.",
+  "ingredients": [
+   {
+    "name": "wino białe wytrawne",
+    "qty": 100.0,
+    "unit": "ml"
+   },
+   {
+    "name": "likier z czarnej porzeczki",
+    "qty": 10.0,
+    "unit": "ml"
+   },
+   {
+    "name": "jagoda",
+    "qty": 1.0,
+    "unit": "szt."
+   }
+  ],
+  "steps": [
+   "Do kieliszka wlej likier.",
+   "Dolej powoli schłodzone wino.",
+   "Dodaj jagodę."
+  ],
+  "tip": "Tradycyjnie używa się wina Aligoté, ale każde wytrawne białe się nada.",
+  "source": "Własny przepis (Książka Kucharska)",
+  "license": "własny",
+  "id": "own:kir",
   "rest_minutes": 0
  }
 ]

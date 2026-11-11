@@ -13,7 +13,7 @@ export const CATS: { id: string; label: string }[] = [
   { id: 'sniadanie', label: 'Śniadania' }, { id: 'obiad', label: 'Obiady' }, { id: 'zupa', label: 'Zupy' },
   { id: 'makaron', label: 'Makarony' }, { id: 'kolacja', label: 'Kolacje' }, { id: 'salatka', label: 'Sałatki' },
   { id: 'przekaska', label: 'Przekąski' }, { id: 'ciasto', label: 'Ciasta' }, { id: 'deser', label: 'Desery' },
-  { id: 'napoj', label: 'Napoje' }, { id: 'sos', label: 'Sosy' },
+  { id: 'napoj', label: 'Napoje' }, { id: 'drink', label: 'Drinki' }, { id: 'sos', label: 'Sosy' },
 ]
 export const catLabel = (id: string) => CATS.find(c => c.id === id)?.label ?? id
 export const DIFF = ['', 'Bardzo łatwe', 'Łatwe', 'Średnie', 'Trudne']
