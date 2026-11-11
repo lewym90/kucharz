@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { Search, BookOpen, Refrigerator, CalendarDays, ShoppingCart, Shuffle } from 'lucide-react'
-import { useIndex, useDemoted } from '../components/hooks'
-import { RecipeCard, Section, catImg } from '../components/RecipeCard'
+import { Search, BookOpen, Refrigerator, CalendarDays, ShoppingCart, Shuffle, Zap, Star } from 'lucide-react'
+import { useIndex } from '../components/hooks'
+import { Section, catImg } from '../components/RecipeCard'
 import { CATS } from '../lib/types'
 import { db } from '../lib/db'
 
@@ -12,13 +12,8 @@ export default function Home() {
   const ix = useIndex()
   const nav = useNavigate()
   const [q, setQ] = useState('')
-  const demoted = useDemoted()
-  const hist = useLiveQuery(() => db.hist.orderBy('at').reverse().limit(8).toArray(), [])
   const plan = useLiveQuery(() => db.plan.where('date').equals(todayStr()).toArray(), [])
   const byId = useMemo(() => new Map((ix ?? []).map(r => [r.id, r])), [ix])
-  const quick = useMemo(() => (ix ?? []).filter(r => r.min <= 15 && r.cat !== 'napoj' && r.cat !== 'sos').slice(0, 400), [ix])
-  const quickPick = useMemo(() => [...quick].sort(() => Math.random() - 0.5).slice(0, 8), [quick])
-  const sigPick = useMemo(() => [...(ix ?? []).filter(r => r.tags.includes('signature') && !demoted.has(r.id))].sort(() => Math.random() - 0.5).slice(0, 8), [ix, demoted])
   const surprise = () => {
     const pool = (ix ?? []).filter(r => ['obiad', 'kolacja', 'makaron', 'zupa'].includes(r.cat))
     if (pool.length) nav('/przepis/' + encodeURIComponent(pool[Math.floor(Math.random() * pool.length)].id))
@@ -43,19 +38,11 @@ export default function Home() {
           <div className="list">{plan.map(p => { const r = byId.get(p.rid); return r ? <Link key={p.key} className="row" to={'/przepis/' + encodeURIComponent(r.id)}><b>{p.slot}</b><span>{r.title}</span></Link> : null })}</div>
         </Section>
       )}
-      {hist && hist.length > 0 && (
-        <Section title="Kontynuuj">
-          <div className="hscroll">{hist.map(h => byId.get(h.id)).filter(Boolean).map(r => <div key={r!.id} className="hitem"><RecipeCard r={r!} demoted={demoted.has(r!.id)} /></div>)}</div>
-        </Section>
-      )}
-      <Section title="Na szybko (do 15 min)" more={<button className="link" onClick={surprise}><Shuffle size={14} /> Zaskocz mnie</button>}>
-        <div className="hscroll">{quickPick.map(r => <div key={r.id} className="hitem"><RecipeCard r={r} demoted={demoted.has(r.id)} /></div>)}</div>
-      </Section>
-      <Section title="Signature – autorskie nowości" more={<Link className="link" to="/odkrywaj?sig=1">Wszystkie</Link>}>
-        <div className="hscroll">{sigPick.map(r => <div key={r.id} className="hitem"><RecipeCard r={r} /></div>)}</div>
-      </Section>
-      <Section title="Kategorie">
-        <div className="cats">{CATS.map(c => (
+      <Section title="Kategorie" more={<button className="link" onClick={surprise}><Shuffle size={14} /> Zaskocz mnie</button>}>
+        <div className="cats">
+          <Link to="/odkrywaj?max=15" className="cat special" style={{ backgroundImage: `linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.75)),url(${catImg('szybko')})` }}><Zap size={16} /><span>Na szybko<small>do 15 min</small></span></Link>
+          <Link to="/odkrywaj?sig=1" className="cat special" style={{ backgroundImage: `linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.75)),url(${catImg('signature')})` }}><Star size={16} fill="currentColor" /><span>Signature<small>autorskie nowości</small></span></Link>
+          {CATS.map(c => (
           <Link key={c.id} to={'/odkrywaj?cat=' + c.id} className="cat" style={{ backgroundImage: `linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.75)),url(${catImg(c.id)})` }}><span>{c.label}</span></Link>
         ))}</div>
       </Section>

@@ -14,7 +14,7 @@ export default function Library() {
   const demoted = useDemoted()
   const [q, setQ] = useState(sp.get('q') ?? '')
   const [cat, setCat] = useState(sp.get('cat') ?? '')
-  const [maxMin, setMaxMin] = useState(999)
+  const [maxMin, setMaxMin] = useState(Number(sp.get('max')) || 999)
   const [maxDiff, setMaxDiff] = useState(4)
   const [diets, setDiets] = useState<string[]>([])
   const [sig, setSig] = useState(sp.get('sig') === '1')
