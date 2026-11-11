@@ -40,7 +40,7 @@ export default function Home() {
       )}
       <Section title="Kategorie" more={<button className="link" onClick={surprise}><Shuffle size={14} /> Zaskocz mnie</button>}>
         <div className="cats">
-          <Link to="/odkrywaj?max=15" className="cat special" style={{ backgroundImage: `linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.75)),url(${catImg('szybko')})` }}><Zap size={16} /><span>Na szybko<small>do 15 min</small></span></Link>
+          <Link to="/odkrywaj?max=15" className="cat special" style={{ backgroundImage: `linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.75)),url(${catImg('szybko')})` }}><b className="badge15"><Zap size={13} fill="currentColor" />15 min</b><span>Na szybko<small>do 15 minut</small></span></Link>
           <Link to="/odkrywaj?sig=1" className="cat special" style={{ backgroundImage: `linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.75)),url(${catImg('signature')})` }}><Star size={16} fill="currentColor" /><span>Signature<small>autorskie nowości</small></span></Link>
           {CATS.map(c => (
           <Link key={c.id} to={'/odkrywaj?cat=' + c.id} className="cat" style={{ backgroundImage: `linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.75)),url(${catImg(c.id)})` }}><span>{c.label}</span></Link>
