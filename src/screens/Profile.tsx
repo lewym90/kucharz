@@ -32,6 +32,8 @@ export default function Profile() {
         {msg && <p className="muted">{msg}</p>}
       </section>
       <section className="section"><div className="section-h"><h2>O aplikacji</h2></div>
+        <div className="verline"><span>Wersja</span><b>{__APP_VERSION__}</b></div>
+        <div className="verline"><span>Zbudowana</span><b>{__BUILD__}</b></div>
         <p className="muted"><Info size={14} /> Książka Kucharska działa offline, bez kont, bez reklam i bez sztucznej inteligencji w czasie działania. Wszystkie dane zostają na Twoim urządzeniu.</p></section>
     </div>
   )

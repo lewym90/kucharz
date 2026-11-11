@@ -9,16 +9,15 @@ export function RecipeCard({ r, badge, demoted }: { r: IndexItem; badge?: string
   const sig = r.tags.includes('signature') && !demoted
   return (
     <Link to={`/przepis/${encodeURIComponent(r.id)}`} className="card">
-      <div className="card-img" style={{ backgroundImage: `url(${img(r.cat)})` }}>
-        {sig && <span className="sig"><Star size={12} fill="currentColor" /> Signature</span>}
-        {badge && <span className="pct">{badge}</span>}
+      <div className="card-top">
+        <span className="catlbl">{catLabel(r.cat)}</span>
+        {badge ? <span className="pct">{badge}</span> : sig ? <span className="sig"><Star size={12} fill="currentColor" /> Signature</span> : null}
       </div>
       <div className="card-body">
         <h3>{r.title}</h3>
         <div className="meta">
           <span><Clock size={13} /> {fmtMin(r.min)}{r.rest ? ` + ${fmtMin(r.rest)}` : ''}</span>
           <span><Gauge size={13} /> {DIFF[r.diff]}</span>
-          <span>{catLabel(r.cat)}</span>
         </div>
       </div>
     </Link>

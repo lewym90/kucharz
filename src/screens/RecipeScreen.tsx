@@ -8,7 +8,6 @@ import { loadRecipe } from '../lib/data'
 import { db, setSetting } from '../lib/db'
 import { fmtIng, fmtMin } from '../lib/format'
 import { addRecipeToShopping } from '../lib/shopping'
-import { catImg } from '../components/RecipeCard'
 import { useDemoted } from '../components/hooks'
 
 const SLOTS = ['Śniadanie', 'II śniadanie', 'Obiad', 'Podwieczorek', 'Kolacja']
@@ -35,7 +34,7 @@ export default function RecipeScreen() {
   const toggleSig = async () => { const s = new Set(demoted); s.has(id) ? s.delete(id) : s.add(id); await setSetting('demoted', [...s]) }
   return (
     <div className="page recipe">
-      <div className="rhead" style={{ backgroundImage: `linear-gradient(180deg,rgba(11,11,12,.35),rgba(11,11,12,.95)),url(${catImg(r.cat)})` }}>
+      <div className="rhead">
         <div className="rtop">
           <button className="iconbtn glass" onClick={() => nav(-1)} aria-label="Wróć"><ArrowLeft size={20} /></button>
           <button className={'iconbtn glass' + (fav ? ' on' : '')} onClick={() => fav ? db.favs.delete(id) : db.favs.put({ id, at: Date.now() })} aria-label="Ulubione"><Heart size={20} fill={fav ? 'currentColor' : 'none'} /></button>
