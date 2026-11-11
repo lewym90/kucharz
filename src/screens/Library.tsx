@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { fold } from '../lib/keys'
+import { isMine } from '../lib/mine'
 import { Search, SlidersHorizontal } from 'lucide-react'
 import { useIndex, useDemoted } from '../components/hooks'
 import { RecipeCard } from '../components/RecipeCard'
@@ -33,7 +35,7 @@ export default function Library() {
   const list = useMemo(() => {
     if (!ix) return []
     let l = ix.filter(r => (!cat || r.cat === cat) && r.min <= maxMin && !(quick && maxMin <= 15 && ['napoj', 'sos', 'drink'].includes(r.cat)) && r.diff <= maxDiff && (!sig || (r.tags.includes('signature') && !demoted.has(r.id))) && diets.every(d => r.tags.includes(d)))
-    if (hits) l = l.filter(r => hits.has(r.id))
+    if (hits) { const qt = fold(q).split(/\s+/).filter(Boolean); l = l.filter(r => hits.has(r.id) || (isMine(r.id) && qt.every(t => fold(r.title + ' ' + r.ingtext + ' ' + r.sum + ' ' + r.cuisine).includes(t)))) }
     if (sort === 'time') l = [...l].sort((a, b) => a.min - b.min)
     else if (sort === 'diff') l = [...l].sort((a, b) => a.diff - b.diff)
     else if (sort === 'ing') l = [...l].sort((a, b) => a.ni - b.ni)

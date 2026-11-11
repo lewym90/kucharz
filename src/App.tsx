@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Route, Routes, useNavigate, useLocation } from 'react-router-dom'
-import { Home as HomeIcon, Compass, Plus, Heart, User } from 'lucide-react'
+import { Home as HomeIcon, Compass, Plus, BookMarked, User } from 'lucide-react'
 import Home from './screens/Home'
 import Library from './screens/Library'
 import RecipeScreen from './screens/RecipeScreen'
@@ -11,6 +11,7 @@ import Shopping from './screens/Shopping'
 import Favorites from './screens/Favorites'
 import Profile from './screens/Profile'
 import Sources from './screens/Sources'
+import AddRecipe from './screens/AddRecipe'
 import Onboarding from './screens/Onboarding'
 import { getSetting, setSetting } from './lib/db'
 
@@ -40,6 +41,8 @@ export default function App() {
           <Route path="/plan" element={<Planner />} />
           <Route path="/zakupy" element={<Shopping />} />
           <Route path="/ulubione" element={<Favorites />} />
+          <Route path="/dodaj" element={<AddRecipe />} />
+          <Route path="/edytuj/:id" element={<AddRecipe />} />
           <Route path="/profil" element={<Profile />} />
           <Route path="/zrodla" element={<Sources />} />
           <Route path="*" element={<Home />} />
@@ -49,8 +52,8 @@ export default function App() {
         <nav className="tabbar">
           <NavLink to="/" end><HomeIcon size={22} /><span>Start</span></NavLink>
           <NavLink to="/odkrywaj"><Compass size={22} /><span>Odkrywaj</span></NavLink>
-          <NavLink to="/lodowka" className="plus" aria-label="Moja lodówka"><Plus size={28} /></NavLink>
-          <NavLink to="/ulubione"><Heart size={22} /><span>Ulubione</span></NavLink>
+          <NavLink to="/dodaj" className="plus" aria-label="Dodaj przepis z linku"><Plus size={28} /></NavLink>
+          <NavLink to="/ulubione"><BookMarked size={22} /><span>Moje</span></NavLink>
           <NavLink to="/profil"><User size={22} /><span>Profil</span></NavLink>
         </nav>
       )}

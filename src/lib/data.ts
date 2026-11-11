@@ -1,5 +1,6 @@
 import MiniSearch from 'minisearch'
 import type { CatalogItem, IndexItem, Recipe } from './types'
+import { db } from './db'
 
 const base = import.meta.env.BASE_URL + 'data/'
 let indexP: Promise<IndexItem[]> | null = null
@@ -14,6 +15,7 @@ export const loadPack = (cat: string) => {
   return packs.get(cat)!
 }
 export async function loadRecipe(id: string, cat?: string): Promise<Recipe | undefined> {
+  if (id.startsWith('mine:')) return db.mine.get(id)
   if (!cat) { const ix = await loadIndex(); cat = ix.find((r: IndexItem) => r.id === id)?.cat }
   if (!cat) return undefined
   return (await loadPack(cat)).find((r: Recipe) => r.id === id)

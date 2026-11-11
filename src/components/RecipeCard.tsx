@@ -10,7 +10,7 @@ export function RecipeCard({ r, badge, demoted }: { r: IndexItem; badge?: string
   return (
     <Link to={`/przepis/${encodeURIComponent(r.id)}`} className="card">
       <div className="card-top">
-        <span className="catlbl">{catLabel(r.cat)}</span>
+        <span className="catlbl">{catLabel(r.cat)}{r.id.startsWith('mine:') ? ' · moje' : ''}</span>
         {badge ? <span className="pct">{badge}</span> : sig ? <span className="sig"><Star size={12} fill="currentColor" /> Signature</span> : null}
       </div>
       <div className="card-body">

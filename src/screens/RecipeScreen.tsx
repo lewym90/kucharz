@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { ArrowLeft, Heart, Clock, Gauge, Users, Minus, Plus, ShoppingCart, CalendarPlus, Star, Play, Lightbulb } from 'lucide-react'
+import { ArrowLeft, Heart, Clock, Gauge, Users, Minus, Plus, ShoppingCart, CalendarPlus, Star, Play, Lightbulb, Pencil, Trash2, ExternalLink } from 'lucide-react'
 import type { Recipe } from '../lib/types'
 import { DIFF, catLabel } from '../lib/types'
 import { loadRecipe } from '../lib/data'
@@ -9,6 +9,7 @@ import { db, setSetting } from '../lib/db'
 import { fmtIng, fmtMin } from '../lib/format'
 import { addRecipeToShopping } from '../lib/shopping'
 import { useDemoted } from '../components/hooks'
+import { isMine } from '../lib/mine'
 
 const SLOTS = ['Śniadanie', 'II śniadanie', 'Obiad', 'Podwieczorek', 'Kolacja']
 export default function RecipeScreen() {
@@ -46,12 +47,19 @@ export default function RecipeScreen() {
             <span><Clock size={15} /> {fmtMin(r.min)}</span>
             {r.rest > 0 && <span>+ {fmtMin(r.rest)} odpoczynku</span>}
             <span><Gauge size={15} /> {DIFF[r.diff]}</span>
-            <span>{catLabel(r.cat)} · {r.cuisine}</span>
+            <span>{catLabel(r.cat)}{r.cuisine ? ' · ' + r.cuisine : ''}</span>
           </div>
         </div>
       </div>
       <p className="lead">{r.sum}</p>
       <div className="tags">{r.tags.filter(t => t !== 'signature').map(t => <span key={t}>{t}</span>)}</div>
+      {isMine(id) && (
+        <div className="actions">
+          <Link className="btn ghost" to={`/edytuj/${encodeURIComponent(id)}`}><Pencil size={16} /> Edytuj</Link>
+          <button className="btn ghost" onClick={async () => { if (confirm('Usunąć ten przepis z „Moich przepisów”?')) { await db.mine.delete(id); await db.favs.delete(id); nav('/ulubione', { replace: true }) } }}><Trash2 size={16} /> Usuń</button>
+        </div>
+      )}
+      {isMine(id) && /^https?:\/\//.test(r.src) && <p className="muted small"><a className="srclink" href={r.src} target="_blank" rel="noreferrer"><ExternalLink size={13} /> Źródło przepisu</a></p>}
       <Link className="btn gold wide" to={`/cook/${encodeURIComponent(id)}?s=${serv}`}><Play size={18} /> Gotuj krok po kroku</Link>
       <div className="actions">
         <button className="btn ghost" onClick={async () => { await addRecipeToShopping(r, serv); flash('Dodano do listy zakupów') }}><ShoppingCart size={16} /> Do zakupów</button>
@@ -84,8 +92,8 @@ export default function RecipeScreen() {
         <label className="chk"><input type="checkbox" checked={rating?.cooked ?? false} onChange={e => db.ratings.put({ id, stars: rating?.stars ?? 0, note: rating?.note ?? '', cooked: e.target.checked, at: Date.now() })} /> Ugotowane</label>
         <textarea className="note" placeholder="Twoje notatki: co zmienić, jak smakowało…" defaultValue={rating?.note ?? ''} key={rating?.at ?? 0}
           onBlur={e => db.ratings.put({ id, stars: rating?.stars ?? 0, note: e.target.value, cooked: rating?.cooked ?? false, at: Date.now() })} />
-        {r.tags.includes('signature') && <button className="link" onClick={toggleSig}>{demoted.has(id) ? 'Przywróć odznakę Signature' : 'Ten przepis nie zasługuje na Signature – zdejmij odznakę'}</button>}
-        <p className="muted small">Przepis własny aplikacji, nietestowany w kuchni – Twoja ocena pomoże wyłonić najlepsze.</p>
+        {!isMine(id) && r.tags.includes('signature') && <button className="link" onClick={toggleSig}>{demoted.has(id) ? 'Przywróć odznakę Signature' : 'Ten przepis nie zasługuje na Signature – zdejmij odznakę'}</button>}
+        <p className="muted small">{isMine(id) ? 'Przepis dodany przez Ciebie. Zapisany w tym telefonie i w kopii zapasowej z Profilu.' : 'Przepis własny aplikacji, nietestowany w kuchni – Twoja ocena pomoże wyłonić najlepsze.'}</p>
       </section>
     </div>
   )

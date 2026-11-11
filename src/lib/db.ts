@@ -1,4 +1,5 @@
 import Dexie, { Table } from 'dexie'
+import type { Recipe } from './types'
 
 export type Fav = { id: string; at: number }
 export type Rating = { id: string; stars: number; note: string; cooked: boolean; at: number }
@@ -7,6 +8,7 @@ export type ShopItem = { key: string; name: string; qty: number | null; unit: st
 export type Pantry = { k: string; label: string; at: number }
 export type Hist = { id: string; at: number }
 export type Setting = { k: string; v: any }
+export type Mine = Recipe & { at: number }
 export type Collection = { id: string; name: string; rids: string[] }
 
 class KDB extends Dexie {
@@ -18,11 +20,13 @@ class KDB extends Dexie {
   hist!: Table<Hist, string>
   settings!: Table<Setting, string>
   colls!: Table<Collection, string>
+  mine!: Table<Mine, string>
   constructor() {
     super('ksiazka-kucharska')
     this.version(1).stores({
       favs: 'id,at', ratings: 'id,at', plan: 'key,date', shop: 'key,dept,done', pantry: 'k', hist: 'id,at', settings: 'k', colls: 'id',
     })
+    this.version(2).stores({ mine: 'id,at' })
   }
 }
 export const db = new KDB()
@@ -32,7 +36,7 @@ export async function getSetting<T>(k: string, def: T): Promise<T> {
 }
 export const setSetting = (k: string, v: any) => db.settings.put({ k, v })
 
-const TABLES = ['favs', 'ratings', 'plan', 'shop', 'pantry', 'hist', 'settings', 'colls'] as const
+const TABLES = ['favs', 'ratings', 'plan', 'shop', 'pantry', 'hist', 'settings', 'colls', 'mine'] as const
 export async function exportBackup(): Promise<string> {
   const out: any = { app: 'ksiazka-kucharska', version: 1, at: new Date().toISOString() }
   for (const t of TABLES) out[t] = await (db as any)[t].toArray()
