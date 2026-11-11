@@ -7,6 +7,7 @@ import { useIndex, useDemoted } from '../components/hooks'
 import { RecipeCard } from '../components/RecipeCard'
 import { CATS, DIFF } from '../lib/types'
 import { loadSearch } from '../lib/data'
+import { FILTERS } from '../lib/filters'
 
 const TIMES = [10, 20, 30, 45, 60, 999]
 const DIETS: [string, string][] = [['wegetariańskie', 'Wege'], ['wegańskie', 'Wegańskie'], ['bezglutenowe', 'Bez glutenu']]
@@ -21,7 +22,9 @@ export default function Library() {
   const [maxDiff, setMaxDiff] = useState(4)
   const [diets, setDiets] = useState<string[]>([])
   const [sig, setSig] = useState(sp.get('sig') === '1')
+  const [sub, setSub] = useState('')
   const [sort, setSort] = useState('rel')
+  useEffect(() => setSub(''), [cat])
   const [open, setOpen] = useState(false)
   const [limit, setLimit] = useState(40)
   const [hits, setHits] = useState<Set<string> | null>(null)
@@ -32,28 +35,43 @@ export default function Library() {
     return () => { alive = false }
   }, [q])
   useEffect(() => setLimit(40), [q, cat, maxMin, maxDiff, diets, sig, sort])
+  const texts = useMemo(() => new Map((ix ?? []).map(r => [r.id, fold(r.title + ' ' + r.ingtext + ' ' + r.sum)])), [ix])
+  const base = useMemo(() => (ix ?? []).filter(r => r.cat === cat), [ix, cat])
+  const subs = cat ? FILTERS[cat] ?? [] : []
+  const subDef = subs.find(x => x.id === sub)
   const list = useMemo(() => {
     if (!ix) return []
     let l = ix.filter(r => (!cat || r.cat === cat) && r.min <= maxMin && !(quick && maxMin <= 15 && ['napoj', 'sos', 'drink'].includes(r.cat)) && r.diff <= maxDiff && (!sig || (r.tags.includes('signature') && !demoted.has(r.id))) && diets.every(d => r.tags.includes(d)))
+    if (subDef) l = l.filter(r => subDef.test(r, texts.get(r.id) ?? ''))
     if (hits) { const qt = fold(q).split(/\s+/).filter(Boolean); l = l.filter(r => hits.has(r.id) || (isMine(r.id) && qt.every(t => fold(r.title + ' ' + r.ingtext + ' ' + r.sum + ' ' + r.cuisine).includes(t)))) }
     if (sort === 'time') l = [...l].sort((a, b) => a.min - b.min)
     else if (sort === 'diff') l = [...l].sort((a, b) => a.diff - b.diff)
     else if (sort === 'ing') l = [...l].sort((a, b) => a.ni - b.ni)
     else if (sort === 'az') l = [...l].sort((a, b) => a.title.localeCompare(b.title, 'pl'))
     return l
-  }, [ix, cat, quick, maxMin, maxDiff, diets, sig, sort, hits, demoted])
+  }, [ix, texts, subDef, cat, quick, maxMin, maxDiff, diets, sig, sort, hits, demoted])
   const toggleDiet = (d: string) => setDiets(x => x.includes(d) ? x.filter(y => y !== d) : [...x, d])
   return (
     <div className="page">
-      <h1 className="ptitle">Odkrywaj</h1>
+      <h1 className="ptitle">{cat ? CATS.find(c => c.id === cat)?.label : 'Odkrywaj'}</h1>
       <div className="searchbar"><Search size={18} />
         <input value={q} onChange={e => { setQ(e.target.value); setSp(p => { if (e.target.value) p.set('q', e.target.value); else p.delete('q'); return p }, { replace: true }) }} placeholder="Danie, składnik, kuchnia…" />
         <button className="iconbtn" onClick={() => setOpen(o => !o)} aria-label="Filtry"><SlidersHorizontal size={18} /></button>
       </div>
-      <div className="chips">
-        <button className={!cat ? 'on' : ''} onClick={() => setCat('')}>Wszystko</button>
-        {CATS.map(c => <button key={c.id} className={cat === c.id ? 'on' : ''} onClick={() => setCat(c.id)}>{c.label}</button>)}
-      </div>
+      {!cat ? (
+        <div className="chips">
+          {CATS.map(c => <button key={c.id} onClick={() => setCat(c.id)}>{c.label}</button>)}
+        </div>
+      ) : (
+        <div className="chips">
+          <button className="back" onClick={() => setCat('')}>‹ Wszystkie kategorie</button>
+          <button className={!sub ? 'on' : ''} onClick={() => setSub('')}>Wszystkie</button>
+          {subs.map(x => {
+            const n = base.filter(r => x.test(r, texts.get(r.id) ?? '')).length
+            return n ? <button key={x.id} className={sub === x.id ? 'on' : ''} onClick={() => setSub(sub === x.id ? '' : x.id)}>{x.label} <small>{n}</small></button> : null
+          })}
+        </div>
+      )}
       {open && (
         <div className="filters">
           <label>Czas: <b>{maxMin === 999 ? 'bez limitu' : 'do ' + maxMin + ' min'}</b>

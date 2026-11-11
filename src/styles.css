@@ -145,3 +145,4 @@ input[type=range]{accent-color:var(--gold);width:100%}
 .addmine{display:flex;align-items:center;justify-content:center;gap:8px}
 .srclink{color:var(--gold2);display:inline-flex;gap:4px;align-items:center}
 .btn:disabled{opacity:.45}
+.chips button small{opacity:.65;margin-left:4px;font-size:11px}.chips button.back{background:transparent;border-color:#3a3a3d;color:var(--gold2)}
