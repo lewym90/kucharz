@@ -7,9 +7,15 @@ import './styles.css'
 
 const updateSW = registerSW({
   immediate: true,
-  onRegisteredSW(_u, reg) { reg?.update().catch(() => {}); },
+  onRegisteredSW(_u, reg) {
+    reg?.update().catch(() => {})
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reg?.update().catch(() => {}) })
+    setInterval(() => reg?.update().catch(() => {}), 10 * 60 * 1000)
+  },
   onNeedRefresh() { updateSW(true) }
 })
+let reloaded = false
+navigator.serviceWorker?.addEventListener('controllerchange', () => { if (reloaded) return; reloaded = true; location.reload() })
 for (const ev of ['gesturestart', 'gesturechange', 'gestureend'])
   document.addEventListener(ev, e => e.preventDefault())
 let lastTouch = 0

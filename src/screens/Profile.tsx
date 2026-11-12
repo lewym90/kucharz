@@ -43,6 +43,10 @@ export default function Profile() {
         {srvMsg && <p className="muted">{srvMsg}</p>}</section>
       <section className="section"><div className="section-h"><h2>O aplikacji</h2></div>
         <div className="verline"><span>Wersja</span><b>{__APP_VERSION__}</b></div>
+        <button className="btn ghost" style={{ marginTop: 8 }} onClick={async () => {
+          try { const regs = await navigator.serviceWorker?.getRegistrations(); for (const r of regs ?? []) await r.unregister(); for (const k of await caches.keys()) await caches.delete(k) } catch {}
+          location.reload()
+        }}>Wymuś aktualizację aplikacji</button>
         <div className="verline"><span>Zbudowana</span><b>{__BUILD__}</b></div>
         <p className="muted"><Info size={14} /> Książka Kucharska działa offline, bez kont, bez reklam i bez sztucznej inteligencji w czasie działania. Wszystkie dane zostają na Twoim urządzeniu.</p></section>
     </div>
