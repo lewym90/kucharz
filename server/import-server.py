@@ -19,7 +19,7 @@ from collections import defaultdict, deque
 PORT = int(os.environ.get('IMPORT_PORT', '8795'))
 GEMINI_KEY = os.environ.get('GEMINI_API_KEY', '')
 GEMINI_BASE = os.environ.get('GEMINI_BASE', 'https://generativelanguage.googleapis.com/v1beta')
-MODELS = [m for m in os.environ.get('GEMINI_MODELS', 'gemini-2.5-flash,gemini-2.0-flash').split(',') if m]
+MODELS = [m for m in os.environ.get('GEMINI_MODELS', 'gemini-3.6-flash,gemini-3.5-flash,gemini-3.5-flash-lite,gemini-3.1-flash-lite,gemini-2.5-flash').split(',') if m]
 YTDLP = os.environ.get('YTDLP', shutil.which('yt-dlp') or 'yt-dlp')
 ALLOW_ORIGINS = [o for o in os.environ.get('ALLOW_ORIGINS', 'https://lewym90.github.io').split(',') if o]
 PER_HOUR = int(os.environ.get('IMPORT_PER_HOUR', '25'))
