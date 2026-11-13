@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { ClipboardPaste, Link2, FileText, PencilLine, Loader2, Sparkles, AlertCircle, Check } from 'lucide-react'
+import { Camera, ImagePlus, X, ClipboardPaste, Link2, FileText, PencilLine, Loader2, Sparkles, AlertCircle, Check } from 'lucide-react'
 import { CATS } from '../lib/types'
 import { db } from '../lib/db'
+import { PhotoPair, delPhoto, processPhoto, putPhoto } from '../lib/photos'
 import { Draft, emptyDraft, importFrom, ingToLine, lineToIng, saveMine, toDraft } from '../lib/mine'
 
 type Mode = 'link' | 'text' | 'manual'
@@ -28,10 +29,17 @@ export default function AddRecipe() {
   const [ingTxt, setIngTxt] = useState('')
   const [stepTxt, setStepTxt] = useState('')
   const started = useRef(0)
+  const [photo, setPhoto] = useState<PhotoPair | null>(null)
+  const [photoDirty, setPhotoDirty] = useState(false)
+  const pickPhoto = async (f?: File | null) => {
+    if (!f) return
+    try { setPhoto(await processPhoto(f)); setPhotoDirty(true); setErr('') } catch (e: any) { setErr(e.message || 'Nie udało się wczytać zdjęcia.') }
+  }
 
   useEffect(() => {
     if (!editId) return
     db.mine.get(editId).then(r => { if (r) openEditor(toDraft(r)) })
+    Promise.all([db.photos.get(editId), db.thumbs.get(editId)]).then(([f, t]) => { if (f) setPhoto({ full: f.data, thumb: t?.data ?? f.data }) })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editId])
   useEffect(() => {
@@ -68,6 +76,7 @@ export default function AddRecipe() {
     if (!draft.title.trim()) { setErr('Wpisz tytuł przepisu.'); return }
     if (ing.length < 1 || steps.length < 1) { setErr('Dodaj przynajmniej jeden składnik i jeden krok.'); return }
     const id = await saveMine({ ...draft, ing, steps }, editId ?? undefined)
+    if (photoDirty) { if (photo) await putPhoto(id, photo); else await delPhoto(id) }
     nav('/przepis/' + encodeURIComponent(id), { replace: true })
   }
   const set = <K extends keyof Draft>(k: K, v: Draft[K]) => setDraft(d => (d ? { ...d, [k]: v } : d))
@@ -78,6 +87,14 @@ export default function AddRecipe() {
         <h1 className="ptitle">{editId ? 'Edytuj przepis' : 'Sprawdź przepis'}</h1>
         {!editId && how && <p className="importnote"><Sparkles size={15} /> Wczytano {HOW[how] ?? 'z linku'}. Przejrzyj i popraw, zanim zapiszesz.</p>}
         {err && <p className="errnote"><AlertCircle size={15} /> {err}</p>}
+        <div className="photofld">
+          {photo ? (
+            <div className="photoprev"><img src={photo.full} alt="" />
+              <button className="iconbtn glass" aria-label="Usuń zdjęcie" onClick={() => { setPhoto(null); setPhotoDirty(true) }}><X size={18} /></button></div>
+          ) : null}
+          <label className="btn ghost wide"><input type="file" accept="image/*" hidden onChange={e => { pickPhoto(e.target.files?.[0]); e.target.value = '' }} />
+            {photo ? <><ImagePlus size={17} /> Zmień zdjęcie</> : <><Camera size={17} /> Dodaj zdjęcie dania</>}</label>
+        </div>
         <label className="fld">Tytuł<input value={draft.title} onChange={e => set('title', e.target.value)} /></label>
         <label className="fld">Krótki opis<textarea rows={2} value={draft.summary} onChange={e => set('summary', e.target.value)} /></label>
         <div className="fld">Kategoria

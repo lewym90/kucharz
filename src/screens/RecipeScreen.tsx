@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { ArrowLeft, Heart, Clock, Gauge, Users, Minus, Plus, ShoppingCart, CalendarPlus, Star, Play, Lightbulb, Pencil, Trash2, ExternalLink } from 'lucide-react'
+import { ArrowLeft, Heart, Clock, Gauge, Users, Minus, Plus, ShoppingCart, CalendarPlus, Star, Play, Lightbulb, Pencil, Trash2, ExternalLink, Camera, ImagePlus, X } from 'lucide-react'
 import type { Recipe } from '../lib/types'
 import { DIFF, catLabel } from '../lib/types'
 import { loadRecipe } from '../lib/data'
@@ -10,6 +10,7 @@ import { fmtIng, fmtMin } from '../lib/format'
 import { addRecipeToShopping } from '../lib/shopping'
 import { useDemoted } from '../components/hooks'
 import { isMine } from '../lib/mine'
+import { delPhoto, processPhoto, putPhoto } from '../lib/photos'
 
 const SLOTS = ['Śniadanie', 'II śniadanie', 'Obiad', 'Podwieczorek', 'Kolacja']
 export default function RecipeScreen() {
@@ -25,6 +26,11 @@ export default function RecipeScreen() {
   const fav = useLiveQuery(() => db.favs.get(id), [id])
   const rating = useLiveQuery(() => db.ratings.get(id), [id])
   const demoted = useDemoted()
+  const photo = useLiveQuery(() => db.photos.get(id), [id])
+  const onPhoto = async (f?: File | null) => {
+    if (!f) return
+    try { await putPhoto(id, await processPhoto(f)); flash('Zdjęcie zapisane') } catch (e: any) { flash(e.message || 'Nie udało się wczytać zdjęcia') }
+  }
   useEffect(() => { loadRecipe(id).then(x => { setR(x ?? null); if (x) { setServ(x.serv); db.hist.put({ id, at: Date.now() }) } }) }, [id])
   const flash = (m: string) => { setMsg(m); setTimeout(() => setMsg(''), 2200) }
   if (r === undefined) return <div className="page"><p className="muted center">Ładowanie…</p></div>
@@ -35,7 +41,7 @@ export default function RecipeScreen() {
   const toggleSig = async () => { const s = new Set(demoted); s.has(id) ? s.delete(id) : s.add(id); await setSetting('demoted', [...s]) }
   return (
     <div className="page recipe">
-      <div className="rhead">
+      <div className={'rhead' + (photo ? ' withphoto' : '')} style={photo ? { backgroundImage: `linear-gradient(180deg,rgba(10,10,11,.35) 0%,rgba(10,10,11,.15) 35%,rgba(10,10,11,.92) 100%),url(${photo.data})` } : undefined}>
         <div className="rtop">
           <button className="iconbtn glass" onClick={() => nav(-1)} aria-label="Wróć"><ArrowLeft size={20} /></button>
           <button className={'iconbtn glass' + (fav ? ' on' : '')} onClick={() => fav ? db.favs.delete(id) : db.favs.put({ id, at: Date.now() })} aria-label="Ulubione"><Heart size={20} fill={fav ? 'currentColor' : 'none'} /></button>
@@ -53,10 +59,15 @@ export default function RecipeScreen() {
       </div>
       <p className="lead">{r.sum}</p>
       <div className="tags">{r.tags.filter(t => t !== 'signature').map(t => <span key={t}>{t}</span>)}</div>
+      <div className="actions">
+        <label className="btn ghost"><input type="file" accept="image/*" hidden onChange={e => { onPhoto(e.target.files?.[0]); e.target.value = '' }} />
+          {photo ? <><ImagePlus size={16} /> Zmień zdjęcie</> : <><Camera size={16} /> Dodaj zdjęcie</>}</label>
+        {photo && <button className="btn ghost" onClick={async () => { await delPhoto(id); flash('Zdjęcie usunięte') }}><X size={16} /> Usuń zdjęcie</button>}
+      </div>
       {isMine(id) && (
         <div className="actions">
           <Link className="btn ghost" to={`/edytuj/${encodeURIComponent(id)}`}><Pencil size={16} /> Edytuj</Link>
-          <button className="btn ghost" onClick={async () => { if (confirm('Usunąć ten przepis z „Moich przepisów”?')) { await db.mine.delete(id); await db.favs.delete(id); nav('/ulubione', { replace: true }) } }}><Trash2 size={16} /> Usuń</button>
+          <button className="btn ghost" onClick={async () => { if (confirm('Usunąć ten przepis z „Moich przepisów”?')) { await db.mine.delete(id); await db.favs.delete(id); await delPhoto(id); nav('/ulubione', { replace: true }) } }}><Trash2 size={16} /> Usuń</button>
         </div>
       )}
       {isMine(id) && /^https?:\/\//.test(r.src) && <p className="muted small"><a className="srclink" href={r.src} target="_blank" rel="noreferrer"><ExternalLink size={13} /> Źródło przepisu</a></p>}
