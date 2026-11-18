@@ -39,6 +39,7 @@ export default function AddRecipe() {
   const started = useRef(0)
   const [photo, setPhoto] = useState<PhotoPair | null>(null)
   const [photoDirty, setPhotoDirty] = useState(false)
+  const [autoPhoto, setAutoPhoto] = useState(false)
   const pickPhoto = async (f?: File | null) => {
     if (!f) return
     try { setPhoto(await processPhoto(f)); setPhotoDirty(true); setErr('') } catch (e: any) { setErr(e.message || 'Nie udało się wczytać zdjęcia.') }
@@ -78,6 +79,13 @@ export default function AddRecipe() {
       const input = mode === 'link' ? { url: url.trim() } : mode === 'photo' ? { images: shots.map(({ mime, data }) => ({ mime, data })) } : { text: text.trim() }
       const { draft: d, how: h } = await importFrom(input)
       setHow(h); openEditor(d)
+      // zdjęcie dania z filmu lub strony – od razu jako zdjęcie przepisu (można zmienić albo usunąć)
+      if (d.image && !photo) {
+        try {
+          const blob = await (await fetch(d.image)).blob()
+          setPhoto(await processPhoto(new File([blob], 'danie', { type: blob.type || 'image/jpeg' }))); setPhotoDirty(true); setAutoPhoto(true)
+        } catch { /* bez zdjęcia */ }
+      }
     } catch (e: any) { setErr(e.message || 'Import się nie udał.') }
     setBusy(false)
   }
@@ -112,9 +120,10 @@ export default function AddRecipe() {
         <div className="photofld">
           {photo ? (
             <div className="photoprev"><img src={photo.full} alt="" />
-              <button className="iconbtn glass" aria-label="Usuń zdjęcie" onClick={() => { setPhoto(null); setPhotoDirty(true) }}><X size={18} /></button></div>
+              <button className="iconbtn glass" aria-label="Usuń zdjęcie" onClick={() => { setPhoto(null); setPhotoDirty(true); setAutoPhoto(false) }}><X size={18} /></button></div>
           ) : null}
-          <label className="btn ghost wide"><input type="file" accept="image/*" hidden onChange={e => { pickPhoto(e.target.files?.[0]); e.target.value = '' }} />
+          {photo && autoPhoto && <p className="muted small">Zdjęcie pobrane {mode === 'link' && /youtu|tiktok|instagram|facebook|fb\./i.test(url) ? 'z filmu' : 'ze strony'}. Możesz je zmienić albo usunąć.</p>}
+          <label className="btn ghost wide"><input type="file" accept="image/*" hidden onChange={e => { pickPhoto(e.target.files?.[0]); setAutoPhoto(false); e.target.value = '' }} />
             {photo ? <><ImagePlus size={17} /> Zmień zdjęcie</> : <><Camera size={17} /> Dodaj zdjęcie dania</>}</label>
         </div>
         <label className="fld">Tytuł<input value={draft.title} onChange={e => set('title', e.target.value)} /></label>
@@ -133,7 +142,7 @@ export default function AddRecipe() {
         <label className="fld">Wskazówka <small>(opcjonalnie)</small><input value={draft.tip ?? ''} onChange={e => set('tip', e.target.value || null)} /></label>
         {draft.src && <p className="muted small">Źródło: {draft.src}</p>}
         <button className="btn gold wide" onClick={save}><Check size={18} /> Zapisz w „Moich przepisach”</button>
-        <button className="btn ghost wide" onClick={() => (editId || fromFridge ? nav(-1) : (setDraft(null), setErr(''), setExtras([])))}>{editId ? 'Anuluj' : 'Wróć'}</button>
+        <button className="btn ghost wide" onClick={() => (editId || fromFridge ? nav(-1) : (setDraft(null), setErr(''), setExtras([]), autoPhoto && (setPhoto(null), setPhotoDirty(false), setAutoPhoto(false))))}>{editId ? 'Anuluj' : 'Wróć'}</button>
       </div>
     )
   }

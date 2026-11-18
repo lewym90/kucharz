@@ -10,6 +10,8 @@ export const isMine = (id: string) => id.startsWith(MINE_PREFIX)
 export type Draft = {
   title: string; summary: string; cat: string; min: number; diff: number; serv: number; cuisine: string
   tags: string[]; ing: { n: string; q: number | null; u: string | null }[]; steps: string[]; tip: string | null; src: string
+  /** zdjęcie dania pobrane przy imporcie (data URL) – tylko do podglądu, zapisuje się jako zdjęcie przepisu */
+  image?: string | null
 }
 
 const DIET = ['wegetariańskie', 'wegańskie', 'bezglutenowe']
@@ -43,7 +45,7 @@ export function fromServer(r: any): Draft {
   return {
     title: r.title ?? '', summary: r.summary ?? '', cat: r.category ?? 'obiad', min: r.minutes ?? 30, diff: r.difficulty ?? 2, serv: r.servings ?? 2,
     cuisine: r.cuisine ?? '', tags: r.tags ?? [], ing: (r.ingredients ?? []).map((i: any) => ({ n: i.name, q: i.qty ?? null, u: i.unit ?? null })),
-    steps: r.steps ?? [], tip: r.tip ?? null, src: r.source ?? '',
+    steps: r.steps ?? [], tip: r.tip ?? null, src: r.source ?? '', image: r.image ?? null,
   }
 }
 
@@ -92,8 +94,8 @@ export async function pingServer(): Promise<{ ok: boolean; gemini?: boolean; msg
     const j = await r.json()
     if (!j.ok) return { ok: false, msg: 'Serwer odpowiada, ale zgłasza błąd.' }
     if (!j.gemini) return { ok: true, gemini: false, msg: 'Serwer działa, ale bez klucza Gemini (tylko strony i tekst – bez filmów, zdjęć i AI w lodówce).' }
-    if (!(j.v >= 2)) return { ok: true, gemini: true, msg: 'Serwer działa, ale ma starą wersję: bez komentarzy autora, importu ze zdjęć i „Stwórz z AI”. Zaktualizuj go.' }
-    return { ok: true, gemini: true, msg: 'Serwer działa: strony, filmy, komentarze autora, zdjęcia i „Stwórz z AI”.' }
+    if (!(j.v >= 3)) return { ok: true, gemini: true, msg: 'Serwer działa, ale ma starą wersję (brakuje części funkcji: komentarze autora, zdjęcia, „Stwórz z AI”, zdjęcie dania z filmu). Zaktualizuj go.' }
+    return { ok: true, gemini: true, msg: 'Serwer działa: strony, filmy, komentarze autora, zdjęcie dania, import ze zdjęć i „Stwórz z AI”.' }
   } catch { return { ok: false, msg: 'Nie mogę połączyć się z serwerem importu.' } }
 }
 

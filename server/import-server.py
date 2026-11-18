@@ -93,6 +93,84 @@ def http_get(url, ua=UA, limit=3_000_000, timeout=20):
         return raw.decode('utf-8', 'replace')
 
 
+def http_bytes(url, limit=8_000_000, timeout=12):
+    check_url(url)
+    req = urllib.request.Request(url, headers={'User-Agent': UA, 'Accept': 'image/avif,image/webp,image/jpeg,image/png,image/*;q=0.8,*/*;q=0.5'})
+    with OPENER.open(req, timeout=timeout) as r:
+        return (r.headers.get_content_type() or ''), r.read(limit)
+
+
+def fetch_image(url):
+    """Obrazek z sieci jako data URL (zdjęcia z Instagrama/TikToka mają linki ważne tylko chwilę, więc wysyłamy samo zdjęcie)."""
+    try:
+        url = html.unescape(str(url or '').strip())
+        if not url.startswith('http'):
+            return None
+        ct, raw = http_bytes(url)
+        if len(raw) < 4000:
+            return None
+        if not ct.startswith('image/'):
+            ct = 'image/png' if raw[:4] == b'\x89PNG' else 'image/webp' if raw[8:12] == b'WEBP' else 'image/jpeg' if raw[:2] == b'\xff\xd8' else ''
+        if ct not in ('image/jpeg', 'image/png', 'image/webp', 'image/avif'):
+            return None
+        return 'data:%s;base64,%s' % (ct, base64.b64encode(raw).decode())
+    except Exception:
+        return None
+
+
+def ld_images(ld):
+    out = []
+    def walk(x):
+        if isinstance(x, str):
+            out.append(x)
+        elif isinstance(x, list):
+            for i in x:
+                walk(i)
+        elif isinstance(x, dict):
+            walk(x.get('url') or x.get('contentUrl') or '')
+    walk((ld or {}).get('image'))
+    return out
+
+
+def video_thumbs(info):
+    """Okładka filmu (w rolkach i na TikToku zwykle ładne ujęcie gotowego dania), od największej."""
+    th = [t for t in (info or {}).get('thumbnails') or [] if t.get('url')]
+    th.sort(key=lambda t: (t.get('preference') or 0, (t.get('width') or 0) * (t.get('height') or 0)), reverse=True)
+    out = [info.get('thumbnail')] if (info or {}).get('thumbnail') else []
+    return out + [t['url'] for t in th if t['url'] not in out][:3]
+
+
+def video_frame(mime, data, sec):
+    """Klatka z pobranego filmu w sekundzie wskazanej przez Gemini (zapas, gdy nie ma okładki)."""
+    if not data or not mime.startswith('video') or sec is None or not shutil.which('ffmpeg'):
+        return None
+    d = tempfile.mkdtemp(prefix='kfr')
+    try:
+        src, out = os.path.join(d, 'v'), os.path.join(d, 'f.jpg')
+        open(src, 'wb').write(data)
+        subprocess.run(['ffmpeg', '-loglevel', 'error', '-ss', str(max(0.0, float(sec))), '-i', src, '-frames:v', '1', '-q:v', '3', out], capture_output=True, timeout=30)
+        if os.path.exists(out) and os.path.getsize(out) > 3000:
+            return 'data:image/jpeg;base64,' + base64.b64encode(open(out, 'rb').read()).decode()
+    except Exception:
+        pass
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+    return None
+
+
+def with_image(r, candidates, frame=None):
+    """Dokleja do przepisu zdjęcie dania: pierwsze działające z listy, a gdy nic – klatkę z filmu."""
+    if r and not r.get('image'):
+        for u in [c for c in candidates if c][:5]:
+            img = fetch_image(u)
+            if img:
+                r['image'] = img
+                break
+        if not r.get('image') and frame:
+            r['image'] = frame
+    return r
+
+
 # ───────────────────────── wyciąganie tekstu ze strony ─────────────────────────
 def meta(htm, *names):
     for n in names:
@@ -323,6 +401,7 @@ SCHEMA = {
             'required': ['name']}},
         'steps': {'type': 'ARRAY', 'items': {'type': 'STRING'}},
         'tip': {'type': 'STRING', 'nullable': True},
+        'dish_time': {'type': 'NUMBER', 'nullable': True},
     },
     'required': ['found'],
 }
@@ -338,6 +417,7 @@ ZASADY:
 - category wybierz z listy. tags tylko z: %(tags)s (tylko jeśli naprawdę pasują).
 - summary: jedno lub dwa zdania opisu dania. cuisine: np. polska, włoska, azjatycka.
 - tip: jedna praktyczna wskazówka z materiału albo null.
+- dish_time: tylko gdy materiałem jest film – sekunda filmu, w której najlepiej widać gotowe, podane danie (ładne ujęcie z bliska, bez rąk i napisów, jeśli się da); w innym przypadku null.
 - Jeśli w materiale NIE MA przepisu (brak składników lub sposobu wykonania), zwróć {"found": false}.
 
 MATERIAŁ (%(kind)s):
@@ -542,17 +622,20 @@ def do_import(body):
     social = any(host == s.rstrip('.') or host.endswith('.' + s.rstrip('.')) or (s.endswith('.') and s in host + '.') for s in SOCIAL)
     caption, title, dur, page_ld = '', '', None, None
     info = None
+    thumbs = []
     if social:
         info = ytdlp_info(url)
         if info:
             caption = (info.get('description') or '').strip()
             title = (info.get('title') or '').strip()
             dur = info.get('duration')
-        if not caption:
+            thumbs = video_thumbs(info)
+        if not caption or not thumbs:
             try:
                 htm = http_get(url, ua='facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)', limit=800_000)
-                caption = meta(htm, 'og:description', 'description')
+                caption = caption or meta(htm, 'og:description', 'description')
                 title = title or meta(htm, 'og:title')
+                thumbs = thumbs or [meta(htm, 'og:image', 'og:image:secure_url', 'twitter:image')]
             except Fail:
                 pass
         caption = html.unescape(caption)
@@ -566,7 +649,7 @@ def do_import(body):
         if recipe_like(caption) or (GEMINI_KEY and 'KOMENTARZ AUTORA' in caption and len(caption) > 150):
             r = structure((title + '\n' + caption).strip(), kind, url, 'opis')
             if r:
-                return r
+                return with_image(r, thumbs)
         # link do pełnego przepisu w opisie
         for lk in re.findall(r'https?://[^\s)>\]]+', caption):
             hh = (urllib.parse.urlparse(lk).hostname or '').lower()
@@ -574,7 +657,7 @@ def do_import(body):
                 try:
                     r = from_page(lk, url)
                     if r:
-                        return r
+                        return with_image(r, thumbs)
                 except Fail:
                     pass
         if info is not None or 'tiktok' in host or 'instagram' in host or 'youtube' in host or 'youtu.be' in host or 'facebook' in host or 'fb.' in host:
@@ -590,7 +673,7 @@ def do_import(body):
                     if g.get('found'):
                         n = norm_recipe(g, url, 'film+gemini')
                         if valid(n):
-                            return n
+                            return with_image(n, thumbs, video_frame(mime, data, g.get('dish_time')) if not thumbs else None)
         raise Fail('no_recipe', 'Nie znalazłem przepisu w tym poście. Skopiuj opis posta i wklej go w zakładce „Wklej tekst”.')
     r = from_page(url, url)
     if r:
@@ -601,6 +684,8 @@ def do_import(body):
 def from_page(page_url, source_url):
     htm = http_get(page_url)
     ld = find_recipe_ld(htm)
+    og = meta(htm, 'og:image', 'og:image:secure_url', 'twitter:image')
+    og = urllib.parse.urljoin(page_url, og) if og else ''
     if ld:
         txt, ni, ns = ld_to_text(ld)
         if ni >= 2 and ns >= 1:
@@ -608,15 +693,15 @@ def from_page(page_url, source_url):
             if r:
                 if not r['title'] or r['title'] == 'Przepis z linku':
                     r['title'] = str(ld.get('name') or r['title'])
-                return r
+                return with_image(r, [urllib.parse.urljoin(page_url, u) for u in ld_images(ld)] + [og])
     body = html_to_text(htm)
     if len(body) > 200:
         if GEMINI_KEY:
             t = (meta(htm, 'og:title') + '\n' + body)[:30000]
-            return structure(t, 'tekst strony internetowej', source_url, 'strona-tekst')
+            return with_image(structure(t, 'tekst strony internetowej', source_url, 'strona-tekst'), [og])
         h = heuristic(body, meta(htm, 'og:title'))
         if h:
-            return norm_recipe(h, source_url, 'strona-reguły')
+            return with_image(norm_recipe(h, source_url, 'strona-reguły'), [og])
     return None
 
 
@@ -796,7 +881,7 @@ class H(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if urllib.parse.urlparse(self.path).path in ('/health', '/zdrowie'):
-            return self.send(200, {'ok': True, 'v': 2, 'features': ['komentarze', 'zdjecia', 'lodowka'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
+            return self.send(200, {'ok': True, 'v': 3, 'features': ['komentarze', 'zdjecia', 'lodowka', 'zdjecie-dania'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
         self.send(404, {'ok': False, 'error': 'nie znaleziono'})
 
     def do_POST(self):
