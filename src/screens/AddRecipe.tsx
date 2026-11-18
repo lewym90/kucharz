@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { Camera, ImagePlus, X, ClipboardPaste, Link2, FileText, PencilLine, Loader2, Sparkles, AlertCircle, Check, Images, ExternalLink, Tv } from 'lucide-react'
+import { Camera, ImagePlus, X, ClipboardPaste, Link2, FileText, PencilLine, Loader2, Sparkles, AlertCircle, Check, Images, ExternalLink, Tv, RotateCcw } from 'lucide-react'
 import { CATS } from '../lib/types'
 import { db } from '../lib/db'
 import { PhotoPair, delPhoto, processPhoto, putPhoto, shrinkForUpload } from '../lib/photos'
@@ -83,12 +83,13 @@ export default function AddRecipe() {
     try { const t = (await navigator.clipboard.readText()).trim(); if (/^https?:\/\//.test(t) && !/\s/.test(t)) { setUrl(t); setMode('link') } else { setText(t); setMode('text') } }
     catch { setErr('Nie mogę odczytać schowka. Wklej ręcznie w pole poniżej (przytrzymaj pole i wybierz „Wklej”).') }
   }
+  const [warn, setWarn] = useState('')
   const run = async () => {
-    setErr(''); setBusy(true); setPhase(0); started.current = Date.now()
+    setErr(''); setWarn(''); setBusy(true); setPhase(0); started.current = Date.now()
     try {
       const input = mode === 'link' ? { url: url.trim() } : mode === 'photo' ? { images: shots.map(({ mime, data }) => ({ mime, data })) } : { text: text.trim() }
       const { draft: d, how: h } = await importFrom(input)
-      setHow(h); openEditor(d)
+      setHow(h); setWarn(d.warning ?? ''); openEditor(d)
       // zdjęcie dania z filmu lub strony – od razu jako zdjęcie przepisu (można zmienić albo usunąć)
       if (d.image && !photo) {
         try {
@@ -124,6 +125,8 @@ export default function AddRecipe() {
       <div className="page addrec">
         <h1 className="ptitle">{editId ? 'Edytuj przepis' : 'Sprawdź przepis'}</h1>
         {!editId && how && <p className="importnote"><Sparkles size={15} /> {how.startsWith('ai-') ? 'Przepis przygotowany' : 'Wczytano'} {HOW[how] ?? 'z linku'}. Przejrzyj i popraw, zanim zapiszesz.</p>}
+        {!editId && warn && <div className="errnote warnbox"><AlertCircle size={15} /><div>{warn}
+          {mode === 'link' && url && <button className="btn ghost small" onClick={() => { setDraft(null); if (autoPhoto) { setPhoto(null); setPhotoDirty(false); setAutoPhoto(false) } run() }}><RotateCcw size={15} /> Spróbuj ponownie</button>}</div></div>}
         {!editId && extras.length > 0 && <p className="errnote"><AlertCircle size={15} /> Uwaga: przepis używa produktów, których nie zaznaczyłeś w lodówce: {extras.join(', ')}. Usuń je albo zamień.</p>}
         {!editId && how === 'ai-internet' && /^https?:\/\//.test(draft.src) && <p className="muted small"><a className="srclink" href={draft.src} target="_blank" rel="noreferrer"><ExternalLink size={13} /> Strona, z której pochodzi przepis</a></p>}
         {err && <p className="errnote"><AlertCircle size={15} /> {err}</p>}
@@ -202,6 +205,7 @@ export default function AddRecipe() {
         </>
       )}
       {err && <p className="errnote"><AlertCircle size={15} /> {err}</p>}
+      {err && !busy && mode === 'link' && /\S/.test(url) && <button className="btn ghost wide" onClick={run}><RotateCcw size={17} /> Spróbuj ponownie</button>}
       {mode === 'channel' ? (!chRunning && <button className="btn gold wide" disabled={busy || !/\S/.test(chUrl)} onClick={() => runChannel(chUrl)}>{busy ? <Loader2 className="spin" size={18} /> : <Tv size={18} />} Pobierz wszystkie przepisy</button>)
       : busy ? (
         <div className="loadbox"><Loader2 className="spin" size={22} /><div><b>{(mode === 'photo' ? STEPS_PHOTO : STEPS_LOADING)[phase]}</b>

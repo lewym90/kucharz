@@ -195,3 +195,4 @@ label.btn{cursor:pointer}
 .chhead{display:grid;gap:8px;margin:6px 0 12px}
 .chhead .actions{margin:0}
 .chnote{margin-top:8px}.chnote .link{padding:0;font-size:14px;text-decoration:underline}
+.warnbox{display:flex;gap:8px;align-items:flex-start}.warnbox>div{display:grid;gap:8px}.warnbox .btn.small{padding:8px 12px;font-size:14px;justify-self:start}

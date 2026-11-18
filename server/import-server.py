@@ -14,7 +14,7 @@ Kolejność działania (od najtańszej i najdokładniejszej):
  4. wklejony tekst.
 Gemini porządkuje wynik do formatu aplikacji (polski, jednostki metryczne). Bez klucza działa tryb awaryjny (reguły).
 Nasłuchuje tylko na 127.0.0.1; z internetu wchodzi przez Caddy."""
-import base64, html, ipaddress, json, os, re, shutil, socket, subprocess, tempfile, threading, time
+import base64, html, ipaddress, json, os, re, shutil, socket, subprocess, sys, tempfile, threading, time
 import urllib.request, urllib.error, urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from collections import defaultdict, deque
@@ -462,6 +462,79 @@ def gemini(parts, kind):
 
 
 # ───────────────────────── film ─────────────────────────
+IPHONE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1'
+
+
+def ig_embed(url):
+    """Instagram: strona osadzenia posta (/embed/captioned/) daje bez logowania pełny opis, autora, okładkę i długość filmu."""
+    m = re.search(r'instagram\.com/(?:[\w.]+/)?(?:p|reel|reels|tv)/([\w-]+)', url)
+    if not m:
+        return None
+    try:
+        htm = http_get('https://www.instagram.com/p/%s/embed/captioned/' % m.group(1), ua=IPHONE_UA, limit=2_000_000, timeout=15)
+    except Exception:
+        return None
+    out = {'caption': '', 'user': '', 'image': '', 'duration': None}
+    try:
+        cj = re.search(r'"contextJSON":"((?:[^"\\]|\\.)*)"', htm)
+        sm = json.loads(json.loads('"' + cj.group(1) + '"'))['gql_data']['shortcode_media']
+        edges = (sm.get('edge_media_to_caption') or {}).get('edges') or []
+        out['caption'] = (edges[0]['node']['text'] if edges else '').strip()
+        out['user'] = (sm.get('owner') or {}).get('username') or ''
+        out['image'] = sm.get('display_url') or sm.get('thumbnail_src') or ''
+        out['duration'] = sm.get('video_duration')
+    except Exception:
+        pass
+    if not out['caption']:
+        mm = re.search(r'<div class="Caption">(.*?)<div class="CaptionComments', htm, re.S) or re.search(r'class="Caption"[^>]*>(.*?)</div>', htm, re.S)
+        if mm:
+            t = html.unescape(re.sub(r'<[^>]+>', '', re.sub(r'<br\s*/?>', '\n', mm.group(1)))).strip()
+            t = re.sub(r'\s*(View all|Zobacz wszystkie)\s+\d+\s+\w+\s*$', '', t)
+            lines = t.split('\n')
+            if lines and re.fullmatch(r'[\w.]+', lines[0].strip()):
+                t = '\n'.join(lines[1:])
+            out['caption'] = t.strip()
+    return out if (out['caption'] or out['image']) else None
+
+
+def ig_meta_caption(d):
+    """og:description z Instagrama ma doklejone „123 likes, 4 comments - autor on data: "…"” – zostawiamy sam opis."""
+    m = re.match(r'^[\d.,KkMm\s]+(likes?|polubie\w*)[^-]*-\s*[\w.]+\s+(on|dnia)\s+[^:]+:\s*["“](.*)["”]\.?\s*$', d or '', re.S)
+    return m.group(3) if m else (d or '')
+
+
+def partial_from_caption(text, url):
+    """Same składniki z opisu (gdy kroki są tylko w filmie, którego nie dało się pobrać)."""
+    if GEMINI_KEY:
+        try:
+            g = gemini([{'text': text[:30000]}], 'opis posta, w którym są składniki, a sposób przygotowania jest tylko w filmie '
+                                                 '(zwróć found=true, składniki z opisu i tylko te kroki, które są w opisie; nie wymyślaj kroków)')
+            n = norm_recipe(g, url, 'opis-skladniki')
+            if len(n['ingredients']) >= 3:
+                return n
+        except Fail:
+            pass
+    other, ing, steps = split_sections(text)
+    if len(ing) < 3:
+        return None
+    h = heuristic(text) or {'title': (other[0] if other else 'Przepis z linku')[:120], 'ingredients': [parse_ing_line(l) for l in ing], 'steps': steps}
+    h['steps'] = h.get('steps') or []
+    return norm_recipe(h, url, 'opis-skladniki')
+
+
+def ytdlp_selfupdate():
+    """yt-dlp raz na dobę sam się aktualizuje (Instagram i TikTok często zmieniają strony, a nowe wersje to naprawiają)."""
+    if not os.access(sys.prefix, os.W_OK):
+        return
+    while True:
+        time.sleep(90)
+        try:
+            subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', '--no-cache-dir', '-U', 'yt-dlp'], capture_output=True, timeout=300)
+        except Exception:
+            pass
+        time.sleep(86400 - 90)
+
+
 def ytdlp_info(url):
     try:
         out = subprocess.run([YTDLP, '--dump-single-json', '--no-playlist', '--skip-download', '--no-warnings', '--socket-timeout', '15', url],
@@ -625,16 +698,27 @@ def do_import(body):
     info = None
     thumbs = []
     if social:
+        ig = 'instagram' in host
+        site = 'Instagram' if ig else 'TikTok' if 'tiktok' in host else 'YouTube' if ('youtube' in host or 'youtu.be' in host) else 'Facebook'
         info = ytdlp_info(url)
+        if info is None and ig:
+            time.sleep(3)
+            info = ytdlp_info(url)  # Instagram często odmawia tylko na chwilę
         if info:
             caption = (info.get('description') or '').strip()
             title = (info.get('title') or '').strip()
             dur = info.get('duration')
             thumbs = video_thumbs(info)
+        if ig and (not caption or not thumbs):
+            emb = ig_embed(url)  # strona osadzenia posta: pełny opis i okładka bez logowania
+            if emb:
+                caption = caption or emb['caption']
+                thumbs = thumbs or ([emb['image']] if emb['image'] else [])
+                dur = dur or emb['duration']
         if not caption or not thumbs:
             try:
                 htm = http_get(url, ua='facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)', limit=800_000)
-                caption = caption or meta(htm, 'og:description', 'description')
+                caption = caption or ig_meta_caption(meta(htm, 'og:description', 'description'))
                 title = title or meta(htm, 'og:title')
                 thumbs = thumbs or [meta(htm, 'og:image', 'og:image:secure_url', 'twitter:image')]
             except Fail:
@@ -647,10 +731,12 @@ def do_import(body):
             if cm:
                 caption = (caption + '\n\nKOMENTARZ AUTORA POD POSTEM:\n' + '\n\n'.join(cm)).strip()
                 kind = 'opis posta i komentarz autora pod postem'
+        cap_r = None
         if recipe_like(caption) or (GEMINI_KEY and 'KOMENTARZ AUTORA' in caption and len(caption) > 150):
-            r = structure((title + '\n' + caption).strip(), kind, url, 'opis')
-            if r:
-                return with_image(r, thumbs)
+            cap_r = structure((title + '\n' + caption).strip(), kind, url, 'opis')
+            # pełny przepis w opisie – gotowe; jeśli kroków jest mało, autor pewnie mówi je w filmie, więc najpierw film
+            if cap_r and len(cap_r['steps']) >= 3:
+                return with_image(cap_r, thumbs)
         # link do pełnego przepisu w opisie
         for lk in re.findall(r'https?://[^\s)>\]]+', caption):
             hh = (urllib.parse.urlparse(lk).hostname or '').lower()
@@ -661,21 +747,45 @@ def do_import(body):
                         return with_image(r, thumbs)
                 except Fail:
                     pass
-        if info is not None or 'tiktok' in host or 'instagram' in host or 'youtube' in host or 'youtu.be' in host or 'facebook' in host or 'fb.' in host:
-            if GEMINI_KEY:
+        watched = False
+        if GEMINI_KEY:
+            media = download_media(url, dur)
+            if not media and ig:
+                time.sleep(3)
                 media = download_media(url, dur)
-                if media:
-                    mime, data = media
-                    ctx = (title + '\n' + caption).strip()
-                    parts = [{'inline_data': {'mime_type': mime, 'data': base64.b64encode(data).decode()}}]
-                    if ctx:
-                        parts.append({'text': 'Opis posta i komentarze autora (mogą być niepełne):\n' + ctx[:8000]})
-                    g = gemini(parts, 'film (obraz, napisy na ekranie i mowa)' if mime.startswith('video') else 'nagranie dźwięku z filmu')
-                    if g.get('found'):
-                        n = norm_recipe(g, url, 'film+gemini')
-                        if valid(n):
-                            return with_image(n, thumbs, video_frame(mime, data, g.get('dish_time')) if not thumbs else None)
-        raise Fail('no_recipe', 'Nie znalazłem przepisu w tym poście. Skopiuj opis posta i wklej go w zakładce „Wklej tekst”.')
+            if media:
+                watched = True
+                mime, data = media
+                ctx = (title + '\n' + caption).strip()
+                parts = [{'inline_data': {'mime_type': mime, 'data': base64.b64encode(data).decode()}}]
+                if ctx:
+                    parts.append({'text': 'Opis posta i komentarze autora (składniki z opisu są wiarygodne – użyj ich ilości; kroki weź z filmu):\n' + ctx[:8000]})
+                g = gemini(parts, 'film (obraz, napisy na ekranie i mowa) razem z opisem posta' if mime.startswith('video') else 'nagranie dźwięku z filmu razem z opisem posta')
+                if g.get('found'):
+                    n = norm_recipe(g, url, 'film+gemini')
+                    if valid(n) and (not cap_r or len(n['steps']) >= len(cap_r['steps'])):
+                        return with_image(n, thumbs, video_frame(mime, data, g.get('dish_time')) if not thumbs else None)
+        if cap_r:
+            if not watched and len(cap_r['steps']) < 3:
+                cap_r['warning'] = ('%s nie dał teraz pobrać filmu, więc kroki są tylko z opisu i mogą być niepełne. '
+                                    'Spróbuj ponownie za kilka minut albo dopisz brakujące kroki.' % site)
+            return with_image(cap_r, thumbs)
+        # w opisie są same składniki, a filmu nie udało się pobrać – oddajemy składniki zamiast błędu
+        other, ing_lines, step_lines = split_sections(caption)
+        if not watched and len(ing_lines) >= 3:
+            part = partial_from_caption((title + '\n' + caption).strip(), url)
+            if part:
+                part['warning'] = ('%s nie dał teraz pobrać filmu, a sposób przygotowania jest tylko w nim. Mam składniki z opisu – '
+                                   'spróbuj ponownie za kilka minut, żeby dostać kroki, albo dopisz je sam.' % site)
+                return with_image(part, thumbs)
+        if not caption and info is None:
+            raise Fail('blocked', '%s nie wpuścił teraz serwera do tego posta (blokuje automatyczne pobieranie, to nie wina linku). '
+                                  'Spróbuj ponownie za kilka minut albo dodaj zrzuty ekranu w zakładce „Ze zdjęć”.' % site)
+        if not watched and GEMINI_KEY:
+            raise Fail('blocked', '%s nie dał teraz pobrać filmu, a w opisie nie ma przepisu. Spróbuj ponownie za kilka minut '
+                                  'albo dodaj zrzuty ekranu w zakładce „Ze zdjęć”.' % site)
+        raise Fail('no_recipe', 'Obejrzałem film i przeczytałem opis, ale nie znalazłem w nich przepisu (składników i sposobu przygotowania). '
+                                'Jeśli przepis jest np. na zdjęciach w karuzeli, dodaj zrzuty ekranu w zakładce „Ze zdjęć”.')
     r = from_page(url, url)
     if r:
         return r
@@ -1306,7 +1416,7 @@ class H(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if urllib.parse.urlparse(self.path).path in ('/health', '/zdrowie'):
-            return self.send(200, {'ok': True, 'v': 5, 'features': ['komentarze', 'zdjecia', 'lodowka', 'zdjecie-dania', 'kanal', 'strona'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
+            return self.send(200, {'ok': True, 'v': 6, 'features': ['komentarze', 'zdjecia', 'lodowka', 'zdjecie-dania', 'kanal', 'strona', 'instagram-zapas'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
         m = re.match(r'^/channel/([\w-]+)(/recipes)?$', urllib.parse.urlparse(self.path).path)
         if m:
             job = jobs.get(m.group(1))
@@ -1357,7 +1467,7 @@ class H(BaseHTTPRequestHandler):
             r = do_import(body) if path == '/import' else create_recipe(body)
             self.send(200, {'ok': True, 'recipe': r, 'how': r.get('how')})
         except Fail as e:
-            self.send(422 if e.code in ('no_recipe', 'empty', 'bad_url', 'size') else 502, {'ok': False, 'code': e.code, 'error': e.msg})
+            self.send(422 if e.code in ('no_recipe', 'empty', 'bad_url', 'size') else 503 if e.code == 'blocked' else 502, {'ok': False, 'code': e.code, 'error': e.msg})
         except Exception as e:
             self.send(500, {'ok': False, 'code': 'internal', 'error': 'Błąd serwera (%s).' % type(e).__name__})
         finally:
@@ -1366,4 +1476,5 @@ class H(BaseHTTPRequestHandler):
 
 if __name__ == '__main__':
     print('kucharz-import na 127.0.0.1:%d, Gemini: %s' % (PORT, 'tak' if GEMINI_KEY else 'nie'), flush=True)
+    threading.Thread(target=ytdlp_selfupdate, daemon=True).start()
     ThreadingHTTPServer(('127.0.0.1', PORT), H).serve_forever()

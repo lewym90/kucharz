@@ -12,6 +12,8 @@ export type Draft = {
   tags: string[]; ing: { n: string; q: number | null; u: string | null }[]; steps: string[]; tip: string | null; src: string
   /** zdjęcie dania pobrane przy imporcie (data URL) – tylko do podglądu, zapisuje się jako zdjęcie przepisu */
   image?: string | null
+  /** ostrzeżenie z serwera, np. że kroki są tylko w filmie, którego nie dało się teraz pobrać */
+  warning?: string | null
 }
 
 const DIET = ['wegetariańskie', 'wegańskie', 'bezglutenowe']
@@ -45,7 +47,7 @@ export function fromServer(r: any): Draft {
   return {
     title: r.title ?? '', summary: r.summary ?? '', cat: r.category ?? 'obiad', min: r.minutes ?? 30, diff: r.difficulty ?? 2, serv: r.servings ?? 2,
     cuisine: r.cuisine ?? '', tags: r.tags ?? [], ing: (r.ingredients ?? []).map((i: any) => ({ n: i.name, q: i.qty ?? null, u: i.unit ?? null })),
-    steps: r.steps ?? [], tip: r.tip ?? null, src: r.source ?? '', image: r.image ?? null,
+    steps: r.steps ?? [], tip: r.tip ?? null, src: r.source ?? '', image: r.image ?? null, warning: r.warning ?? null,
   }
 }
 
