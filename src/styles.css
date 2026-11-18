@@ -186,3 +186,12 @@ label.btn{cursor:pointer}
 .aibox.strong p{margin:0;line-height:1.5}
 .aibox .loadbox{margin-top:0}
 .mwrap{display:flex;flex-direction:column}.mwrap .card{height:auto;flex:1}
+.chprog{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--r);padding:14px;margin:12px 0;display:grid;gap:8px}
+.chprog.err{border-left-color:#c0533f}
+.chprog p{margin:0}
+.chprog-h{display:flex;align-items:center;gap:8px}.chprog-h b{flex:1;font-size:16px}.chprog-h .iconbtn{width:30px;height:30px}
+.chbar{height:8px;border-radius:99px;background:var(--bg2);overflow:hidden;border:1px solid var(--line)}
+.chbar div{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .6s ease}
+.chhead{display:grid;gap:8px;margin:6px 0 12px}
+.chhead .actions{margin:0}
+.chnote{margin-top:8px}.chnote .link{padding:0;font-size:14px;text-decoration:underline}

@@ -8,9 +8,9 @@ export type ShopItem = { key: string; name: string; qty: number | null; unit: st
 export type Pantry = { k: string; label: string; at: number }
 export type Hist = { id: string; at: number }
 export type Setting = { k: string; v: any }
-export type Mine = Recipe & { at: number }
+export type Mine = Recipe & { at: number; ch?: string }
 export type PhotoRow = { id: string; data: string }
-export type Collection = { id: string; name: string; rids: string[] }
+export type Collection = { id: string; name: string; rids: string[]; url?: string; at?: number }
 
 class KDB extends Dexie {
   favs!: Table<Fav, string>

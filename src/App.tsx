@@ -15,6 +15,7 @@ import AddRecipe from './screens/AddRecipe'
 import Onboarding from './screens/Onboarding'
 import { getSetting, setSetting } from './lib/db'
 import { leftOf, stopAlarm, useTimers } from './lib/timerStore'
+import { syncChannel } from './lib/channel'
 
 export default function App() {
   const [ready, setReady] = useState(false)
@@ -28,6 +29,11 @@ export default function App() {
     getSetting('onboarded', false).then(v => { setOnboard(!v); setReady(true) })
     const t = setTimeout(() => { setSplash(false); try { sessionStorage.setItem('splash', '1') } catch { /* */ } }, 1100)
     return () => clearTimeout(t)
+  }, [])
+  useEffect(() => { // przepisy z kanału dochodzą w tle, gdy aplikacja jest otwarta
+    const tick = () => { if (document.visibilityState === 'visible') syncChannel() }
+    tick(); const t = setInterval(tick, 4000); document.addEventListener('visibilitychange', tick)
+    return () => { clearInterval(t); document.removeEventListener('visibilitychange', tick) }
   }, [])
   const hideNav = loc.pathname.startsWith('/cook/')
   if (splash || !ready) return <div className="splash"><img src={import.meta.env.BASE_URL + 'img/splash.webp'} alt="Książka Kucharska" /></div>

@@ -3,6 +3,7 @@
 
 POST /import   {"url": "..."}  albo  {"text": "..."}  albo  {"images": [{"mime": "image/jpeg", "data": "<base64>"}, ...]}
                ->  {"ok": true, "recipe": {...}, "how": "..."}
+POST /channel  {"url": "https://www.youtube.com/@kanal"}  ->  zadanie w tle (bez AI); GET /channel/<id> (postęp), GET /channel/<id>/recipes?from=N
 POST /create   {"ingredients": [...], "category": "obiad", "servings": 2}  ->  przepis z produktów z lodówki (najpierw internet, potem nowy przepis AI)
 GET  /health
 
@@ -476,7 +477,7 @@ def _norm_user(x):
     return str(x or '').strip().lstrip('@').lower()
 
 
-def author_comments(url, info):
+def author_comments(url, info, max_comments=60):
     """Komentarze autora pod postem (często tam jest lista składników albo cały przepis).
     YouTube i Instagram przez yt-dlp, TikTok przez publiczne API komentarzy. Zwraca listę tekstów (najstarsze pierwsze)."""
     host = (urllib.parse.urlparse(url).hostname or '').lower()
@@ -493,7 +494,7 @@ def author_comments(url, info):
                     found.append((c.get('create_time') or 0, c.get('text') or ''))
         elif any(h in host for h in ('youtube.com', 'youtu.be', 'instagram.com')):
             out = subprocess.run([YTDLP, '--dump-single-json', '--no-playlist', '--skip-download', '--no-warnings', '--socket-timeout', '15',
-                                  '--write-comments', '--extractor-args', 'youtube:max_comments=60,all,0,0;comment_sort=top', url],
+                                  '--write-comments', '--extractor-args', 'youtube:max_comments=%d,all,0,0;comment_sort=top' % max_comments, url],
                                  capture_output=True, text=True, timeout=50)
             if out.returncode == 0 and out.stdout.strip():
                 j = json.loads(out.stdout)
@@ -852,6 +853,247 @@ def create_recipe(body):
     raise Fail('no_recipe', 'Nie udało się ułożyć przepisu. Spróbuj jeszcze raz.')
 
 
+# ───────────────────────── cały kanał (bez AI) ─────────────────────────
+# Serwer tylko pobiera listę filmów i ich opisy (yt-dlp), a przepisy wyciągają reguły (heuristic) – bez Gemini.
+# Bierzemy wyłącznie PEŁNE przepisy spisane przez autora: w opisie filmu, w jego komentarzu albo na jego stronie (schema.org).
+CH_MAX = int(os.environ.get('CHANNEL_MAX', '1000'))
+CH_PER_DAY = int(os.environ.get('CHANNEL_PER_DAY', '12'))
+jobs = {}
+ch_day = deque()
+PROMO = re.compile(r'https?://|www\.|(^|\s)[#@]\w|subskryb|subscri|obserwuj|follow\b|patronit|kod rabat|rabat|discount|sponsor|affiliat|wspó[łl]prac|newsletter|merch|playlist|zapraszam na|instagram|facebook|tiktok|e-?mail|kontakt|business|biznes', re.I)
+TIMESTAMP = re.compile(r'^\s*\(?\d{1,2}:\d{2}(?::\d{2})?\)?\s')
+SKIP_HOSTS = ('amazon.', 'allegro.', 'linktr.ee', 'patronite.', 'buycoffee', 'buymeacoffee', 'spotify.', 'apple.com', 'google.', 'paypal.', 'zrzutka', 'shop', 'sklep', 'merch', 'patreon.', 'ko-fi.', 'discord.', 'twitch.')
+CAT_RULES = [
+    ('drink', r'\b(drink|koktajl alkohol|cocktail|mojito|margarit|negroni|spritz|martini|daiquiri|nalewk|grzaniec|mulled wine)'),
+    ('zupa', r'\b(zup|krem z |rosół|rosol|barszcz|żurek|zurek|chłodnik|chlodnik|soup|bisque|ramen|pho\b|chowder|gazpacho)'),
+    ('ciasto', r'\b(ciast|sernik|tort|babk|muffin|brownie|szarlotk|drożdżów|piernik|keks|tart[aey]?\b|cake|cookie|ciastek|ciasteczk|cheesecake|bread|chleb|bułk|rogal|croissant)'),
+    ('deser', r'\b(deser|lody|tiramisu|panna cotta|mus\b|budyń|budyn|pudding|dessert|ice cream|sorbet|crème|creme brulee|kisiel)'),
+    ('salatka', r'\b(sałatk|salatk|salad|surówk|surowk|coleslaw)'),
+    ('makaron', r'\b(makaron|spaghetti|pasta\b|penne|tagliatelle|lasagn|carbonara|gnocchi|noodle|kluski|pierogi|ravioli)'),
+    ('sos', r'\b(sos\b|sauce|dressing|pesto|dip\b|majonez|aioli|salsa)'),
+    ('napoj', r'\b(smoothie|lemoniad|lemonade|kawa\b|coffee|latte|herbat|kompot|koktajl|shake|napój|napoj)'),
+    ('sniadanie', r'\b(śniadan|sniadan|breakfast|omlet|jajecznic|owsiank|oatmeal|pancake|naleśnik|nalesnik|gofr|granola|szakszuk|shakshuk|tost)'),
+    ('przekaska', r'\b(przekąsk|przekask|snack|appetizer|hummus|chips|frytk|nachos|bruschett|tapas|zapiekank|pizza|burger|tortill|kanapk|sandwich)'),
+    ('kolacja', r'\b(kolacj|dinner)'),
+]
+
+
+def guess_cat(text):
+    t = text.lower()
+    for c, rx in CAT_RULES:
+        if re.search(rx, t):
+            return c
+    return 'obiad'
+
+
+def clean_social(text):
+    out = []
+    for l in (text or '').replace('\r', '').split('\n'):
+        if TIMESTAMP.match(l) or PROMO.search(l):
+            continue
+        out.append(l)
+    return '\n'.join(out)
+
+
+def full_recipe(title, text):
+    """Pełny przepis z tekstu (bez AI): min. 3 składniki i 2 kroki, inaczej None."""
+    t = clean_social(text)
+    if not recipe_like(t):
+        return None
+    h = heuristic(t, title)
+    if not h or len(h['ingredients']) < 3 or len(h['steps']) < 2:
+        return None
+    return h
+
+
+def rules_from_page(url, title):
+    htm = http_get(url, limit=2_000_000, timeout=15)
+    ld = find_recipe_ld(htm)
+    if not ld:
+        return None, []
+    txt, ni, ns = ld_to_text(ld)
+    if ni < 3 or ns < 2:
+        return None, []
+    h = heuristic(txt, str(ld.get('name') or title))
+    return h, [urllib.parse.urljoin(url, u) for u in ld_images(ld)]
+
+
+def channel_key(info, url):
+    k = info.get('channel_id') or info.get('uploader_id') or info.get('channel') or url
+    return re.sub(r'[^\w@.-]+', '-', str(k))[:80]
+
+
+def list_channel(url, job):
+    host = (urllib.parse.urlparse(url).hostname or '').lower()
+    if 'instagram.com' in host:
+        raise Fail('instagram', 'Instagram nie pokazuje listy postów bez zalogowania, więc całego profilu nie da się pobrać. Dodawaj pojedyncze posty z linku albo ze zrzutów ekranu.')
+    tabs = [url]
+    if 'youtube.com' in host and 'list=' not in url:
+        base = re.sub(r'/(videos|shorts|streams|featured|playlists|community|about|search.*)/?$', '', url.split('?')[0].rstrip('/'))
+        tabs = [base + '/videos', base + '/shorts']
+    seen, out = set(), []
+    for t in tabs:
+        try:
+            r = subprocess.run([YTDLP, '--flat-playlist', '-J', '--no-warnings', '--socket-timeout', '20', '--playlist-end', str(CH_MAX), t],
+                               capture_output=True, text=True, timeout=600)
+        except subprocess.TimeoutExpired:
+            continue
+        if r.returncode != 0 or not r.stdout.strip():
+            continue
+        j = json.loads(r.stdout)
+        if not job.get('name'):
+            nm = j.get('channel') or j.get('uploader') or re.sub(r'\s*[-–]\s*(Videos|Shorts|Filmy|Wideo)\s*$', '', j.get('title') or '')
+            job['name'] = (nm or '').strip()[:60]
+            job['key'] = channel_key(j, url)
+        for e in j.get('entries') or []:
+            vid = e.get('id')
+            u = ('https://www.youtube.com/watch?v=%s' % vid) if ('youtube' in host and vid) else (e.get('url') or e.get('webpage_url'))
+            if u and u not in seen:
+                seen.add(u)
+                out.append((vid or u, u))
+            if len(out) >= CH_MAX:
+                break
+    if not out:
+        raise Fail('no_list', 'Nie udało się pobrać listy filmów z tego kanału. Sprawdź link (np. https://www.youtube.com/@nazwa).')
+    job['name'] = job.get('name') or host
+    job['key'] = job.get('key') or re.sub(r'[^\w@.-]+', '-', url)[:80]
+    return out
+
+
+def ch_add(job, h, info, url, imgs=()):
+    vid = str(info.get('id') or url)
+    r = norm_recipe(h, url, 'kanal')
+    r['title'] = (str(info.get('title') or '').strip() or r['title'])[:140]
+    r['category'] = guess_cat(r['title'] + ' ' + r['summary'])
+    r['vid'] = re.sub(r'[^\w-]', '', vid)[:40]
+    thumbs = list(imgs)
+    if 'youtube' in url and info.get('id'):
+        thumbs = ['https://i.ytimg.com/vi/%s/hqdefault.jpg' % info['id']] + thumbs
+    thumbs += [t for t in video_thumbs(info) if 'maxres' not in t][:2]
+    with_image(r, thumbs)
+    job['recipes'].append(r)
+    job['found'] = len(job['recipes'])
+
+
+def ch_check(job, info, later):
+    url = info.get('webpage_url') or info.get('original_url') or ''
+    title = str(info.get('title') or '')
+    desc = str(info.get('description') or '')
+    h = full_recipe(title, title + '\n' + desc)
+    if h:
+        return ch_add(job, h, info, url)
+    for lk in re.findall(r'https?://[^\s)>\]]+', desc)[:6]:
+        hh = (urllib.parse.urlparse(lk).hostname or '').lower()
+        if not hh or any(s.rstrip('.') in hh for s in SOCIAL) or any(x in hh for x in SKIP_HOSTS):
+            continue
+        try:
+            h, imgs = rules_from_page(lk, title)
+            if h:
+                return ch_add(job, h, info, url, imgs)
+        except Exception:
+            pass
+    later.append(info)
+
+
+def run_channel(job):
+    try:
+        job['phase'] = 'lista'
+        vids = list_channel(job['url'], job)
+        job['total'] = len(vids)
+        job['phase'] = 'opisy'
+        d = tempfile.mkdtemp(prefix='kch')
+        later = []
+        try:
+            parts = [vids[i::2] for i in range(2)]
+            procs = []
+            for n, part in enumerate(parts):
+                if not part:
+                    continue
+                f = os.path.join(d, 'l%d.txt' % n)
+                open(f, 'w').write('\n'.join(u for _, u in part))
+                procs.append(subprocess.Popen([YTDLP, '-j', '--skip-download', '--ignore-errors', '--no-warnings', '--ignore-no-formats-error',
+                                               '--socket-timeout', '20', '--sleep-requests', '0.3', '-a', f],
+                                              stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True))
+
+            def reader(pr):
+                for line in pr.stdout:
+                    if job.get('cancel'):
+                        pr.kill()
+                        break
+                    try:
+                        info = json.loads(line)
+                    except Exception:
+                        continue
+                    job['checked'] += 1
+                    try:
+                        ch_check(job, info, later)
+                    except Exception:
+                        pass
+                pr.wait()
+            ths = [threading.Thread(target=reader, args=(pr,), daemon=True) for pr in procs]
+            for t in ths:
+                t.start()
+            for t in ths:
+                t.join()
+        finally:
+            shutil.rmtree(d, ignore_errors=True)
+        job['checked'] = job['total']
+        # przepis w komentarzu autora (np. przypiętym) – tylko dla filmów bez przepisu w opisie
+        job['phase'] = 'komentarze'
+        job['later'] = len(later)
+        for n, info in enumerate(later[:300]):
+            if job.get('cancel'):
+                break
+            job['later_done'] = n + 1
+            url = info.get('webpage_url') or ''
+            try:
+                cm = author_comments(url, info, max_comments=20)
+                if cm:
+                    h = full_recipe(str(info.get('title') or ''), str(info.get('description') or '') + '\n' + '\n\n'.join(cm))
+                    if h:
+                        ch_add(job, h, info, url)
+            except Exception:
+                pass
+        job['state'] = 'done'
+        job['phase'] = 'gotowe'
+    except Fail as e:
+        job['state'], job['error'] = 'error', e.msg
+    except Exception as e:
+        job['state'], job['error'] = 'error', 'Błąd serwera (%s).' % type(e).__name__
+    finally:
+        job['ended'] = time.time()
+
+
+def start_channel(body):
+    url = (body.get('url') or '').strip()
+    if not re.match(r'^https?://', url):
+        url = 'https://' + url
+    check_url(url)
+    now = time.time()
+    for k in [k for k, j in jobs.items() if now - j['started'] > 48 * 3600]:
+        jobs.pop(k, None)
+    for j in jobs.values():
+        if j['state'] == 'running':
+            if j['url'] == url:
+                return j
+            raise Fail('busy', 'Serwer pobiera już inny kanał (%s). Spróbuj, gdy skończy.' % (j.get('name') or j['url']))
+    while ch_day and now - ch_day[0] > 86400:
+        ch_day.popleft()
+    if len(ch_day) >= CH_PER_DAY:
+        raise Fail('limit', 'Na dziś wystarczy kanałów. Spróbuj jutro.')
+    ch_day.append(now)
+    jid = base64.urlsafe_b64encode(os.urandom(9)).decode()
+    job = {'id': jid, 'url': url, 'name': '', 'key': '', 'state': 'running', 'phase': 'start', 'total': 0, 'checked': 0, 'found': 0,
+           'later': 0, 'later_done': 0, 'recipes': [], 'error': '', 'started': now}
+    jobs[jid] = job
+    threading.Thread(target=run_channel, args=(job,), daemon=True).start()
+    return job
+
+
+def job_status(job):
+    return {k: job.get(k) for k in ('id', 'url', 'name', 'key', 'state', 'phase', 'total', 'checked', 'found', 'later', 'later_done', 'error')}
+
+
 # ───────────────────────── HTTP ─────────────────────────
 class H(BaseHTTPRequestHandler):
     def log_message(self, *a):
@@ -881,11 +1123,31 @@ class H(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if urllib.parse.urlparse(self.path).path in ('/health', '/zdrowie'):
-            return self.send(200, {'ok': True, 'v': 3, 'features': ['komentarze', 'zdjecia', 'lodowka', 'zdjecie-dania'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
+            return self.send(200, {'ok': True, 'v': 4, 'features': ['komentarze', 'zdjecia', 'lodowka', 'zdjecie-dania', 'kanal'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
+        m = re.match(r'^/channel/([\w-]+)(/recipes)?$', urllib.parse.urlparse(self.path).path)
+        if m:
+            job = jobs.get(m.group(1))
+            if not job:
+                return self.send(404, {'ok': False, 'code': 'no_job', 'error': 'Serwer nie ma już tego zadania (np. po restarcie). Pobierz kanał jeszcze raz.'})
+            if m.group(2):
+                qs = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query)
+                a = max(0, int((qs.get('from') or ['0'])[0]))
+                n = min(30, max(1, int((qs.get('n') or ['12'])[0])))
+                return self.send(200, {'ok': True, 'from': a, 'recipes': job['recipes'][a:a + n], 'count': len(job['recipes'])})
+            return self.send(200, {'ok': True, 'job': job_status(job)})
         self.send(404, {'ok': False, 'error': 'nie znaleziono'})
 
     def do_POST(self):
         path = urllib.parse.urlparse(self.path).path
+        if path == '/channel':
+            n = int(self.headers.get('Content-Length') or 0)
+            try:
+                body = json.loads(self.rfile.read(n)) if 0 < n < 10000 else {}
+                return self.send(200, {'ok': True, 'job': job_status(start_channel(body))})
+            except Fail as e:
+                return self.send(409 if e.code == 'busy' else 429 if e.code == 'limit' else 422, {'ok': False, 'code': e.code, 'error': e.msg})
+            except Exception as e:
+                return self.send(400, {'ok': False, 'code': 'json', 'error': 'Błędne dane (%s).' % type(e).__name__})
         if path not in ('/import', '/create'):
             return self.send(404, {'ok': False, 'error': 'nie znaleziono'})
         ip = (self.headers.get('X-Forwarded-For') or self.client_address[0]).split(',')[0].strip()

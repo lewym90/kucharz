@@ -1,6 +1,6 @@
 # Książka Kucharska (PWA)
 
-Offline-first PWA: 2293 własne przepisy, Moja lodówka (tylko dania, na które masz komplet składników, plus „Stwórz z AI”), gotowanie krok po kroku z minutnikami, planer, lista zakupów, ulubione i oceny, import przepisów z linku, tekstu i zrzutów ekranu, kopia zapasowa JSON. AI (darmowy klucz Gemini) działa tylko na serwerze: przy imporcie i przy „Stwórz z AI”; reszta działa offline.
+Offline-first PWA: 2293 własne przepisy, Moja lodówka (tylko dania, na które masz komplet składników, plus „Stwórz z AI”), gotowanie krok po kroku z minutnikami, planer, lista zakupów, ulubione i oceny, import przepisów z linku, tekstu, zrzutów ekranu i z całego kanału YouTube/TikTok (bez AI, osobna zakładka kanału w „Moje”), kopia zapasowa JSON. AI (darmowy klucz Gemini) działa tylko na serwerze: przy imporcie i przy „Stwórz z AI”; reszta działa offline.
 
 ## Uruchomienie
     npm install

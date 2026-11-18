@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { Camera, ImagePlus, X, ClipboardPaste, Link2, FileText, PencilLine, Loader2, Sparkles, AlertCircle, Check, Images, ExternalLink } from 'lucide-react'
+import { Camera, ImagePlus, X, ClipboardPaste, Link2, FileText, PencilLine, Loader2, Sparkles, AlertCircle, Check, Images, ExternalLink, Tv } from 'lucide-react'
 import { CATS } from '../lib/types'
 import { db } from '../lib/db'
 import { PhotoPair, delPhoto, processPhoto, putPhoto, shrinkForUpload } from '../lib/photos'
 import { Draft, emptyDraft, importFrom, ingToLine, lineToIng, saveMine, toDraft } from '../lib/mine'
+import { isChannelUrl, startChannel, useChannelJob } from '../lib/channel'
+import { ChannelProgress } from '../components/ChannelPanel'
 
-type Mode = 'link' | 'text' | 'photo' | 'manual'
+type Mode = 'link' | 'text' | 'photo' | 'channel' | 'manual'
 type Shot = { mime: string; data: string; preview: string }
 const STEPS_LOADING = ['Pobieram stronę lub film…', 'Czytam opis i komentarz autora…', 'Słucham, co mówi autor…', 'Układam składniki i kroki…', 'Przeliczam jednostki na polskie…']
 const STEPS_PHOTO = ['Wysyłam zdjęcia…', 'Czytam tekst ze zrzutów…', 'Łączę składniki i kroki…', 'Przeliczam jednostki na polskie…']
@@ -26,6 +28,14 @@ export default function AddRecipe() {
   const [extras, setExtras] = useState<string[]>((loc.state as any)?.extras ?? [])
   const [shots, setShots] = useState<Shot[]>([])
   const [reading, setReading] = useState(false)
+  const [chUrl, setChUrl] = useState('')
+  const chJob = useChannelJob()
+  const chRunning = !!chJob && !chJob.dismissed && chJob.job?.state === 'running'
+  const runChannel = async (u: string) => {
+    setErr(''); setBusy(true)
+    try { await startChannel(u); setMode('channel') } catch (e: any) { setErr(e.message || 'Nie udało się zacząć pobierania.') }
+    setBusy(false)
+  }
   const [mode, setMode] = useState<Mode>('link')
   const [url, setUrl] = useState(sp.get('u') ?? '')
   const [text, setText] = useState('')
@@ -151,9 +161,10 @@ export default function AddRecipe() {
   return (
     <div className="page addrec">
       <h1 className="ptitle">Dodaj przepis</h1>
-      <div className="chips">
+      <div className="chips wrap">
         <button className={mode === 'link' ? 'on' : ''} onClick={() => { setMode('link'); setErr('') }}><Link2 size={15} /> Z linku</button>
         <button className={mode === 'photo' ? 'on' : ''} onClick={() => { setMode('photo'); setErr('') }}><Images size={15} /> Ze zdjęć</button>
+        <button className={mode === 'channel' ? 'on' : ''} onClick={() => { setMode('channel'); setErr('') }}><Tv size={15} /> Cały kanał</button>
         <button className={mode === 'text' ? 'on' : ''} onClick={() => { setMode('text'); setErr('') }}><FileText size={15} /> Tekst</button>
         <button onClick={startManual}><PencilLine size={15} /> Ręcznie</button>
       </div>
@@ -161,6 +172,17 @@ export default function AddRecipe() {
         <>
           <p className="muted">Skopiuj link do posta, filmu lub strony z przepisem (Instagram, TikTok, Facebook, YouTube, bloga) i wklej tutaj. Aplikacja przeczyta opis, pierwszy komentarz autora i sam film. Jeśli nie wyjdzie, zrób zrzuty ekranu i użyj zakładki „Ze zdjęć”.</p>
           <input className="urlin" inputMode="url" autoCapitalize="none" autoCorrect="off" placeholder="https://…" value={url} onChange={e => setUrl(e.target.value)} disabled={busy} />
+        </>
+      )}
+      {mode === 'link' && isChannelUrl(url) && !busy && (
+        <div className="importnote chnote"><Tv size={15} /> <span>To link do całego kanału. <button className="link" onClick={() => { setChUrl(url.trim()); runChannel(url.trim()) }}>Pobierz wszystkie przepisy z kanału</button></span></div>
+      )}
+      {mode === 'channel' && (
+        <>
+          <p className="muted">Wklej link do kanału YouTube (np. https://www.youtube.com/@nazwa) albo profilu TikTok. Aplikacja przejrzy wszystkie filmy i zapisze pełne przepisy spisane przez autora – w opisie filmu, w jego komentarzu albo na jego stronie – bez AI. Filmy, w których przepis jest tylko pokazany lub powiedziany, zostaną pominięte (takie dodasz pojedynczo z linku). Przepisy trafią do osobnej zakładki z nazwą kanału w „Moje”.</p>
+          <p className="muted small">Instagram nie pozwala pobrać całego profilu bez logowania – posty z Instagrama dodawaj pojedynczo albo ze zrzutów.</p>
+          <ChannelProgress />
+          {!chRunning && <input className="urlin" inputMode="url" autoCapitalize="none" autoCorrect="off" placeholder="https://www.youtube.com/@…" value={chUrl} onChange={e => setChUrl(e.target.value)} disabled={busy} />}
         </>
       )}
       {mode === 'photo' && (
@@ -180,7 +202,8 @@ export default function AddRecipe() {
         </>
       )}
       {err && <p className="errnote"><AlertCircle size={15} /> {err}</p>}
-      {busy ? (
+      {mode === 'channel' ? (!chRunning && <button className="btn gold wide" disabled={busy || !/\S/.test(chUrl)} onClick={() => runChannel(chUrl)}>{busy ? <Loader2 className="spin" size={18} /> : <Tv size={18} />} Pobierz przepisy z kanału</button>)
+      : busy ? (
         <div className="loadbox"><Loader2 className="spin" size={22} /><div><b>{(mode === 'photo' ? STEPS_PHOTO : STEPS_LOADING)[phase]}</b>
           <small>{mode === 'photo' ? 'Zwykle 10 do 40 sekund.' : elapsed > 25 ? 'Film trwa dłużej niż strona, to normalne. Jeszcze chwila…' : 'Zwykle 5 do 40 sekund.'}</small></div></div>
       ) : (

@@ -50,7 +50,7 @@ export function fromServer(r: any): Draft {
 }
 
 export type ImportInput = { url?: string; text?: string; images?: { mime: string; data: string }[] }
-const serverBase = async () => (await getSetting<string>('importUrl', DEFAULT_IMPORT_URL)).replace(/\/+$/, '')
+export const serverBase = async () => (await getSetting<string>('importUrl', DEFAULT_IMPORT_URL)).replace(/\/+$/, '')
 
 export async function importFrom(input: ImportInput): Promise<{ draft: Draft; how: string }> {
   const base = await serverBase()
@@ -93,7 +93,7 @@ export async function pingServer(): Promise<{ ok: boolean; gemini?: boolean; msg
     const r = await fetch(base + '/health', { signal: AbortSignal.timeout(8000) })
     const j = await r.json()
     if (!j.ok) return { ok: false, msg: 'Serwer odpowiada, ale zgłasza błąd.' }
-    if (!j.gemini) return { ok: true, gemini: false, msg: 'Serwer działa, ale bez klucza Gemini (tylko strony i tekst – bez filmów, zdjęć i AI w lodówce).' }
+    if (!j.gemini) return { ok: true, gemini: false, msg: 'Serwer działa, ale bez klucza Gemini (strony, tekst i całe kanały działają; filmy, zdjęcia i AI w lodówce – nie).' }
     if (!(j.v >= 3)) return { ok: true, gemini: true, msg: 'Serwer działa, ale ma starą wersję (brakuje części funkcji: komentarze autora, zdjęcia, „Stwórz z AI”, zdjęcie dania z filmu). Zaktualizuj go.' }
     return { ok: true, gemini: true, msg: 'Serwer działa: strony, filmy, komentarze autora, zdjęcie dania, import ze zdjęć i „Stwórz z AI”.' }
   } catch { return { ok: false, msg: 'Nie mogę połączyć się z serwerem importu.' } }
