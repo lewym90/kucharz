@@ -16464,8 +16464,7 @@
   "cuisine": "polska",
   "tags": [
    "klasyka",
-   "polska",
-   "wegetariańskie"
+   "polska"
   ],
   "summary": "Delikatna wątróbka drobiowa smażona krótko na maśle, z karmelizowaną cebulą i jabłkiem. Soczysta w środku, z rumianą skórką.",
   "ingredients": [
@@ -27074,7 +27073,7 @@
    {
     "name": "okoń lub dorsz (po 150 g)",
     "qty": 2.0,
-    "unit": "filety"
+    "unit": "filet"
    },
    {
     "name": "oliwa",
@@ -29533,7 +29532,7 @@
    {
     "name": "biała ryba (po 180 g)",
     "qty": 2.0,
-    "unit": "filety"
+    "unit": "filet"
    },
    {
     "name": "imbir (4 cm)",
@@ -32285,7 +32284,7 @@
   "summary": "Kwaśna, sycąca zupa z kiszonych ogórków z ziemniakami i marchewką, zabielona śmietaną i posypana koperkiem.",
   "ingredients": [
    {
-    "name": "bulion",
+    "name": "bulion warzywny",
     "qty": 1.5,
     "unit": "l"
    },
@@ -33186,7 +33185,7 @@
   "summary": "Wiosenna, kwaśna zupa ze świeżego szczawiu na bulionie, zabielona śmietaną i podana z jajkiem na twardo i ziemniakami.",
   "ingredients": [
    {
-    "name": "bulion",
+    "name": "bulion warzywny",
     "qty": 1.2,
     "unit": "l"
    },
@@ -33437,7 +33436,7 @@
     "unit": "szt."
    },
    {
-    "name": "bulion",
+    "name": "bulion warzywny",
     "qty": 1.5,
     "unit": "l"
    },
@@ -33524,7 +33523,7 @@
     "unit": "łyżka"
    },
    {
-    "name": "bulion",
+    "name": "bulion warzywny",
     "qty": 1.2,
     "unit": "l"
    },
@@ -34072,7 +34071,7 @@
     "unit": "szt."
    },
    {
-    "name": "bulion",
+    "name": "bulion warzywny",
     "qty": 1.5,
     "unit": "l"
    },
@@ -34159,7 +34158,7 @@
     "unit": "szt."
    },
    {
-    "name": "bulion",
+    "name": "bulion warzywny",
     "qty": 1.2,
     "unit": "l"
    },
@@ -37725,7 +37724,7 @@
     "unit": "puszka"
    },
    {
-    "name": "bulion",
+    "name": "bulion warzywny",
     "qty": 1.2,
     "unit": "l"
    },
@@ -38204,7 +38203,7 @@
     "unit": "łyżka"
    },
    {
-    "name": "bulion",
+    "name": "bulion warzywny",
     "qty": 1.5,
     "unit": "l"
    },
@@ -40290,7 +40289,7 @@
   "summary": "Rozgrzewająca zupa ziemniaczana z ogromną ilością czosnku, kminkiem i majerankiem, podana z grzankami i serem. Czeski lek na kaca.",
   "ingredients": [
    {
-    "name": "bulion",
+    "name": "bulion warzywny",
     "qty": 1.2,
     "unit": "l"
    },
@@ -40695,7 +40694,7 @@
     "unit": "g"
    },
    {
-    "name": "bulion",
+    "name": "bulion warzywny",
     "qty": 1.5,
     "unit": "l"
    },
@@ -41410,7 +41409,7 @@
     "unit": "łyżka"
    },
    {
-    "name": "bulion",
+    "name": "bulion warzywny",
     "qty": 700.0,
     "unit": "ml"
    },
@@ -42830,7 +42829,7 @@
    {
     "name": "szpinak",
     "qty": 2.0,
-    "unit": "garści"
+    "unit": "garść"
    },
    {
     "name": "marchewka",
@@ -43623,7 +43622,7 @@
    {
     "name": "ziele angielskie",
     "qty": 5.0,
-    "unit": "ziaren"
+    "unit": "ziarno"
    },
    {
     "name": "liść laurowy",
@@ -44649,7 +44648,7 @@
    {
     "name": "pieprz",
     "qty": 5.0,
-    "unit": "ziaren"
+    "unit": "ziarno"
    },
    {
     "name": "sól",
@@ -58842,7 +58841,7 @@
    {
     "name": "szałwia",
     "qty": 6.0,
-    "unit": "liści"
+    "unit": "liść"
    },
    {
     "name": "bulion warzywny",
@@ -59206,7 +59205,7 @@
    {
     "name": "szałwia",
     "qty": 8.0,
-    "unit": "liści"
+    "unit": "liść"
    },
    {
     "name": "sól",
@@ -59341,7 +59340,7 @@
    {
     "name": "szałwia",
     "qty": 6.0,
-    "unit": "liści"
+    "unit": "liść"
    },
    {
     "name": "sól",
@@ -63110,8 +63109,7 @@
   "cuisine": "polska",
   "tags": [
    "signature",
-   "polska-nowoczesna",
-   "wegetariańskie"
+   "polska-nowoczesna"
   ],
   "summary": "Delikatna wątróbka smażona z karmelizowaną cebulą i jabłkiem, podlana koniakiem, na maślanej brioszce. Bistro w polskim wydaniu.",
   "ingredients": [
@@ -70093,8 +70091,7 @@
   "servings": 2,
   "cuisine": "polska",
   "tags": [
-   "klasyka",
-   "wegetariańskie"
+   "klasyka"
   ],
   "summary": "Delikatna wątróbka drobiowa smażona z cebulą i jabłkiem. Tradycyjne danie z nowoczesnym akcentem.",
   "ingredients": [
@@ -74892,7 +74889,7 @@
    {
     "name": "ciasto filo",
     "qty": 8.0,
-    "unit": "arkuszy"
+    "unit": "arkusz"
    },
    {
     "name": "masło roztopione",
@@ -74937,7 +74934,7 @@
    {
     "name": "ciasto filo",
     "qty": 8.0,
-    "unit": "arkuszy"
+    "unit": "arkusz"
    },
    {
     "name": "feta",
@@ -88787,8 +88784,7 @@
   "servings": 2,
   "cuisine": "francuska",
   "tags": [
-   "klasyka",
-   "wegetariańskie"
+   "klasyka"
   ],
   "summary": "Ciepła wątróbka z karmelizowanym jabłkiem, cebulą i rukolą w balsamicznym dressingu. Francuska bistro.",
   "ingredients": [
@@ -92120,8 +92116,7 @@
   "servings": 8,
   "cuisine": "polska",
   "tags": [
-   "klasyka",
-   "wegetariańskie"
+   "klasyka"
   ],
   "summary": "Aksamitny pasztet z wątróbek drobiowych z jabłkiem, cebulą i masłem. Pyszny na chrupiącym chlebie.",
   "ingredients": [
@@ -98863,7 +98858,7 @@
    {
     "name": "ciasto filo",
     "qty": 12.0,
-    "unit": "arkuszy"
+    "unit": "arkusz"
    },
    {
     "name": "pierś z kurczaka",
@@ -134830,7 +134825,7 @@
     "unit": "łyżka"
    },
    {
-    "name": "bulion",
+    "name": "bulion warzywny",
     "qty": 500.0,
     "unit": "ml"
    },
@@ -142634,7 +142629,7 @@
     "unit": "g"
    },
    {
-    "name": "bulion",
+    "name": "bulion warzywny",
     "qty": 400.0,
     "unit": "ml"
    },
@@ -143306,7 +143301,7 @@
    {
     "name": "szałwia",
     "qty": 6.0,
-    "unit": "liści"
+    "unit": "liść"
    },
    {
     "name": "masło",
@@ -143626,7 +143621,7 @@
     "unit": "ml"
    },
    {
-    "name": "bulion",
+    "name": "bulion warzywny",
     "qty": 100.0,
     "unit": "ml"
    },
@@ -144775,7 +144770,7 @@
    {
     "name": "kawa",
     "qty": 3.0,
-    "unit": "ziarna"
+    "unit": "ziarno"
    },
    {
     "name": "kostki lodu",

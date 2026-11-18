@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Książka Kucharska: import przepisu z linku (strona, Instagram, TikTok, Facebook, YouTube) lub z wklejonego tekstu.
+"""Książka Kucharska: import przepisu z linku (strona, Instagram, TikTok, Facebook, YouTube), z wklejonego tekstu albo ze zdjęć.
 
-POST /import   {"url": "..."}  albo  {"text": "..."}   ->  {"ok": true, "recipe": {...}, "how": "..."}
+POST /import   {"url": "..."}  albo  {"text": "..."}  albo  {"images": [{"mime": "image/jpeg", "data": "<base64>"}, ...]}
+               ->  {"ok": true, "recipe": {...}, "how": "..."}
+POST /create   {"ingredients": [...], "category": "obiad", "servings": 2}  ->  przepis z produktów z lodówki (najpierw internet, potem nowy przepis AI)
 GET  /health
 
 Kolejność działania (od najtańszej i najdokładniejszej):
@@ -342,31 +344,40 @@ MATERIAŁ (%(kind)s):
 """
 
 
-def gemini(parts, kind):
+def gemini_call(contents_parts, schema=True, tools=None, temperature=0.15, timeout=120):
+    """Jedno wywołanie Gemini z kolejnymi modelami na liście. Zwraca (dict albo tekst, cała odpowiedź)."""
     if not GEMINI_KEY:
         raise Fail('no_key', 'Serwer nie ma klucza Gemini.')
-    body = {
-        'contents': [{'parts': [{'text': PROMPT % {'units': ', '.join(UNITS), 'tags': ', '.join(TAGS), 'kind': kind}}] + parts}],
-        'generationConfig': {'responseMimeType': 'application/json', 'responseSchema': SCHEMA, 'temperature': 0.15},
-    }
+    cfg = {'temperature': temperature}
+    if schema:
+        cfg.update({'responseMimeType': 'application/json', 'responseSchema': SCHEMA})
+    body = {'contents': [{'parts': contents_parts}], 'generationConfig': cfg}
+    if tools:
+        body['tools'] = tools
     last = None
     for model in MODELS:
         url = '%s/models/%s:generateContent' % (GEMINI_BASE, model)
         req = urllib.request.Request(url, data=json.dumps(body).encode(), headers={'Content-Type': 'application/json', 'x-goog-api-key': GEMINI_KEY})
         try:
-            with urllib.request.urlopen(req, timeout=120) as r:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
                 data = json.loads(r.read())
-            txt = data['candidates'][0]['content']['parts'][0]['text']
-            return json.loads(txt)
+            cand = data['candidates'][0]
+            txt = ''.join(p.get('text', '') for p in cand['content']['parts'] if not p.get('thought'))
+            return (json.loads(txt) if schema else txt), data
         except urllib.error.HTTPError as e:
             last = 'HTTP %s' % e.code
-            if e.code in (429, 500, 503, 404):
+            if e.code in (400, 429, 500, 503, 404):
                 continue
             break
         except Exception as e:
             last = type(e).__name__
             continue
     raise Fail('gemini', 'Gemini nie odpowiedział (%s).' % last)
+
+
+def gemini(parts, kind):
+    head = PROMPT % {'units': ', '.join(UNITS), 'tags': ', '.join(TAGS), 'kind': kind}
+    return gemini_call([{'text': head}] + parts)[0]
 
 
 # ───────────────────────── film ─────────────────────────
@@ -379,6 +390,47 @@ def ytdlp_info(url):
     except Exception:
         pass
     return None
+
+
+def _norm_user(x):
+    return str(x or '').strip().lstrip('@').lower()
+
+
+def author_comments(url, info):
+    """Komentarze autora pod postem (często tam jest lista składników albo cały przepis).
+    YouTube i Instagram przez yt-dlp, TikTok przez publiczne API komentarzy. Zwraca listę tekstów (najstarsze pierwsze)."""
+    host = (urllib.parse.urlparse(url).hostname or '').lower()
+    names = {_norm_user(info.get(k)) for k in ('channel', 'uploader', 'uploader_id', 'channel_id', 'creator', 'uploader_url') if info.get(k)}
+    names.discard('')
+    found = []
+    try:
+        if 'tiktok' in host and info.get('id'):
+            api = 'https://www.tiktok.com/api/comment/list/?aid=1988&count=50&cursor=0&aweme_id=%s' % urllib.parse.quote(str(info['id']))
+            j = json.loads(http_get(api, limit=2_000_000, timeout=15) or '{}')
+            for c in j.get('comments') or []:
+                u = c.get('user') or {}
+                if _norm_user(u.get('unique_id')) in names or c.get('is_author_digged') and c.get('stick_position') or c.get('label_text') in ('Twórca', 'Creator', 'Autor'):
+                    found.append((c.get('create_time') or 0, c.get('text') or ''))
+        elif any(h in host for h in ('youtube.com', 'youtu.be', 'instagram.com')):
+            out = subprocess.run([YTDLP, '--dump-single-json', '--no-playlist', '--skip-download', '--no-warnings', '--socket-timeout', '15',
+                                  '--write-comments', '--extractor-args', 'youtube:max_comments=60,all,0,0;comment_sort=top', url],
+                                 capture_output=True, text=True, timeout=50)
+            if out.returncode == 0 and out.stdout.strip():
+                j = json.loads(out.stdout)
+                for c in j.get('comments') or []:
+                    if c.get('parent') not in (None, 'root'):
+                        continue
+                    if c.get('author_is_uploader') or c.get('is_pinned') or _norm_user(c.get('author')) in names or _norm_user(c.get('author_id')) in names:
+                        found.append((c.get('timestamp') or 0, c.get('text') or ''))
+    except Exception:
+        pass
+    found.sort(key=lambda x: x[0] or 9e12)
+    texts = []
+    for _, t in found:
+        t = html.unescape(str(t)).strip()
+        if len(t) >= 15 and t not in texts:
+            texts.append(t)
+    return texts[:4]
 
 
 def download_media(url, dur):
@@ -468,6 +520,8 @@ def structure(text, kind, url, how_prefix):
 
 
 def do_import(body):
+    if body.get('images'):
+        return from_images(body.get('images'), (body.get('text') or '').strip())
     text = (body.get('text') or '').strip()
     url = (body.get('url') or '').strip()
     if text and not url:
@@ -502,8 +556,15 @@ def do_import(body):
             except Fail:
                 pass
         caption = html.unescape(caption)
-        if recipe_like(caption):
-            r = structure((title + '\n' + caption).strip(), 'opis posta pod filmem', url, 'opis')
+        kind = 'opis posta pod filmem'
+        # przepis albo składniki często są w pierwszym komentarzu autora
+        if info and (not recipe_like(caption) or re.search(r'koment|comment|przepis ni[żz]ej|sk[łl]adniki ni[żz]ej', caption, re.I)):
+            cm = author_comments(url, info)
+            if cm:
+                caption = (caption + '\n\nKOMENTARZ AUTORA POD POSTEM:\n' + '\n\n'.join(cm)).strip()
+                kind = 'opis posta i komentarz autora pod postem'
+        if recipe_like(caption) or (GEMINI_KEY and 'KOMENTARZ AUTORA' in caption and len(caption) > 150):
+            r = structure((title + '\n' + caption).strip(), kind, url, 'opis')
             if r:
                 return r
         # link do pełnego przepisu w opisie
@@ -524,7 +585,7 @@ def do_import(body):
                     ctx = (title + '\n' + caption).strip()
                     parts = [{'inline_data': {'mime_type': mime, 'data': base64.b64encode(data).decode()}}]
                     if ctx:
-                        parts.append({'text': 'Opis posta (może być niepełny):\n' + ctx[:6000]})
+                        parts.append({'text': 'Opis posta i komentarze autora (mogą być niepełne):\n' + ctx[:8000]})
                     g = gemini(parts, 'film (obraz, napisy na ekranie i mowa)' if mime.startswith('video') else 'nagranie dźwięku z filmu')
                     if g.get('found'):
                         n = norm_recipe(g, url, 'film+gemini')
@@ -559,6 +620,153 @@ def from_page(page_url, source_url):
     return None
 
 
+# ───────────────────────── przepis ze zdjęć / zrzutów ekranu ─────────────────────────
+IMG_MIME = ('image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif')
+
+
+def from_images(images, text=''):
+    if not isinstance(images, list) or not images:
+        raise Fail('empty', 'Dodaj przynajmniej jedno zdjęcie.')
+    if len(images) > 10:
+        raise Fail('size', 'Za dużo zdjęć (najwięcej 10).')
+    parts, total = [], 0
+    for im in images:
+        mime, data = (im.get('mime'), im.get('data')) if isinstance(im, dict) else ('image/jpeg', im)
+        data = str(data or '')
+        m = re.match(r'^data:([\w/+.-]+);base64,(.*)$', data, re.S)
+        if m:
+            mime, data = m.group(1), m.group(2)
+        if mime not in IMG_MIME:
+            mime = 'image/jpeg'
+        try:
+            raw = base64.b64decode(data, validate=False)
+        except Exception:
+            raise Fail('json', 'Nie mogę odczytać zdjęcia.')
+        total += len(raw)
+        if not raw or total > 18 * 1024 * 1024:
+            raise Fail('size', 'Zdjęcia są za duże.')
+        parts.append({'inline_data': {'mime_type': mime, 'data': base64.b64encode(raw).decode()}})
+    if text:
+        parts.append({'text': 'Dopisek użytkownika:\n' + text[:4000]})
+    kind = ('%d zrzuty ekranu lub zdjęcia (połącz informacje ze WSZYSTKICH: np. składniki na jednym, sposób przygotowania na drugim; '
+            'czytaj tekst na obrazach, napisy z filmów i opisy postów; pomiń komentarze innych osób, reklamy i interfejs aplikacji)') % len(parts)
+    g = gemini(parts, kind)
+    if g.get('found'):
+        n = norm_recipe(g, '', 'zdjecia+gemini')
+        if valid(n):
+            n['source'] = 'Ze zrzutów ekranu'
+            return n
+    raise Fail('no_recipe', 'Nie widzę przepisu na tych zdjęciach. Dodaj zrzut z listą składników i zrzut ze sposobem przygotowania.')
+
+
+# ───────────────────────── nowy przepis z lodówki (AI) ─────────────────────────
+CAT_LABEL = {'sniadanie': 'śniadanie', 'obiad': 'danie obiadowe', 'zupa': 'zupa', 'makaron': 'danie z makaronem', 'kolacja': 'kolacja',
+             'salatka': 'sałatka', 'przekaska': 'przekąska', 'ciasto': 'ciasto lub wypiek', 'deser': 'deser', 'napoj': 'napój bezalkoholowy',
+             'drink': 'drink (koktajl alkoholowy)', 'sos': 'sos, dip lub dressing'}
+STAPLES_TXT = 'sól, pieprz, woda, olej, oliwa, cukier'
+_IGN = set('swiezy swieza swieze swiezo drobno posiekany posiekana posiekane pokrojony pokrojona pokrojone starty starta starte tarty tarta '
+           'mielony mielona mielone duzy duza duze maly mala male sredni srednia srednie ugotowany ugotowana ugotowane do podania smaku '
+           'kawalki kawalek plasterki kostke kostka cienko grubo opcjonalnie najlepiej okolo dla ze na po lub albo oraz bez'.split())
+
+
+def _fold(s):
+    import unicodedata
+    return unicodedata.normalize('NFKD', s.replace('ł', 'l').replace('Ł', 'L')).encode('ascii', 'ignore').decode().lower()
+
+
+def _stems(txt):
+    return {w[:4] for w in re.findall(r'[a-z]{3,}', _fold(txt)) if w not in _IGN}
+
+
+def extras_in(recipe, allowed):
+    ok = set()
+    for a in list(allowed) + STAPLES_TXT.split(', ') + ['cukru', 'wody', 'oleju', 'oliwy', 'soli']:
+        ok |= _stems(a)
+    bad = []
+    for i in recipe.get('ingredients') or []:
+        st = _stems(i['name'])
+        if st and not (st & ok):
+            bad.append(i['name'])
+    return bad
+
+
+def create_recipe(body):
+    ings = []
+    for x in body.get('ingredients') or []:
+        x = re.sub(r'\s+', ' ', str(x)).strip()[:60]
+        if x and x not in ings:
+            ings.append(x)
+    ings = ings[:80]
+    if not ings:
+        raise Fail('empty', 'Zaznacz w lodówce, co masz.')
+    cat = body.get('category') if body.get('category') in CATS else ''
+    serv = min(12, max(1, int(body.get('servings') or 2)))
+    what = CAT_LABEL.get(cat, 'danie')
+    have = ', '.join(ings)
+    avoid = [str(a)[:60] for a in (body.get('avoid') or [])][:20]
+    # 1) najpierw sprawdzony przepis z internetu
+    web_prompt = ('Wyszukaj w internecie (Google) sprawdzony, dobrze oceniany przepis typu: %s, który da się przygotować WYŁĄCZNIE z tych produktów: %s. '
+                  'Poza nimi wolno użyć tylko: %s. Przepis nie musi wykorzystać wszystkich produktów, ale NIE MOŻE wymagać żadnego innego składnika '
+                  '(także przypraw, ziół, nabiału, mąki, bulionu ani dodatków do podania). Szukaj w aktualnych serwisach kulinarnych i na blogach kucharzy. '
+                  '%s'
+                  'Jeśli znajdziesz taki przepis, przepisz go po polsku: tytuł, liczba porcji, czas, składniki z ilościami, kroki, a na końcu linia '
+                  '"ADRES: <pełny adres strony>". Jeśli żaden przepis nie spełnia warunku, odpowiedz jednym słowem: BRAK.') % (
+                      what, have, STAPLES_TXT, ('Nie proponuj: %s. ' % ', '.join(avoid)) if avoid else '')
+    try:
+        txt, data = gemini_call([{'text': web_prompt}], schema=False, tools=[{'google_search': {}}], temperature=0.3, timeout=90)
+        if txt and len(txt) > 200 and not txt.strip().upper().startswith('BRAK'):
+            m = re.search(r'ADRES:\s*(https?://\S+)', txt)
+            src = m.group(1).rstrip(').,]') if m else ''
+            chunks = ((data.get('candidates') or [{}])[0].get('groundingMetadata') or {}).get('groundingChunks') or []
+            if not src and chunks:
+                src = (chunks[0].get('web') or {}).get('uri', '')
+            g = gemini([{'text': txt}], 'przepis znaleziony w internecie')
+            if g.get('found'):
+                n = norm_recipe(g, src, 'ai-internet')
+                if valid(n) and not extras_in(n, ings):
+                    n['category'] = cat or n['category']
+                    n['servings'] = n['servings'] or serv
+                    return n
+    except Fail:
+        pass
+    # 2) nowy, autorski przepis
+    prompt = ('Jesteś szefem kuchni nowoczesnej restauracji i autorem książek kucharskich. Stwórz JEDEN nowy, bardzo smaczny przepis typu: %s '
+              'na %d porcje, WYŁĄCZNIE z produktów, które ktoś ma w lodówce: %s. Poza nimi wolno użyć tylko: %s.\n'
+              'ZASADY:\n'
+              '- Nie dodawaj ŻADNEGO innego składnika (ani przypraw, ziół, nabiału, mąki, bulionu, dodatków do podania). Nie musisz użyć wszystkich produktów: '
+              'wybierz te, które naprawdę do siebie pasują.\n'
+              '- Danie ma być dopracowane: balans smaku (słoność, kwasowość, słodycz, tłuszcz, chrupkość) osiągnięty tym, co jest dostępne. '
+              'Korzystaj z aktualnych standardów i trendów kulinarnych (np. karmelizacja i głębokie przypieczenie, pieczenie warzyw w wysokiej temperaturze, '
+              'emulsje, redukcje, kontrasty tekstur, warzywa w roli głównej, kuchnia bez marnowania), ale tylko gdy to realne w domowej kuchni.\n'
+              '- Kroki: szczegółowe, w trybie rozkazującym, z temperaturami, czasami i oznakami gotowości (kolor, konsystencja).\n'
+              '- title: apetyczna, konkretna nazwa po polsku. summary: 1–2 zdania, dlaczego to smakuje. tip: jedna praktyczna wskazówka.\n'
+              '- Jednostki metryczne, dozwolone jednostki: %s. Nazwy składników krótkie, bez ilości, dokładnie tak jak na liście produktów.\n'
+              '- category = "%s". tags tylko z: %s.\n'
+              '- Jeśli z tych produktów nie da się zrobić sensownego, smacznego dania tego typu, zwróć {"found": false}.\n') % (
+                  what, serv, have, STAPLES_TXT, ', '.join(UNITS), cat or 'obiad', ', '.join(TAGS))
+    if avoid:
+        prompt += '- Nie proponuj tych dań (już były): %s.\n' % ', '.join(avoid)
+    last = None
+    for _ in range(2):
+        g = gemini_call([{'text': prompt}], temperature=0.85)[0]
+        if not g.get('found'):
+            raise Fail('no_recipe', 'Z samych tych produktów nie da się zrobić sensownego dania tego typu. Dodaj coś do lodówki albo wybierz inny rodzaj dania.')
+        n = norm_recipe(g, '', 'ai-nowy')
+        if cat:
+            n['category'] = cat
+        if not valid(n):
+            continue
+        bad = extras_in(n, ings)
+        if not bad:
+            return n
+        last = n
+        last['extras'] = bad
+        prompt += '- POPRZEDNIA PROPOZYCJA używała niedozwolonych składników: %s. Tym razem użyj wyłącznie produktów z listy.\n' % ', '.join(bad)
+    if last:
+        return last
+    raise Fail('no_recipe', 'Nie udało się ułożyć przepisu. Spróbuj jeszcze raz.')
+
+
 # ───────────────────────── HTTP ─────────────────────────
 class H(BaseHTTPRequestHandler):
     def log_message(self, *a):
@@ -588,11 +796,12 @@ class H(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if urllib.parse.urlparse(self.path).path in ('/health', '/zdrowie'):
-            return self.send(200, {'ok': True, 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
+            return self.send(200, {'ok': True, 'v': 2, 'features': ['komentarze', 'zdjecia', 'lodowka'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
         self.send(404, {'ok': False, 'error': 'nie znaleziono'})
 
     def do_POST(self):
-        if urllib.parse.urlparse(self.path).path != '/import':
+        path = urllib.parse.urlparse(self.path).path
+        if path not in ('/import', '/create'):
             return self.send(404, {'ok': False, 'error': 'nie znaleziono'})
         ip = (self.headers.get('X-Forwarded-For') or self.client_address[0]).split(',')[0].strip()
         now = time.time()
@@ -604,7 +813,7 @@ class H(BaseHTTPRequestHandler):
         if len(q) >= PER_HOUR or len(day_hits) >= PER_DAY_ALL:
             return self.send(429, {'ok': False, 'code': 'limit', 'error': 'Za dużo importów. Spróbuj za chwilę.'})
         n = int(self.headers.get('Content-Length') or 0)
-        if n <= 0 or n > 200_000:
+        if n <= 0 or n > (26_000_000 if path == '/import' else 100_000):
             return self.send(413, {'ok': False, 'code': 'size', 'error': 'Za długi tekst.'})
         try:
             body = json.loads(self.rfile.read(n))
@@ -615,10 +824,10 @@ class H(BaseHTTPRequestHandler):
         try:
             q.append(now)
             day_hits.append(now)
-            r = do_import(body)
+            r = do_import(body) if path == '/import' else create_recipe(body)
             self.send(200, {'ok': True, 'recipe': r, 'how': r.get('how')})
         except Fail as e:
-            self.send(422 if e.code in ('no_recipe', 'empty', 'bad_url') else 502, {'ok': False, 'code': e.code, 'error': e.msg})
+            self.send(422 if e.code in ('no_recipe', 'empty', 'bad_url', 'size') else 502, {'ok': False, 'code': e.code, 'error': e.msg})
         except Exception as e:
             self.send(500, {'ok': False, 'code': 'internal', 'error': 'Błąd serwera (%s).' % type(e).__name__})
         finally:

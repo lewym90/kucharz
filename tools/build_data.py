@@ -7,16 +7,24 @@ SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file_
 OUT = os.path.join(os.path.dirname(__file__), '..', 'public', 'data')
 os.makedirs(OUT, exist_ok=True)
 
-ADJ = set('świeży świeża świeże świeżo drobno posiekany posiekana posiekane posiekanej mielony mielona mielone duży duża duże mały mała małe średni średnia średnie gotowany gotowana gotowane ugotowany ugotowana ugotowane dojrzały dojrzała dojrzałe twardy miękki miękka zimny zimna zimne ciepły ciepła ciepłe gorący gorąca gorące pokrojony pokrojona pokrojone starty starta starte tarty tarta tarte w kostkę kostkę kostka plasterkach plasterki plasterkami półplasterkach półplasterki cienkie cienkich cienkie grubo drobny drobna drobne rozmiar rozmiaru dobrej jakości opalona opalony najlepiej plus około ok bardzo dobrze mocno odsączone odsączona odsączony wypestkowane wypestkowany obrane obrany umyte pokruszona pokruszone rozmrożone mrożone mrożony mrożona cienko krojone krojona krojony świeżej'.split())
-CONT = set('sok skórka skórki proszek soda'.split())
+HERE = os.path.dirname(os.path.abspath(__file__))
+KEYCFG = json.load(open(os.path.join(HERE, '..', 'src', 'lib', 'keymerge.json'), encoding='utf-8'))
+ADJ = set(KEYCFG['adj'])          # słowa pomijane wszędzie (stan, rozmiar, sposób krojenia)
+DROP2 = set(KEYCFG['drop2'])      # słowa pomijane tylko na drugim miejscu („masło miękkie” = „masło”)
+CONT = set(KEYCFG['cont'])        # po tych słowach „z/ze” nie przerywa nazwy („pierś z kurczaka”)
+STEMX = KEYCFG['stemx']           # wyjątki odmiany („oliwki” ≠ „oliwa”)
+MERGE = KEYCFG['merge']           # klucze, które w lodówce znaczą to samo („żółtka” → „jajka”)
 STOP = set('z ze do na w i oraz lub albo bez dla po od'.split())
 SUF = ['ami', 'ach', 'ów', 'om', 'ek', 'ka', 'ko', 'ki', 'ku', 'ie', 'ę', 'ą', 'a', 'e', 'y', 'i', 'o', 'u']
+TOK = re.compile(r'[a-ząćęłńóśźżà-ÿ]+')
 
 def fold(s):
     return unicodedata.normalize('NFKD', s.replace('ł', 'l').replace('Ł', 'L')).encode('ascii', 'ignore').decode().lower()
 
 def stem(tok):
     t = fold(tok)
+    if t in STEMX:
+        return STEMX[t]
     for s in SUF:
         if t.endswith(s) and len(t) - len(s) >= 4:
             return t[:-len(s)]
@@ -31,10 +39,10 @@ def clean(name):
 
 def label_and_key(name):
     n = clean(name)
-    toks = re.findall(r'[a-ząćęłńóśźż]+', n)
+    toks = [t for t in TOK.findall(n) if len(t) > 1]
     cut = []
     for t in toks:
-        if t in STOP and cut and not (cut[0] in CONT and len(cut) == 1):
+        if t in STOP and cut and not (cut[0] in CONT and len(cut) == 1 and (t in ('z', 'ze') or cut[0] in ('proszek', 'soda'))):
             break
         if t in STOP and cut:
             continue
@@ -42,11 +50,13 @@ def label_and_key(name):
             continue
         cut.append(t)
     cut = cut[:2] if cut else toks[:1]
+    if len(cut) == 2 and cut[1] in DROP2:
+        cut = cut[:1]
     if not cut:
         return n or name, fold(name)
     label = ' '.join(cut)
     key = ' '.join(stem(t) for t in cut)
-    return label, key
+    return label, MERGE.get(key, key)
 
 STAPLES = {'sol', 'pieprz', 'woda', 'olej', 'oliw', 'cukier', 'mak'}
 raw = json.load(open(SRC, encoding='utf-8'))
@@ -57,7 +67,8 @@ for r in raw:
     for i in r['ingredients']:
         lab, key = label_and_key(i['name'])
         i['key'] = key
-        labels[key][lab] += 1
+        raw_key = ' '.join(stem(t) for t in lab.split(' '))
+        labels[key][lab] += 1 if raw_key == key or raw_key not in MERGE else 0.001
         if key not in seen:
             counts[key] += 1; seen.add(key)
 

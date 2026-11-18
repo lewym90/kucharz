@@ -6,7 +6,7 @@ import type { Recipe } from '../lib/types'
 import { DIFF, catLabel } from '../lib/types'
 import { loadRecipe } from '../lib/data'
 import { db, setSetting } from '../lib/db'
-import { fmtIng, fmtMin } from '../lib/format'
+import { fmtIng, fmtMin, todayLocal } from '../lib/format'
 import { addRecipeToShopping } from '../lib/shopping'
 import { useDemoted } from '../components/hooks'
 import { isMine } from '../lib/mine'
@@ -21,7 +21,7 @@ export default function RecipeScreen() {
   const [serv, setServ] = useState(2)
   const [msg, setMsg] = useState('')
   const [planOpen, setPlanOpen] = useState(false)
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
+  const [date, setDate] = useState(todayLocal())
   const [slot, setSlot] = useState('Obiad')
   const fav = useLiveQuery(() => db.favs.get(id), [id])
   const rating = useLiveQuery(() => db.ratings.get(id), [id])
@@ -67,7 +67,7 @@ export default function RecipeScreen() {
       {isMine(id) && (
         <div className="actions">
           <Link className="btn ghost" to={`/edytuj/${encodeURIComponent(id)}`}><Pencil size={16} /> Edytuj</Link>
-          <button className="btn ghost" onClick={async () => { if (confirm('Usunąć ten przepis z „Moich przepisów”?')) { await db.mine.delete(id); await db.favs.delete(id); await delPhoto(id); nav('/ulubione', { replace: true }) } }}><Trash2 size={16} /> Usuń</button>
+          <button className="btn ghost" onClick={async () => { if (confirm('Usunąć ten przepis z „Moich przepisów”?')) { await db.mine.delete(id); await db.favs.delete(id); await db.ratings.delete(id); await db.hist.delete(id); await db.plan.filter(p => p.rid === id).delete(); await delPhoto(id); nav('/ulubione', { replace: true }) } }}><Trash2 size={16} /> Usuń</button>
         </div>
       )}
       {isMine(id) && /^https?:\/\//.test(r.src) && <p className="muted small"><a className="srclink" href={r.src} target="_blank" rel="noreferrer"><ExternalLink size={13} /> Źródło przepisu</a></p>}

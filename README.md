@@ -1,6 +1,6 @@
 # Książka Kucharska (PWA)
 
-Offline-first PWA: 1650 własnych przepisów, Moja lodówka, gotowanie krok po kroku z minutnikami, planer, lista zakupów, ulubione i oceny, kopia zapasowa JSON. Bez AI w czasie działania, bez płatnych API.
+Offline-first PWA: 2293 własne przepisy, Moja lodówka (tylko dania, na które masz komplet składników, plus „Stwórz z AI”), gotowanie krok po kroku z minutnikami, planer, lista zakupów, ulubione i oceny, import przepisów z linku, tekstu i zrzutów ekranu, kopia zapasowa JSON. AI (darmowy klucz Gemini) działa tylko na serwerze: przy imporcie i przy „Stwórz z AI”; reszta działa offline.
 
 ## Uruchomienie
     npm install
@@ -15,3 +15,5 @@ Wypchnij repo na GitHub (gałąź `main`), w Settings → Pages wybierz „GitHu
 - `src/screens` – ekrany, `src/lib` – dane, dopasowanie lodówki, zakupy, timery, Dexie (IndexedDB)
 - `public/data` – indeks + paczki kategorii (ładowane na żądanie), katalog składników
 - `tools/` – generator danych i skrypty kontroli jakości przepisów
+- `src/lib/keymerge.json` – wspólne reguły kluczy składników dla aplikacji i generatora (`tools/build_data.py`): słowa pomijane i scalanie („żółtka” = „jajka”, „masło miękkie” = „masło”). Po zmianie uruchom `npm run data`.
+- `server/` – usługa importu i „Stwórz z AI” (szczegóły w `server/README.md`)

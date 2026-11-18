@@ -1,6 +1,6 @@
 # Import przepisów z linku (kucharz-import)
 
-Usługa na serwerze, która z linku (strona, Instagram, TikTok, Facebook, YouTube) albo wklejonego tekstu robi gotowy przepis dla aplikacji.
+Usługa na serwerze, która z linku (strona, Instagram, TikTok, Facebook, YouTube), wklejonego tekstu albo zrzutów ekranu robi gotowy przepis dla aplikacji, a w lodówce tworzy przepis z zaznaczonych produktów (`POST /create`).
 
 Instalacja i aktualizacja (serwer NOWY, prompt `root@lewym90`, jedno polecenie):
 
@@ -8,5 +8,5 @@ Instalacja i aktualizacja (serwer NOWY, prompt `root@lewym90`, jedno polecenie):
 
 Instalator sam bierze klucz Gemini z `/etc/kalendarz-push.env` (jeśli jest), dodaje usługę `kucharz-import` (127.0.0.1:8795) i trasę Caddy `/kucharz-import/`. Sprawdzenie: `https://188-68-247-201.sslip.io/kucharz-import/health`.
 
-Kolejność: dane schema.org ze strony → opis posta → film (Gemini ogląda obraz i słucha dźwięku) → wklejony tekst. Bez klucza Gemini działa tryb awaryjny (reguły, bez filmów).
+Kolejność: dane schema.org ze strony → opis posta + pierwszy komentarz autora (YouTube i Instagram przez yt-dlp, TikTok przez publiczne API komentarzy) → film (Gemini ogląda obraz i słucha dźwięku) → wklejony tekst. Zrzuty ekranu (do 10) czyta Gemini i łączy w jeden przepis. „Stwórz z AI”: najpierw Gemini szuka sprawdzonego przepisu w Google, a gdy żaden nie pasuje, układa nowy – tylko z podanych produktów (+ sól, pieprz, woda, olej, oliwa, cukier); serwer sprawdza listę składników i w razie czego poprawia przepis. Bez klucza Gemini działa tryb awaryjny (reguły, bez filmów, zdjęć i AI). Wersja z tymi funkcjami zgłasza w /health `"v": 2`.
 Limity: 25 importów/h na adres, 200/dobę łącznie, adresy wewnętrzne zablokowane.

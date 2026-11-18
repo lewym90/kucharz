@@ -24,6 +24,18 @@ export async function processPhoto(file: File): Promise<PhotoPair> {
   } finally { URL.revokeObjectURL(url) }
 }
 
+/** Zrzut ekranu do wysłania na serwer: dłuższy bok do 2000 px, JPEG – tekst zostaje czytelny, a plik mały. */
+export async function shrinkForUpload(file: File): Promise<{ mime: string; data: string; preview: string }> {
+  const url = URL.createObjectURL(file)
+  try {
+    const img = await new Promise<HTMLImageElement>((ok, no) => {
+      const i = new Image(); i.onload = () => ok(i); i.onerror = () => no(new Error('Nie mogę odczytać tego zdjęcia.')); i.src = url
+    })
+    const w = img.naturalWidth, h = img.naturalHeight
+    return { mime: 'image/jpeg', data: draw(img, w, h, 2000, 0.85).split(',')[1], preview: draw(img, w, h, 360, 0.7) }
+  } finally { URL.revokeObjectURL(url) }
+}
+
 export async function putPhoto(id: string, p: PhotoPair) {
   await db.transaction('rw', db.photos, db.thumbs, async () => {
     await db.photos.put({ id, data: p.full }); await db.thumbs.put({ id, data: p.thumb })

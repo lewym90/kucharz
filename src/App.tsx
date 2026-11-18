@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Route, Routes, useNavigate, useLocation } from 'react-router-dom'
-import { Home as HomeIcon, Compass, Plus, BookMarked, User } from 'lucide-react'
+import { Home as HomeIcon, Compass, Plus, BookMarked, User, Timer } from 'lucide-react'
 import Home from './screens/Home'
 import Library from './screens/Library'
 import RecipeScreen from './screens/RecipeScreen'
@@ -14,16 +14,19 @@ import Sources from './screens/Sources'
 import AddRecipe from './screens/AddRecipe'
 import Onboarding from './screens/Onboarding'
 import { getSetting, setSetting } from './lib/db'
+import { leftOf, stopAlarm, useTimers } from './lib/timerStore'
 
 export default function App() {
   const [ready, setReady] = useState(false)
   const [onboard, setOnboard] = useState(false)
-  const [splash, setSplash] = useState(true)
+  // ekran powitalny tylko przy pierwszym otwarciu w danej sesji (nie po przeładowaniu przy aktualizacji)
+  const [splash, setSplash] = useState(() => { try { return !sessionStorage.getItem('splash') } catch { return true } })
+  const timers = useTimers()
   const nav = useNavigate()
   const loc = useLocation()
   useEffect(() => {
     getSetting('onboarded', false).then(v => { setOnboard(!v); setReady(true) })
-    const t = setTimeout(() => setSplash(false), 1400)
+    const t = setTimeout(() => { setSplash(false); try { sessionStorage.setItem('splash', '1') } catch { /* */ } }, 1100)
     return () => clearTimeout(t)
   }, [])
   const hideNav = loc.pathname.startsWith('/cook/')
@@ -48,6 +51,12 @@ export default function App() {
           <Route path="*" element={<Home />} />
         </Routes>
       </main>
+      {!hideNav && timers.length > 0 && (() => {
+        const t = [...timers].sort((a, b) => leftOf(a) - leftOf(b))[0]
+        const left = leftOf(t)
+        return <button className={'timerpill' + (t.done ? ' done' : '')} onClick={() => { stopAlarm(); nav('/cook/' + encodeURIComponent(t.rid)) }}>
+          <Timer size={16} /> {t.done ? 'Minutnik: koniec!' : `${String(Math.floor(left / 60)).padStart(2, '0')}:${String(left % 60).padStart(2, '0')}`}{timers.length > 1 ? ` · ${timers.length}` : ''}</button>
+      })()}
       {!hideNav && (
         <nav className="tabbar">
           <NavLink to="/" end><HomeIcon size={22} /><span>Start</span></NavLink>

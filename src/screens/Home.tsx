@@ -6,13 +6,13 @@ import { useIndex } from '../components/hooks'
 import { Section, catImg } from '../components/RecipeCard'
 import { CATS } from '../lib/types'
 import { db } from '../lib/db'
+import { todayLocal } from '../lib/format'
 
-const todayStr = () => new Date().toISOString().slice(0, 10)
 export default function Home() {
   const ix = useIndex()
   const nav = useNavigate()
   const [q, setQ] = useState('')
-  const plan = useLiveQuery(() => db.plan.where('date').equals(todayStr()).toArray(), [])
+  const plan = useLiveQuery(() => db.plan.where('date').equals(todayLocal()).toArray(), [])
   const byId = useMemo(() => new Map((ix ?? []).map(r => [r.id, r])), [ix])
   const surprise = () => {
     const pool = (ix ?? []).filter(r => ['obiad', 'kolacja', 'makaron', 'zupa'].includes(r.cat))

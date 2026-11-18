@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Download, Upload, ChevronRight, Info, FileText } from 'lucide-react'
 import { exportBackup, importBackup, getSetting, setSetting } from '../lib/db'
+import { todayLocal } from '../lib/format'
 import { DEFAULT_IMPORT_URL, pingServer } from '../lib/mine'
 
 export default function Profile() {
@@ -12,9 +13,15 @@ export default function Profile() {
   useEffect(() => { getSetting('importUrl', DEFAULT_IMPORT_URL).then(setSrv) }, [])
   const testSrv = async () => { setSrvMsg('Sprawdzam…'); await setSetting('importUrl', srv.trim() || DEFAULT_IMPORT_URL); setSrvMsg((await pingServer()).msg) }
   const doExport = async () => {
+    const name = `ksiazka-kucharska-kopia-${todayLocal()}.json`
     const blob = new Blob([await exportBackup()], { type: 'application/json' })
+    // na iPhonie najpewniej działa arkusz „Udostępnij” (Zachowaj w Plikach, AirDrop, Mail); pobieranie pliku jako zapas
+    const file = new File([blob], name, { type: 'application/json' })
+    if ((navigator as any).canShare?.({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: 'Kopia Książki Kucharskiej' }); setMsg('Kopia gotowa.'); return } catch (e: any) { if (e?.name === 'AbortError') return }
+    }
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob)
-    a.download = `ksiazka-kucharska-kopia-${new Date().toISOString().slice(0, 10)}.json`; a.click(); URL.revokeObjectURL(a.href)
+    a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000)
     setMsg('Kopia zapisana.')
   }
   const doImport = async (f?: File) => {

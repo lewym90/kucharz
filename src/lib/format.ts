@@ -21,7 +21,11 @@ const PL: Record<string, [string, string, string]> = {
   'arkusz': ['arkusz', 'arkusze', 'arkuszy'], 'opakowanie': ['opakowanie', 'opakowania', 'opakowań'],
   'gałka': ['gałka', 'gałki', 'gałek'], 'laska': ['laska', 'laski', 'lasek'], 'porcja': ['porcja', 'porcje', 'porcji'],
   'dash': ['kropla', 'krople', 'kropli'], 'torebka': ['torebka', 'torebki', 'torebek'], 'kostka': ['kostka', 'kostki', 'kostek'],
+  'listek': ['listek', 'listki', 'listków'], 'filet': ['filet', 'filety', 'filetów'], 'ziarno': ['ziarno', 'ziarna', 'ziaren'],
+  'szklanka': ['szklanka', 'szklanki', 'szklanek'], 'pasek': ['pasek', 'paski', 'pasków'], 'kiść': ['kiść', 'kiście', 'kiści'], 'saszetka': ['saszetka', 'saszetki', 'saszetek'],
 }
+/** Dzisiejsza data w strefie czasowej telefonu (YYYY-MM-DD), a nie w UTC. */
+export const todayLocal = (d = new Date()) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10)
 export function unitLabel(u: string | null, q: number | null): string {
   if (!u) return ''
   const f = PL[u]; if (!f || q == null) return u

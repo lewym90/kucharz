@@ -169,3 +169,20 @@ input[type=range]{accent-color:var(--gold);width:100%}
 .photoprev img{display:block;width:100%;max-height:260px;object-fit:cover}
 .photoprev .iconbtn{position:absolute;top:10px;right:10px}
 label.btn{cursor:pointer}
+.timerpill{position:fixed;right:14px;bottom:calc(84px + max(0px,calc(var(--safe) - 14px)));z-index:40;display:inline-flex;align-items:center;gap:6px;background:rgba(20,20,22,.96);border:1px solid var(--gold);color:var(--gold2);border-radius:99px;padding:9px 14px;font-weight:700;font-variant-numeric:tabular-nums;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+.timerpill.done{background:var(--gold);color:#111;animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 12px}
+.shot{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);aspect-ratio:9/16;background:var(--card)}
+.shot img{width:100%;height:100%;object-fit:cover;display:block}
+.shot span{position:absolute;left:6px;top:6px;background:var(--gold);color:#111;font-weight:700;font-size:12px;border-radius:99px;min-width:22px;height:22px;display:flex;align-items:center;justify-content:center}
+.shot .iconbtn{position:absolute;right:4px;top:4px;width:30px;height:30px}
+.sugg button{display:inline-flex;align-items:center;gap:4px}.sugg button.on{background:var(--gold);color:#111;border-style:solid}
+.mwrap .missing.ok{color:#b9b19f}
+.fgroup{margin-bottom:14px}.fgroup h3{font-size:15px;margin:0 0 4px;color:var(--gold2);font-family:system-ui,-apple-system,sans-serif;font-weight:600;letter-spacing:.2px}
+.fgroup h3 small{color:var(--mut);font-weight:500}
+.aibox{margin-top:14px;display:grid;gap:10px}
+.aibox.strong{background:linear-gradient(160deg,rgba(212,168,75,.14),rgba(212,168,75,.03));border:1px solid rgba(212,168,75,.45);border-radius:var(--r);padding:16px}
+.aibox.strong p{margin:0;line-height:1.5}
+.aibox .loadbox{margin-top:0}
+.mwrap{display:flex;flex-direction:column}.mwrap .card{height:auto;flex:1}

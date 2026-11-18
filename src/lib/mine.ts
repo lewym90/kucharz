@@ -1,6 +1,7 @@
 import type { Ing, IndexItem, Recipe } from './types'
 import { isStaple, labelAndKey } from './keys'
 import { db, getSetting } from './db'
+import { dietTags } from './diet'
 
 export const DEFAULT_IMPORT_URL = 'https://188-68-247-201.sslip.io/kucharz-import'
 export const MINE_PREFIX = 'mine:'
@@ -11,12 +12,15 @@ export type Draft = {
   tags: string[]; ing: { n: string; q: number | null; u: string | null }[]; steps: string[]; tip: string | null; src: string
 }
 
+const DIET = ['wegetariańskie', 'wegańskie', 'bezglutenowe']
 export function toRecipe(d: Draft, id?: string): Recipe {
   const ing: Ing[] = d.ing.filter(i => i.n.trim()).map(i => ({ n: i.n.trim(), q: i.q, u: i.u, k: labelAndKey(i.n).key }))
+  // tagi diety liczone ze składników (tak samo jak w bazie), żeby filtry „Wege” i „Bez glutenu” widziały też własne przepisy
+  const tags = [...d.tags.filter(t => !DIET.includes(t)), ...dietTags(ing.map(i => i.n))]
   return {
     id: id ?? MINE_PREFIX + Date.now().toString(36), title: d.title.trim() || 'Bez tytułu', cat: d.cat || 'obiad',
     min: Math.max(1, d.min || 30), rest: 0, diff: Math.min(4, Math.max(1, d.diff || 2)), serv: Math.max(1, d.serv || 2),
-    cuisine: d.cuisine, tags: d.tags, sum: d.summary, ing, steps: d.steps.filter(s => s.trim()), tip: d.tip || null,
+    cuisine: d.cuisine, tags, sum: d.summary, ing, steps: d.steps.filter(s => s.trim()), tip: d.tip || null,
     src: d.src || 'Własny przepis', lic: 'moje',
   }
 }
@@ -43,22 +47,42 @@ export function fromServer(r: any): Draft {
   }
 }
 
-export async function importFrom(input: { url?: string; text?: string }): Promise<{ draft: Draft; how: string }> {
-  const base = (await getSetting<string>('importUrl', DEFAULT_IMPORT_URL)).replace(/\/+$/, '')
+export type ImportInput = { url?: string; text?: string; images?: { mime: string; data: string }[] }
+const serverBase = async () => (await getSetting<string>('importUrl', DEFAULT_IMPORT_URL)).replace(/\/+$/, '')
+
+export async function importFrom(input: ImportInput): Promise<{ draft: Draft; how: string }> {
+  const base = await serverBase()
   let res: Response
   try {
     res = await fetch(base + '/import', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input), signal: AbortSignal.timeout(170000) })
   } catch (e: any) {
-    if (input.text) { const d = parseText(input.text); if (d) return { draft: d, how: 'offline' } }
-    throw new Error(e?.name === 'TimeoutError' ? 'Import trwał za długo. Spróbuj ponownie albo wklej opis posta.' : 'Brak połączenia z serwerem importu. Sprawdź internet albo adres serwera w Profilu.')
+    if (input.text && !input.images) { const d = parseText(input.text); if (d) return { draft: d, how: 'offline' } }
+    throw new Error(e?.name === 'TimeoutError' ? 'Import trwał za długo. Spróbuj ponownie.' : 'Brak połączenia z serwerem importu. Sprawdź internet albo adres serwera w Profilu.')
   }
+  if (res.status === 413) throw new Error('Zdjęcia są za duże dla serwera. Spróbuj z mniejszą liczbą zrzutów.')
   let j: any = null
   try { j = await res.json() } catch { /* ignore */ }
   if (!res.ok || !j?.ok) {
-    if (input.text && (j?.code === 'internal' || res.status >= 500)) { const d = parseText(input.text); if (d) return { draft: d, how: 'offline' } }
+    if (input.text && !input.images && (j?.code === 'internal' || res.status >= 500)) { const d = parseText(input.text); if (d) return { draft: d, how: 'offline' } }
     throw new Error(j?.error ?? 'Import się nie udał (' + res.status + ').')
   }
   return { draft: fromServer(j.recipe), how: j.how ?? '' }
+}
+
+/** „Stwórz z AI” w lodówce: najpierw sprawdzony przepis z internetu, a gdy go nie ma – nowy przepis tylko z tych produktów. */
+export async function createFromFridge(ingredients: string[], category: string, avoid: string[] = []): Promise<{ draft: Draft; how: string; extras: string[] }> {
+  const base = await serverBase()
+  let res: Response
+  try {
+    res = await fetch(base + '/create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ingredients, category, servings: 2, avoid }), signal: AbortSignal.timeout(170000) })
+  } catch (e: any) {
+    throw new Error(e?.name === 'TimeoutError' ? 'Tworzenie przepisu trwało za długo. Spróbuj ponownie.' : 'Brak połączenia z serwerem. Tworzenie przepisu wymaga internetu.')
+  }
+  if (res.status === 404) throw new Error('Serwer nie zna jeszcze tej funkcji – trzeba go zaktualizować.')
+  let j: any = null
+  try { j = await res.json() } catch { /* ignore */ }
+  if (!res.ok || !j?.ok) throw new Error(j?.error ?? 'Nie udało się stworzyć przepisu (' + res.status + ').')
+  return { draft: fromServer(j.recipe), how: j.how ?? '', extras: j.recipe?.extras ?? [] }
 }
 
 export async function pingServer(): Promise<{ ok: boolean; gemini?: boolean; msg: string }> {
@@ -67,7 +91,9 @@ export async function pingServer(): Promise<{ ok: boolean; gemini?: boolean; msg
     const r = await fetch(base + '/health', { signal: AbortSignal.timeout(8000) })
     const j = await r.json()
     if (!j.ok) return { ok: false, msg: 'Serwer odpowiada, ale zgłasza błąd.' }
-    return { ok: true, gemini: !!j.gemini, msg: j.gemini ? 'Serwer działa. Filmy i napisy na ekranie są obsługiwane.' : 'Serwer działa, ale bez klucza Gemini (tylko strony i tekst).' }
+    if (!j.gemini) return { ok: true, gemini: false, msg: 'Serwer działa, ale bez klucza Gemini (tylko strony i tekst – bez filmów, zdjęć i AI w lodówce).' }
+    if (!(j.v >= 2)) return { ok: true, gemini: true, msg: 'Serwer działa, ale ma starą wersję: bez komentarzy autora, importu ze zdjęć i „Stwórz z AI”. Zaktualizuj go.' }
+    return { ok: true, gemini: true, msg: 'Serwer działa: strony, filmy, komentarze autora, zdjęcia i „Stwórz z AI”.' }
   } catch { return { ok: false, msg: 'Nie mogę połączyć się z serwerem importu.' } }
 }
 

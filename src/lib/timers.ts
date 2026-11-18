@@ -13,12 +13,3 @@ export function detectTimers(step: string): Detected[] {
   }
   return out
 }
-export function beep() {
-  try {
-    const AC = (window as any).AudioContext || (window as any).webkitAudioContext
-    const ctx = new AC(); const o = ctx.createOscillator(); const g = ctx.createGain()
-    o.connect(g); g.connect(ctx.destination); o.frequency.value = 880; g.gain.value = 0.2
-    o.start(); setTimeout(() => { o.frequency.value = 660 }, 250); setTimeout(() => { o.stop(); ctx.close() }, 600)
-  } catch { /* brak audio */ }
-  try { navigator.vibrate?.([300, 150, 300]) } catch { /* */ }
-}
