@@ -925,8 +925,10 @@ def channel_key(info, url):
 
 def list_channel(url, job):
     host = (urllib.parse.urlparse(url).hostname or '').lower()
+    if any(h in host for h in ('facebook.com', 'fb.com', 'fb.watch')):
+        raise Fail('login', 'Facebook nie pokazuje listy postów strony ani profilu bez zalogowania, więc całości nie da się pobrać. Pojedyncze posty z Facebooka dodasz z linku albo ze zrzutów ekranu.')
     if 'instagram.com' in host:
-        raise Fail('instagram', 'Instagram nie pokazuje listy postów bez zalogowania, więc całego profilu nie da się pobrać. Dodawaj pojedyncze posty z linku albo ze zrzutów ekranu.')
+        raise Fail('login', 'Instagram nie pokazuje listy postów bez zalogowania, więc całego profilu nie da się pobrać. Dodawaj pojedyncze posty z linku albo ze zrzutów ekranu.')
     tabs = [url]
     if 'youtube.com' in host and 'list=' not in url:
         base = re.sub(r'/(videos|shorts|streams|featured|playlists|community|about|search.*)/?$', '', url.split('?')[0].rstrip('/'))
@@ -1064,11 +1066,190 @@ def run_channel(job):
         job['ended'] = time.time()
 
 
+# ───────────── cała strona internetowa z przepisami (bez AI) ─────────────
+SITE_MAX = int(os.environ.get('SITE_MAX', '3000'))
+NOT_RECIPE = re.compile(r'/(tag|tags|category|categories|kategori\w*|author|autor|page|strona|wp-content|wp-json|feed|comment|koszyk|cart|sklep|shop|product|kontakt|contact|polityka|privacy|regulamin|search|szukaj)(/|$)|\?(s|p|replytocom)=|\.(jpe?g|png|gif|webp|svg|pdf|zip|mp4|mp3|css|js|xml)(\?|$)', re.I)
+CRAWL_SKIP = re.compile(r'/(wp-content|wp-json|wp-admin|feed|koszyk|cart|my-account|moje-konto|login|logowanie)(/|$)|\?(s|replytocom|share)=|\.(jpe?g|png|gif|webp|svg|pdf|zip|mp4|mp3|css|js|xml)(\?|$)', re.I)
+MAP_SKIP = re.compile(r'(tag|categor|kategori|author|autor|page-sitemap|attachment|product|image|video|taxonom|user|wp-sitemap-users|wp-sitemap-taxonomies)', re.I)
+
+
+def site_host(u):
+    return re.sub(r'^www\.', '', (urllib.parse.urlparse(u).hostname or '').lower())
+
+
+def site_sitemap_urls(root, host, job):
+    cands = []
+    try:
+        cands += re.findall(r'(?im)^\s*sitemap:\s*(\S+)', http_get(root + '/robots.txt', limit=200_000, timeout=15))
+    except Exception:
+        pass
+    cands += [root + '/sitemap_index.xml', root + '/wp-sitemap.xml', root + '/sitemap.xml', root + '/post-sitemap.xml', root + '/recipe-sitemap.xml']
+    seen, urls, queue = set(), [], []
+    for c in cands:
+        if c not in queue:
+            queue.append(c)
+    while queue and len(seen) < 80 and len(urls) < SITE_MAX * 2 and not job.get('cancel'):
+        sm = queue.pop(0)
+        if sm in seen:
+            continue
+        seen.add(sm)
+        try:
+            x = http_get(sm, limit=15_000_000, timeout=25)
+        except Exception:
+            continue
+        locs = [html.unescape(l) for l in re.findall(r'<loc>\s*(?:<!\[CDATA\[)?\s*(.*?)\s*(?:\]\]>)?\s*</loc>', x, re.S)]
+        if re.search(r'<sitemapindex', x, re.I):
+            subs = [l for l in locs if not MAP_SKIP.search(l.rsplit('/', 1)[-1])]
+            subs.sort(key=lambda l: 0 if re.search(r'recip|przepis|post', l, re.I) else 1)
+            queue = subs + queue
+        else:
+            urls += [l for l in locs if site_host(l) == host and not NOT_RECIPE.search(l)]
+        job['phase'] = 'lista'
+        job['total'] = len(urls)
+    out, s2 = [], set()
+    for u in urls:
+        u = u.split('#')[0]
+        if u not in s2 and u.rstrip('/') != root:
+            s2.add(u)
+            out.append(u)
+    return out[:SITE_MAX]
+
+
+def site_recipe(job, url, htm):
+    ld = find_recipe_ld(htm)
+    if not ld:
+        return
+    txt, ni, ns = ld_to_text(ld)
+    if ni < 3 or ns < 2:
+        return
+    title = html.unescape(str(ld.get('name') or meta(htm, 'og:title') or '')).strip()
+    h = heuristic(txt, title)
+    if not h or len(h['ingredients']) < 3 or len(h['steps']) < 2:
+        return
+    r = norm_recipe(h, url, 'strona-kanal')
+    r['title'] = (title or r['title'])[:140]
+    r['summary'] = html.unescape(re.sub(r'<[^>]+>', ' ', str(ld.get('description') or ''))).strip()[:400] or r['summary']
+    kw = ' '.join(str(x) for x in ([ld.get('recipeCategory')] + [ld.get('keywords')]) if x)
+    r['category'] = guess_cat(r['title'] + ' ' + kw)
+    cu = ld.get('recipeCuisine')
+    r['cuisine'] = (', '.join(cu) if isinstance(cu, list) else str(cu or ''))[:40]
+    import hashlib
+    r['vid'] = hashlib.md5(url.encode()).hexdigest()[:12]
+    og = meta(htm, 'og:image', 'og:image:secure_url')
+    with_image(r, [urllib.parse.urljoin(url, u) for u in ld_images(ld)] + ([urllib.parse.urljoin(url, og)] if og else []))
+    with job['lock']:
+        if url not in job['seen_recipes']:
+            job['seen_recipes'].add(url)
+            job['recipes'].append(r)
+            job['found'] = len(job['recipes'])
+
+
+def page_links(base, htm, host):
+    out = []
+    for h in re.findall(r'<a\s[^>]*href=["\']([^"\'#]+)', htm, re.I):
+        u = urllib.parse.urljoin(base, html.unescape(h)).split('#')[0]
+        if u.startswith('http') and site_host(u) == host and not CRAWL_SKIP.search(u):
+            out.append(u)
+    return out
+
+
+def run_site(job):
+    try:
+        url = job['url']
+        p = urllib.parse.urlparse(url)
+        root, host = '%s://%s' % (p.scheme, p.netloc), site_host(url)
+        job['phase'] = 'lista'
+        try:
+            home = http_get(url, limit=2_000_000, timeout=20)
+        except Fail as e:
+            raise Fail('fetch', 'Nie mogę otworzyć tej strony. Sprawdź adres.')
+        nm = meta(home, 'og:site_name')
+        if not nm and p.path not in ('', '/'):
+            try:
+                rh = http_get(root + '/', limit=1_000_000, timeout=15)
+                nm = meta(rh, 'og:site_name') or (re.search(r'(?is)<title[^>]*>(.*?)</title>', rh) or [None, ''])[1].split('|')[0].split(' - ')[0].strip()
+            except Exception:
+                pass
+        job['name'] = (html.unescape(nm or '') or host)[:60]
+        job['key'] = host
+        whole = p.path in ('', '/')
+        urls = site_sitemap_urls(root, host, job) if whole else []
+        job['phase'] = 'strony'
+        job['total'] = len(urls)
+        if whole and urls:
+            # mapa strony: sprawdzamy każdą podstronę
+            it = iter(urls)
+            def worker():
+                while not job.get('cancel'):
+                    with job['lock']:
+                        u = next(it, None)
+                    if u is None:
+                        return
+                    try:
+                        site_recipe(job, u, http_get(u, limit=3_000_000, timeout=20))
+                    except Exception:
+                        pass
+                    with job['lock']:
+                        job['checked'] += 1
+                    time.sleep(0.15)
+            ths = [threading.Thread(target=worker, daemon=True) for _ in range(4)]
+            for t in ths:
+                t.start()
+            for t in ths:
+                t.join()
+        else:
+            # brak mapy strony albo link do działu: przechodzimy po linkach (do 3 kliknięć od podanej strony)
+            seen, queue = {url}, [(url, 0)]
+            job['total'] = 1
+            while queue and job['checked'] < SITE_MAX and not job.get('cancel'):
+                batch, queue = queue[:4], queue[4:]
+                res = {}
+                def fetch(u):
+                    try:
+                        res[u] = http_get(u, limit=3_000_000, timeout=20)
+                    except Exception:
+                        res[u] = ''
+                ths = [threading.Thread(target=fetch, args=(u,), daemon=True) for u, _ in batch]
+                for t in ths:
+                    t.start()
+                for t in ths:
+                    t.join()
+                for u, d in batch:
+                    htm = res.get(u) or ''
+                    job['checked'] += 1
+                    if not htm:
+                        continue
+                    try:
+                        site_recipe(job, u, htm)
+                    except Exception:
+                        pass
+                    if d < 3:
+                        for l in page_links(u, htm, host):
+                            if l not in seen and len(seen) < SITE_MAX:
+                                seen.add(l)
+                                queue.append((l, d + 1))
+                job['total'] = len(seen)
+                time.sleep(0.15)
+        job['checked'] = job['total'] = max(job['checked'], job['total'])
+        if not job['recipes'] and not job.get('cancel'):
+            raise Fail('no_recipe', 'Na tej stronie nie znalazłem przepisów zapisanych w standardowym formacie (schema.org). Pojedyncze przepisy dodasz z linku.')
+        job['state'], job['phase'] = 'done', 'gotowe'
+    except Fail as e:
+        job['state'], job['error'] = 'error', e.msg
+    except Exception as e:
+        job['state'], job['error'] = 'error', 'Błąd serwera (%s).' % type(e).__name__
+    finally:
+        job['ended'] = time.time()
+
+
 def start_channel(body):
     url = (body.get('url') or '').strip()
     if not re.match(r'^https?://', url):
         url = 'https://' + url
     check_url(url)
+    h0 = (urllib.parse.urlparse(url).hostname or '').lower()
+    if any(x in h0 for x in ('facebook.com', 'fb.com', 'fb.watch', 'instagram.com')):
+        list_channel(url, {})  # od razu zwraca czytelny komunikat (Facebook/Instagram wymagają logowania)
     now = time.time()
     for k in [k for k, j in jobs.items() if now - j['started'] > 48 * 3600]:
         jobs.pop(k, None)
@@ -1084,9 +1265,11 @@ def start_channel(body):
     ch_day.append(now)
     jid = base64.urlsafe_b64encode(os.urandom(9)).decode()
     job = {'id': jid, 'url': url, 'name': '', 'key': '', 'state': 'running', 'phase': 'start', 'total': 0, 'checked': 0, 'found': 0,
-           'later': 0, 'later_done': 0, 'recipes': [], 'error': '', 'started': now}
+           'later': 0, 'later_done': 0, 'recipes': [], 'error': '', 'started': now, 'lock': threading.Lock(), 'seen_recipes': set()}
     jobs[jid] = job
-    threading.Thread(target=run_channel, args=(job,), daemon=True).start()
+    host = (urllib.parse.urlparse(url).hostname or '').lower()
+    social = any(host == x.rstrip('.') or host.endswith('.' + x.rstrip('.')) for x in SOCIAL)
+    threading.Thread(target=run_channel if social else run_site, args=(job,), daemon=True).start()
     return job
 
 
@@ -1123,7 +1306,7 @@ class H(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if urllib.parse.urlparse(self.path).path in ('/health', '/zdrowie'):
-            return self.send(200, {'ok': True, 'v': 4, 'features': ['komentarze', 'zdjecia', 'lodowka', 'zdjecie-dania', 'kanal'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
+            return self.send(200, {'ok': True, 'v': 5, 'features': ['komentarze', 'zdjecia', 'lodowka', 'zdjecie-dania', 'kanal', 'strona'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
         m = re.match(r'^/channel/([\w-]+)(/recipes)?$', urllib.parse.urlparse(self.path).path)
         if m:
             job = jobs.get(m.group(1))

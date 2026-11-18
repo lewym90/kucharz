@@ -5,7 +5,7 @@ import { CATS } from '../lib/types'
 import { db } from '../lib/db'
 import { PhotoPair, delPhoto, processPhoto, putPhoto, shrinkForUpload } from '../lib/photos'
 import { Draft, emptyDraft, importFrom, ingToLine, lineToIng, saveMine, toDraft } from '../lib/mine'
-import { isChannelUrl, startChannel, useChannelJob } from '../lib/channel'
+import { isChannelUrl, isFacebookProfile, isSiteUrl, startChannel, useChannelJob } from '../lib/channel'
 import { ChannelProgress } from '../components/ChannelPanel'
 
 type Mode = 'link' | 'text' | 'photo' | 'channel' | 'manual'
@@ -164,7 +164,7 @@ export default function AddRecipe() {
       <div className="chips wrap">
         <button className={mode === 'link' ? 'on' : ''} onClick={() => { setMode('link'); setErr('') }}><Link2 size={15} /> Z linku</button>
         <button className={mode === 'photo' ? 'on' : ''} onClick={() => { setMode('photo'); setErr('') }}><Images size={15} /> Ze zdjęć</button>
-        <button className={mode === 'channel' ? 'on' : ''} onClick={() => { setMode('channel'); setErr('') }}><Tv size={15} /> Cały kanał</button>
+        <button className={mode === 'channel' ? 'on' : ''} onClick={() => { setMode('channel'); setErr('') }}><Tv size={15} /> Kanał lub strona</button>
         <button className={mode === 'text' ? 'on' : ''} onClick={() => { setMode('text'); setErr('') }}><FileText size={15} /> Tekst</button>
         <button onClick={startManual}><PencilLine size={15} /> Ręcznie</button>
       </div>
@@ -174,15 +174,15 @@ export default function AddRecipe() {
           <input className="urlin" inputMode="url" autoCapitalize="none" autoCorrect="off" placeholder="https://…" value={url} onChange={e => setUrl(e.target.value)} disabled={busy} />
         </>
       )}
-      {mode === 'link' && isChannelUrl(url) && !busy && (
-        <div className="importnote chnote"><Tv size={15} /> <span>To link do całego kanału. <button className="link" onClick={() => { setChUrl(url.trim()); runChannel(url.trim()) }}>Pobierz wszystkie przepisy z kanału</button></span></div>
+      {mode === 'link' && (isChannelUrl(url) || isSiteUrl(url) || isFacebookProfile(url)) && !busy && (
+        <div className="importnote chnote"><Tv size={15} /> <span>{isSiteUrl(url) ? 'To link do całej strony lub działu z przepisami.' : 'To link do całego kanału lub profilu.'} <button className="link" onClick={() => { setChUrl(url.trim()); runChannel(url.trim()) }}>Pobierz wszystkie przepisy</button></span></div>
       )}
       {mode === 'channel' && (
         <>
-          <p className="muted">Wklej link do kanału YouTube (np. https://www.youtube.com/@nazwa) albo profilu TikTok. Aplikacja przejrzy wszystkie filmy i zapisze pełne przepisy spisane przez autora – w opisie filmu, w jego komentarzu albo na jego stronie – bez AI. Filmy, w których przepis jest tylko pokazany lub powiedziany, zostaną pominięte (takie dodasz pojedynczo z linku). Przepisy trafią do osobnej zakładki z nazwą kanału w „Moje”.</p>
-          <p className="muted small">Instagram nie pozwala pobrać całego profilu bez logowania – posty z Instagrama dodawaj pojedynczo albo ze zrzutów.</p>
+          <p className="muted">Wklej link do kanału YouTube (np. https://www.youtube.com/@nazwa), profilu TikTok albo dowolnej strony z przepisami (cały serwis albo jeden dział, np. „/przepisy/zupy”). Bez AI: aplikacja zapisze tylko pełne przepisy – z filmów te spisane przez autora w opisie, w jego komentarzu albo na jego stronie, a ze stron te zapisane w standardowym formacie przepisu (ma go większość blogów kulinarnych). Przepisy trafią do osobnej zakładki z nazwą kanału lub strony w „Moje”.</p>
+          <p className="muted small">Instagram i Facebook nie pozwalają pobrać całego profilu bez logowania – posty z nich dodawaj pojedynczo z linku albo ze zrzutów.</p>
           <ChannelProgress />
-          {!chRunning && <input className="urlin" inputMode="url" autoCapitalize="none" autoCorrect="off" placeholder="https://www.youtube.com/@…" value={chUrl} onChange={e => setChUrl(e.target.value)} disabled={busy} />}
+          {!chRunning && <input className="urlin" inputMode="url" autoCapitalize="none" autoCorrect="off" placeholder="https://www.youtube.com/@… albo https://strona.pl" value={chUrl} onChange={e => setChUrl(e.target.value)} disabled={busy} />}
         </>
       )}
       {mode === 'photo' && (
@@ -202,7 +202,7 @@ export default function AddRecipe() {
         </>
       )}
       {err && <p className="errnote"><AlertCircle size={15} /> {err}</p>}
-      {mode === 'channel' ? (!chRunning && <button className="btn gold wide" disabled={busy || !/\S/.test(chUrl)} onClick={() => runChannel(chUrl)}>{busy ? <Loader2 className="spin" size={18} /> : <Tv size={18} />} Pobierz przepisy z kanału</button>)
+      {mode === 'channel' ? (!chRunning && <button className="btn gold wide" disabled={busy || !/\S/.test(chUrl)} onClick={() => runChannel(chUrl)}>{busy ? <Loader2 className="spin" size={18} /> : <Tv size={18} />} Pobierz wszystkie przepisy</button>)
       : busy ? (
         <div className="loadbox"><Loader2 className="spin" size={22} /><div><b>{(mode === 'photo' ? STEPS_PHOTO : STEPS_LOADING)[phase]}</b>
           <small>{mode === 'photo' ? 'Zwykle 10 do 40 sekund.' : elapsed > 25 ? 'Film trwa dłużej niż strona, to normalne. Jeszcze chwila…' : 'Zwykle 5 do 40 sekund.'}</small></div></div>

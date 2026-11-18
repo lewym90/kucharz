@@ -14,7 +14,7 @@ export function ChannelProgress({ only }: { only?: string }) {
     <div className={'chprog' + (err ? ' err' : '')}>
       <div className="chprog-h">
         {err ? <AlertCircle size={18} /> : running ? <Loader2 className="spin" size={18} /> : <Check size={18} />}
-        <b>{j?.name || 'Kanał'}</b>
+        <b>{j?.name || 'Pobieranie przepisów'}</b>
         {!running && <button className="iconbtn" aria-label="Zamknij" onClick={dismissChannel}><X size={16} /></button>}
       </div>
       <div className="chbar"><div style={{ width: phasePct(j) + '%' }} /></div>

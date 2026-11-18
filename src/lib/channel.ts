@@ -26,6 +26,14 @@ export const isChannelUrl = (u: string) => {
     || /instagram\.com\/(?!p\/|reel\/|reels\/|tv\/|stories\/|explore\/)[\w.]+\/?(\?.*)?$/i.test(s)
 }
 
+const SOCIAL = /(youtube\.com|youtu\.be|tiktok\.com|instagram\.com|facebook\.com|fb\.com|fb\.watch)/i
+/** Link do strony głównej albo działu serwisu z przepisami (nie do jednego przepisu). */
+export const isSiteUrl = (u: string) => {
+  try { const p = new URL(u.trim()); return !SOCIAL.test(p.hostname) && (p.pathname === '/' || p.pathname === '' || /\/(przepisy|kategori\w*|category|recipes?|dzial|tag)\/?[^/]*\/?$/i.test(p.pathname)) } catch { return false }
+}
+export const isFacebookProfile = (u: string) => /facebook\.com\/(?!share|watch|reel|groups\/[^/]+\/(posts|permalink)|[^/]+\/(posts|videos|photos)\/|story\.php|permalink\.php|photo)[\w.-]+\/?(\?.*)?$/i.test(u.trim())
+export const isSocialSource = (url: string) => SOCIAL.test(url)
+
 export async function startChannel(url: string): Promise<void> {
   const base = await serverBase()
   let res: Response
@@ -96,6 +104,7 @@ export function phaseText(j?: ChannelJob): string {
   if (j.state === 'error') return j.error || 'Coś poszło nie tak.'
   if (j.phase === 'lista' || j.phase === 'start') return 'Pobieram listę filmów…'
   if (j.phase === 'opisy') return `Sprawdzam opisy filmów: ${j.checked} z ${j.total}`
+  if (j.phase === 'strony') return `Sprawdzam strony z przepisami: ${j.checked} z ${j.total}`
   if (j.phase === 'komentarze') return `Sprawdzam komentarze autora: ${j.later_done} z ${Math.min(j.later, 300)}`
   return 'Gotowe'
 }
@@ -103,6 +112,7 @@ export function phasePct(j?: ChannelJob): number {
   if (!j) return 2
   if (j.state !== 'running') return 100
   if (j.phase === 'opisy') return 5 + Math.round(80 * j.checked / Math.max(1, j.total))
+  if (j.phase === 'strony') return 5 + Math.round(94 * j.checked / Math.max(1, j.total))
   if (j.phase === 'komentarze') return 85 + Math.round(15 * j.later_done / Math.max(1, Math.min(j.later, 300)))
   return 3
 }

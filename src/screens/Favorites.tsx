@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Link, useSearchParams } from 'react-router-dom'
-import { Plus, RefreshCw, Trash2, Tv, Search, AlertCircle } from 'lucide-react'
+import { Plus, RefreshCw, Trash2, Tv, Globe, Search, AlertCircle } from 'lucide-react'
 import { useIndex, useDemoted, useMine, useChannels } from '../components/hooks'
 import { RecipeCard } from '../components/RecipeCard'
 import { ChannelProgress } from '../components/ChannelPanel'
 import { db } from '../lib/db'
 import { fold } from '../lib/keys'
-import { deleteChannel, startChannel, useChannelJob } from '../lib/channel'
+import { deleteChannel, isSocialSource, startChannel, useChannelJob } from '../lib/channel'
 
 const PAGE = 40
 export default function Favorites() {
@@ -39,12 +39,12 @@ export default function Favorites() {
   }, [chKey, chRecipes, q, tab, mine, favs, rat, hist, byId])
   const running = job && !job.dismissed && job.job?.state === 'running'
   const refresh = async () => { setErr(''); try { await startChannel(ch!.url) } catch (e: any) { setErr(e.message) } }
-  const remove = async () => { if (ch && confirm(`Usunąć kanał „${ch.name}” i wszystkie jego przepisy (${ch.count}) z telefonu?`)) { await deleteChannel(ch.key); setTab('mine') } }
+  const remove = async () => { if (ch && confirm(`Usunąć „${ch.name}” i wszystkie jego przepisy (${ch.count}) z telefonu?`)) { await deleteChannel(ch.key); setTab('mine') } }
   return (
     <div className="page">
       <h1 className="ptitle">Moja kuchnia</h1>
       <div className="chips"><button className={tab === 'mine' ? 'on' : ''} onClick={() => setTab('mine')}>Moje przepisy ({mine.length})</button>
-        {channels.map(c => <button key={c.key} className={chKey === c.key ? 'on' : ''} onClick={() => { setTab('ch:' + c.key); setQ(''); setLimit(PAGE) }}><Tv size={15} /> {c.name} ({c.count})</button>)}
+        {channels.map(c => <button key={c.key} className={chKey === c.key ? 'on' : ''} onClick={() => { setTab('ch:' + c.key); setQ(''); setLimit(PAGE) }}>{isSocialSource(c.url) ? <Tv size={15} /> : <Globe size={15} />} {c.name} ({c.count})</button>)}
         <button className={tab === 'fav' ? 'on' : ''} onClick={() => setTab('fav')}>Ulubione ({favs.length})</button>
         <button className={tab === 'cooked' ? 'on' : ''} onClick={() => setTab('cooked')}>Ocenione / ugotowane</button>
         <button className={tab === 'hist' ? 'on' : ''} onClick={() => setTab('hist')}>Ostatnio oglądane</button></div>
@@ -54,7 +54,7 @@ export default function Favorites() {
           {err && <p className="errnote"><AlertCircle size={15} /> {err}</p>}
           <div className="actions">
             <button className="btn ghost" disabled={!!running || !ch.url} onClick={refresh}><RefreshCw size={16} /> Pobierz nowe</button>
-            <button className="btn ghost" disabled={!!running && job?.job?.key === ch.key} onClick={remove}><Trash2 size={16} /> Usuń kanał</button>
+            <button className="btn ghost" disabled={!!running && job?.job?.key === ch.key} onClick={remove}><Trash2 size={16} /> Usuń zakładkę</button>
           </div>
           {ch.count > 8 && <div className="searchbar"><Search size={18} /><input value={q} onChange={e => { setQ(e.target.value); setLimit(PAGE) }} placeholder={`Szukaj w „${ch.name}”…`} /></div>}
         </div>
