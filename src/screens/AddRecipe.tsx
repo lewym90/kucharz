@@ -154,7 +154,7 @@ export default function AddRecipe() {
           <textarea rows={Math.max(8, stepTxt.split('\n').length + 2)} value={stepTxt} onChange={e => setStepTxt(e.target.value)} /></label>
         <label className="fld">Wskazówka <small>(opcjonalnie)</small><input value={draft.tip ?? ''} onChange={e => set('tip', e.target.value || null)} /></label>
         {draft.src && <p className="muted small">Źródło: {draft.src}</p>}
-        <button className="btn gold wide" onClick={save}><Check size={18} /> Zapisz w „Moich przepisach”</button>
+        <button className="btn gold wide" onClick={save}><Check size={18} /> {editId ? 'Zapisz zmiany' : 'Zapisz w „Moich przepisach”'}</button>
         <button className="btn ghost wide" onClick={() => (editId || fromFridge ? nav(-1) : (setDraft(null), setErr(''), setExtras([]), autoPhoto && (setPhoto(null), setPhotoDirty(false), setAutoPhoto(false))))}>{editId ? 'Anuluj' : 'Wróć'}</button>
       </div>
     )

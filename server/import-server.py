@@ -289,6 +289,30 @@ FRAC = {'½': 0.5, '¼': 0.25, '¾': 0.75, '⅓': 1 / 3, '⅔': 2 / 3, '⅛': 0.
 HEAD_ING = re.compile(r'^\s*(?:#+\s*)?(sk[łl]adniki|ingredients?|potrzebujesz|you(?:\'| wi)ll need|na (?:\d+ )?porcj\w+|do przepisu)\b.*?:?\s*$', re.I)
 HEAD_STEP = re.compile(r'^\s*(?:#+\s*)?(przygotowanie|spos[óo]b (?:przygotowania|wykonania)|wykonanie|kroki|instrukcja|instructions?|directions?|method|steps?|jak zrobi[ćc])\b.*?:?\s*$', re.I)
 
+# wartości odżywcze i metadane – nigdy nie są składnikami ani krokami („565 kcal”, „35 g białka”, „B: 35”, „10 min”)
+NUTRI = re.compile(r'kcal|kalori|calorie|\bmakr[oa]|macros?\b|warto[śs]\w*\s+od[żz]ywcz|nutrition|w[ęe]glowodan|b[łl]onnik|\bprotein|\bcarbs?\b|\bfats?\b|\bfiber\b'
+                   r'|^\W*[BTW]\s*[:=]?\s*\d+[.,]?\d*\s*g?\W*$|(?:^|[|,;]\s*)[BTW]\s*[:=]?\s*\d+[.,]?\d*\s*g?\s*(?:[|,;]|$)'
+                   r'|\d+(?:[.,]\d+)?\s*g\s+(?:bia[łl]k[ao]?|t[łl]uszcz\w*|w[ęe]gl\w*)\b(?!\s+(?:jaj|z\s))'
+                   r'|(?:bia[łl]k\w*|t[łl]uszcz\w*)\s*[:=-]?\s*\d+(?:[.,]\d+)?\s*g\b', re.I)
+META_LINE = re.compile(r'^\W*(?:\d+\s*(?:min\w*|h|godz\w*)|\d+\s*porcj\w*|porcj\w*\W*\d+|czas\b.{0,40}|(?:serves|servings?)\W*\d+)\W*$', re.I)
+QTY = r'(\d+\s+\d+/\d+|\d+/\d+|\d+(?:[.,]\d+)?(?:\s*[-–]\s*\d+(?:[.,]\d+)?)?\s*[½¼¾⅓⅔⅛]?|[½¼¾⅓⅔⅛])'
+TRAIL = re.compile(r'^(.*?[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż].*?)\s*[-–:]?\s*' + QTY + r'\s*([A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż.]+)?\s*(\(.*\))?\s*$')
+LEAD_ING = re.compile(r'^\s*(?:[-•*·▪►✔✅👉🔸🔹●○]\s*)?(?:\d+(?:[.,/]\d+)?|[½¼¾⅓⅔⅛])\s*(?:[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż.]+)\b')
+BULLET = re.compile(r'^\s*[-•*·▪►✔✅👉🔸🔹●○]\s*\S')
+
+
+def is_trail_ing(l):
+    """„pierś kurczaka 360 g”, „oliwa - 30 ml (…)”, „ogórek 1 szt.” – ilość na końcu."""
+    m = TRAIL.match(re.sub(r'^[\s\-•*·▪►✔✅👉🔸🔹●○]+', '', l))
+    if not m or len(l) > 90 or len(m.group(1)) > 60:
+        return False
+    u = (m.group(3) or '').lower()
+    return not u or u in UNIT_MAP or u.rstrip('.') in UNIT_MAP
+
+
+def ing_like(l):
+    return len(l) < 90 and not l.rstrip().endswith(':') and (bool(LEAD_ING.match(l)) or is_trail_ing(l) or (bool(BULLET.match(l)) and len(l) < 70))
+
 
 def to_float(tok):
     tok = tok.strip().replace(',', '.')
@@ -315,6 +339,12 @@ def parse_ing_line(line):
     if not s:
         return None
     m = re.match(r'^(\d+\s+\d+/\d+|\d+/\d+|\d+(?:[.,]\d+)?(?:\s*[-–]\s*\d+(?:[.,]\d+)?)?\s*[½¼¾⅓⅔⅛]?|[½¼¾⅓⅔⅛])\s*(.*)$', s)
+    if not m and is_trail_ing(s):
+        t = TRAIL.match(s)
+        u = (t.group(3) or '').lower()
+        u = UNIT_MAP.get(u) or UNIT_MAP.get(u.rstrip('.'))
+        name = t.group(1).strip(' -–:,.') + (' ' + t.group(4) if t.group(4) else '')
+        return conv_unit(name, to_float(re.split(r'\s*[-–]\s*', t.group(2))[-1]), u)
     if not m:
         pm = re.match(r'^(szczypt\w+|odrobin\w+|pinch of)\s+(.*)$', s, re.I)
         if pm:
@@ -329,6 +359,10 @@ def parse_ing_line(line):
         unit = UNIT_MAP[um.group(1).lower()]
         rest = um.group(2)
         rest = re.sub(r'^(of|z|ze)\s+', '', rest, flags=re.I)
+    return conv_unit(rest.strip(' ,.') or s, qty, unit)
+
+
+def conv_unit(name, qty, unit):
     if unit == 'dag' and qty is not None:
         qty, unit = qty * 10, 'g'
     elif unit == 'oz' and qty is not None:
@@ -339,14 +373,18 @@ def parse_ing_line(line):
         qty, unit = qty * 250, 'ml'
     if unit is None and qty is not None:
         unit = 'szt.'
-    return {'name': rest.strip(' ,.') or s, 'qty': qty, 'unit': unit}
+    return {'name': name, 'qty': qty, 'unit': unit}
 
 
 def split_sections(text):
     lines = [l.rstrip() for l in text.replace('\r', '').split('\n')]
     ing, steps, other, mode = [], [], [], None
+    first_ing = None
     for l in lines:
         if not l.strip():
+            continue
+        if NUTRI.search(l) or META_LINE.match(l):
+            other.append(l)  # makro, kalorie, czas, porcje – tylko do metadanych
             continue
         if HEAD_ING.match(l):
             mode = 'i'
@@ -354,14 +392,24 @@ def split_sections(text):
         if HEAD_STEP.match(l):
             mode = 's'
             continue
-        (ing if mode == 'i' else steps if mode == 's' else other).append(l)
-    if not ing and not steps:
-        ing_like = [l for l in other if re.match(r'^\s*(?:[-•*·▪►✔✅👉🔸🔹●○]\s*)?(?:\d+(?:[.,/]\d+)?|[½¼¾⅓⅔⅛])\s*(?:[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż.]+)\b', l)
-                    and len(l) < 90]
-        if len(ing_like) >= 3:
-            ing = ing_like
-            steps = [l for l in other if l not in ing_like and len(l) > 30]
-            other = [l for l in other if l not in ing_like and l not in steps]
+        if mode == 'i':
+            if l.rstrip().endswith(':') and not re.search(r'\d', l):
+                continue  # podsekcja, np. „Sos:”
+            ing.append(l)
+        elif mode == 's':
+            steps.append(l)
+        else:
+            other.append(l)
+    if not ing:
+        # brak nagłówka „Składniki”: składniki to krótkie linie z ilością (na początku albo na końcu) lub punktory
+        cand = [i for i, l in enumerate(other) if ing_like(l) and not NUTRI.search(l) and not META_LINE.match(l)]
+        if len(cand) >= 3:
+            first_ing = cand[0]
+            ing = [other[i] for i in cand]
+            rest = [(i, l) for i, l in enumerate(other) if i not in cand]
+            if not steps:
+                steps = [l for i, l in rest if i > first_ing and len(l) > 30 and not l.rstrip().endswith(':') and not NUTRI.search(l)]
+            other = [l for i, l in rest if l not in steps]
     return other, ing, steps
 
 
@@ -377,13 +425,19 @@ def heuristic(text, title=''):
     if len(items) < 2 or len(st) < 1:
         return None
     ttl = title or (other[0][:80] if other else 'Przepis z linku')
-    summ = ' '.join(o for o in other[1:3])[:240] if len(other) > 1 else ''
+    desc = [o for o in other if not (o.rstrip().endswith(':') and len(o) < 30) and not NUTRI.search(o) and not META_LINE.match(o)]
+    summ = ' '.join(o for o in desc[1:3])[:240] if len(desc) > 1 else ''
     meta_txt = '\n'.join(other + [l for l in steps if len(l) < 40])
     mm = re.search(r'(\d+)\s*(?:min|minut)', meta_txt, re.I)
-    sv = re.search(r'(?:porcj\w*|osób|os\.|serves|servings?)\D{0,3}(\d+)|(\d+)\s*(?:porcj|osób|servings)', meta_txt, re.I)
+    serv = None
+    for m2 in re.finditer(r'(\d+)\s*(?:porcj|osób|os\.|servings)|(?:porcj\w*|osób|serves|servings?)\W{0,3}(\d+)(?!\s*(?:kcal|g\b|[.,]\d))', text, re.I):
+        v = int(m2.group(1) or m2.group(2))
+        if 1 <= v <= 20:
+            serv = v
+            break
     return {
         'title': ttl.strip(' #*-'), 'summary': summ, 'category': 'obiad', 'minutes': int(mm.group(1)) if mm else 30, 'difficulty': 2,
-        'servings': int((sv.group(1) or sv.group(2))) if sv else 2, 'cuisine': '', 'tags': [], 'ingredients': items, 'steps': st, 'tip': None,
+        'servings': serv or 2, 'cuisine': '', 'tags': [], 'ingredients': items, 'steps': st, 'tip': None,
     }
 
 
@@ -1416,7 +1470,7 @@ class H(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if urllib.parse.urlparse(self.path).path in ('/health', '/zdrowie'):
-            return self.send(200, {'ok': True, 'v': 6, 'features': ['komentarze', 'zdjecia', 'lodowka', 'zdjecie-dania', 'kanal', 'strona', 'instagram-zapas'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
+            return self.send(200, {'ok': True, 'v': 7, 'features': ['parser-v2', 'komentarze', 'zdjecia', 'lodowka', 'zdjecie-dania', 'kanal', 'strona', 'instagram-zapas'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
         m = re.match(r'^/channel/([\w-]+)(/recipes)?$', urllib.parse.urlparse(self.path).path)
         if m:
             job = jobs.get(m.group(1))

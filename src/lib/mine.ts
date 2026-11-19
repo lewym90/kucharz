@@ -180,6 +180,8 @@ export function parseText(text: string): Draft | null {
 }
 export async function saveMine(d: Draft, id?: string): Promise<string> {
   const r = toRecipe(d, id)
-  await db.mine.put({ ...r, at: Date.now() })
+  // edycja przepisu z kanału: zostaje w zakładce kanału i jest oznaczony jako poprawiony ręcznie (naprawa go nie nadpisze)
+  const old = id ? await db.mine.get(id) : undefined
+  await db.mine.put({ ...r, at: old?.at ?? Date.now(), ...(old?.ch ? { ch: old.ch, edited: true } : {}) })
   return r.id
 }

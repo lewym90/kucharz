@@ -15,7 +15,7 @@ import AddRecipe from './screens/AddRecipe'
 import Onboarding from './screens/Onboarding'
 import { getSetting, setSetting } from './lib/db'
 import { leftOf, stopAlarm, useTimers } from './lib/timerStore'
-import { syncChannel } from './lib/channel'
+import { autoRepair, syncChannel } from './lib/channel'
 
 export default function App() {
   const [ready, setReady] = useState(false)
@@ -33,7 +33,8 @@ export default function App() {
   useEffect(() => { // przepisy z kanału dochodzą w tle, gdy aplikacja jest otwarta
     const tick = () => { if (document.visibilityState === 'visible') syncChannel() }
     tick(); const t = setInterval(tick, 4000); document.addEventListener('visibilitychange', tick)
-    return () => { clearInterval(t); document.removeEventListener('visibilitychange', tick) }
+    const r = setTimeout(autoRepair, 5000) // naprawa przepisów z kanałów pobranych starszą wersją
+    return () => { clearInterval(t); clearTimeout(r); document.removeEventListener('visibilitychange', tick) }
   }, [])
   const hideNav = loc.pathname.startsWith('/cook/')
   if (splash || !ready) return <div className="splash"><img src={import.meta.env.BASE_URL + 'img/splash.webp'} alt="Książka Kucharska" /></div>

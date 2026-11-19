@@ -9,7 +9,9 @@ export type ChannelJob = {
   id: string; url: string; name: string; key: string; state: 'running' | 'done' | 'error'; phase: string
   total: number; checked: number; found: number; later: number; later_done: number; error: string
 }
-type Saved = { id: string; url: string; saved: number; added: number; job?: ChannelJob; dismissed?: boolean }
+type Saved = { id: string; url: string; saved: number; added: number; fixed?: number; repair?: boolean; job?: ChannelJob; dismissed?: boolean }
+/** wersja parsera na serwerze, od której przepisy z kanałów są poprawne (bez makro zamiast składników) */
+export const PARSER_V = 7
 
 let current: Saved | null = null
 const subs = new Set<() => void>()
@@ -34,7 +36,7 @@ export const isSiteUrl = (u: string) => {
 export const isFacebookProfile = (u: string) => /facebook\.com\/(?!share|watch|reel|groups\/[^/]+\/(posts|permalink)|[^/]+\/(posts|videos|photos)\/|story\.php|permalink\.php|photo)[\w.-]+\/?(\?.*)?$/i.test(u.trim())
 export const isSocialSource = (url: string) => SOCIAL.test(url)
 
-export async function startChannel(url: string): Promise<void> {
+export async function startChannel(url: string, repair = false): Promise<void> {
   const base = await serverBase()
   let res: Response
   try {
@@ -43,7 +45,7 @@ export async function startChannel(url: string): Promise<void> {
   if (res.status === 404) throw new Error('Serwer nie zna jeszcze tej funkcji – trzeba go zaktualizować.')
   const j = await res.json().catch(() => null)
   if (!res.ok || !j?.ok) throw new Error(j?.error ?? 'Nie udało się zacząć pobierania (' + res.status + ').')
-  current = { id: j.job.id, url: url.trim(), saved: 0, added: 0, job: j.job }
+  current = { id: j.job.id, url: url.trim(), saved: 0, added: 0, fixed: 0, repair, job: j.job }
   await persist(); emit()
   syncChannel()
 }
@@ -71,7 +73,16 @@ export async function syncChannel(): Promise<void> {
       if (!rj?.ok || !rj.recipes?.length) break
       for (const r of rj.recipes) {
         const id = 'mine:' + (job.key || 'kanal').slice(0, 24) + '-' + (r.vid || current.saved)
-        if (!(await db.mine.get(id))) {
+        const old = await db.mine.get(id)
+        if (old && current.repair && !old.edited) {
+          // naprawa: nowa wersja składników i kroków; zdjęcie, ocena, ulubione i plan zostają (są zapisane osobno)
+          const d = fromServer(r)
+          await db.mine.put({ ...toRecipe(d, id), at: old.at, ch: job.key })
+          if (d.image && !(await db.thumbs.get(id))) {
+            try { const b = await (await fetch(d.image)).blob(); await putPhoto(id, await processPhoto(new File([b], 'danie', { type: b.type || 'image/jpeg' }))) } catch { /* bez zdjęcia */ }
+          }
+          current.fixed = (current.fixed ?? 0) + 1
+        } else if (!old) {
           const d = fromServer(r)
           const rec = toRecipe(d, id)
           await db.mine.put({ ...rec, at: Date.now(), ch: job.key })
@@ -84,9 +95,38 @@ export async function syncChannel(): Promise<void> {
       }
       await persist(); emit()
     }
+    if (job.state === 'done' && current.saved >= job.found && current.repair && job.key) await db.colls.update('ch:' + job.key, { fixV: PARSER_V })
     await persist(); emit()
   } catch { /* brak sieci – spróbujemy za chwilę */ }
   finally { busy = false }
+}
+
+// ── naprawa przepisów pobranych starszą wersją (makro zamiast składników) ──
+const BAD_ING = /kcal|kalori|makro|warto[śs]\w* od[żz]ywcz|w[ęe]glowodan|^\W*[BTW]\s*[:=]\s*\d|^(min|t[łl]uszcz\w*)$/i
+export function looksBroken(m: { ing: { n: string; q: number | null; u: string | null }[]; steps: string[] }) {
+  return m.ing.some(i => BAD_ING.test(i.n) || (/^bia[łl]k/i.test(i.n) && i.u === 'g') || (i.q == null && /\d+\s*(g|ml|kg|l)\b\s*(\(.*\))?$/i.test(i.n)))
+    || m.ing.length < 3 || /:\s*$/.test(m.steps[0] ?? '')
+}
+let repairTried = false
+/** Raz po aktualizacji: jeśli któryś kanał ma zepsute przepisy, pobiera go ponownie i poprawia (tylko nieedytowane). */
+export async function autoRepair() {
+  if (repairTried) return
+  if (current && !current.dismissed && current.job?.state === 'running') return
+  repairTried = true
+  try {
+    const chans = (await db.colls.toArray()).filter(c => c.id.startsWith('ch:') && (c.fixV ?? 0) < PARSER_V && c.url)
+    if (!chans.length) return
+    const mine = await db.mine.toArray()
+    const h = await (await fetch((await serverBase()) + '/health', { signal: AbortSignal.timeout(10000) })).json()
+    if (!(h?.v >= PARSER_V)) { repairTried = false; return } // serwer jeszcze nie zaktualizowany – spróbujemy przy następnym otwarciu
+    for (const c of chans) {
+      const key = c.id.slice(3)
+      const broken = mine.filter(m => m.ch === key && !m.edited && looksBroken(m)).length
+      if (!broken) { await db.colls.update(c.id, { fixV: PARSER_V }); continue }
+      await startChannel(c.url!, true)
+      return // jeden kanał naraz; kolejny przy następnym otwarciu aplikacji
+    }
+  } catch { repairTried = false }
 }
 
 /** Usuwa kanał: wszystkie jego przepisy, zdjęcia, oceny i wpisy w planie. */
