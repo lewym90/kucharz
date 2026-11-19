@@ -11,7 +11,7 @@ export type ChannelJob = {
 }
 type Saved = { id: string; url: string; saved: number; added: number; fixed?: number; repair?: boolean; job?: ChannelJob; dismissed?: boolean }
 /** wersja parsera na serwerze, od której przepisy z kanałów są poprawne (bez makro zamiast składników) */
-export const PARSER_V = 7
+export const PARSER_V = 9
 
 let current: Saved | null = null
 const subs = new Set<() => void>()
@@ -105,10 +105,10 @@ export async function syncChannel(): Promise<void> {
 const BAD_ING = /kcal|kalori|makro|warto[śs]\w* od[żz]ywcz|w[ęe]glowodan|^\W*[BTW]\s*[:=]\s*\d|^(min|t[łl]uszcz\w*)$/i
 export function looksBroken(m: { ing: { n: string; q: number | null; u: string | null }[]; steps: string[] }) {
   return m.ing.some(i => BAD_ING.test(i.n) || (/^bia[łl]k/i.test(i.n) && i.u === 'g') || (i.q == null && /\d+\s*(g|ml|kg|l)\b\s*(\(.*\))?$/i.test(i.n)))
-    || m.ing.length < 3 || /:\s*$/.test(m.steps[0] ?? '')
+    || m.ing.length < 3 || m.steps.some(s => /:\s*$/.test(s) || /\bkcal\b|w tym odcinku|w dzisiejszym odcinku|zapraszam|subskryb/i.test(s))
 }
 let repairTried = false
-/** Raz po aktualizacji: jeśli któryś kanał ma zepsute przepisy, pobiera go ponownie i poprawia (tylko nieedytowane). */
+/** Raz po aktualizacji parsera: pobiera kanał ponownie i poprawia przepisy (tylko nieedytowane), dokłada brakujące. */
 export async function autoRepair() {
   if (repairTried) return
   if (current && !current.dismissed && current.job?.state === 'running') return
@@ -119,13 +119,10 @@ export async function autoRepair() {
     const mine = await db.mine.toArray()
     const h = await (await fetch((await serverBase()) + '/health', { signal: AbortSignal.timeout(10000) })).json()
     if (!(h?.v >= PARSER_V)) { repairTried = false; return } // serwer jeszcze nie zaktualizowany – spróbujemy przy następnym otwarciu
-    for (const c of chans) {
-      const key = c.id.slice(3)
-      const broken = mine.filter(m => m.ch === key && !m.edited && looksBroken(m)).length
-      if (!broken) { await db.colls.update(c.id, { fixV: PARSER_V }); continue }
-      await startChannel(c.url!, true)
-      return // jeden kanał naraz; kolejny przy następnym otwarciu aplikacji
-    }
+    // po każdej poprawie parsera każdy kanał jest raz przeglądany od nowa: dochodzą przepisy, których starsza wersja
+    // nie rozpoznała, a zepsute są poprawiane (nadpisywane tylko nieedytowane). Najpierw kanały z zepsutymi przepisami.
+    chans.sort((a, b) => Number(!mine.some(m => m.ch === b.id.slice(3) && looksBroken(m))) - Number(!mine.some(m => m.ch === a.id.slice(3) && looksBroken(m))))
+    await startChannel(chans[0].url!, true) // jeden kanał naraz; kolejny przy następnym otwarciu aplikacji
   } catch { repairTried = false }
 }
 
@@ -145,7 +142,7 @@ export function phaseText(j?: ChannelJob): string {
   if (j.phase === 'lista' || j.phase === 'start') return 'Pobieram listę filmów…'
   if (j.phase === 'opisy') return `Sprawdzam opisy filmów: ${j.checked} z ${j.total}`
   if (j.phase === 'strony') return `Sprawdzam strony z przepisami: ${j.checked} z ${j.total}`
-  if (j.phase === 'komentarze') return `Sprawdzam komentarze autora: ${j.later_done} z ${Math.min(j.later, 300)}`
+  if (j.phase === 'komentarze') return `Sprawdzam komentarze autora: ${Math.min(j.later_done, j.later)} z ${j.later}`
   return 'Gotowe'
 }
 export function phasePct(j?: ChannelJob): number {
@@ -153,6 +150,6 @@ export function phasePct(j?: ChannelJob): number {
   if (j.state !== 'running') return 100
   if (j.phase === 'opisy') return 5 + Math.round(80 * j.checked / Math.max(1, j.total))
   if (j.phase === 'strony') return 5 + Math.round(94 * j.checked / Math.max(1, j.total))
-  if (j.phase === 'komentarze') return 85 + Math.round(15 * j.later_done / Math.max(1, Math.min(j.later, 300)))
+  if (j.phase === 'komentarze') return 85 + Math.round(15 * Math.min(j.later_done, j.later) / Math.max(1, j.later))
   return 3
 }

@@ -29,6 +29,7 @@ export default function Cook() {
     return () => { alive = false; document.removeEventListener('visibilitychange', get); lock?.release?.() }
   }, [])
   if (!r) return <div className="page"><p className="muted center">Ładowanie…</p></div>
+  if (!r.steps.length) return <div className="page"><p className="muted center">Ten przepis nie ma spisanych kroków – sposób przygotowania jest w filmie.</p><button className="btn ghost wide" onClick={() => nav(-1)}>Wróć</button></div>
   const serv = Number(sp.get('s')) || r.serv
   const f = serv / r.serv
   const step = r.steps[i]

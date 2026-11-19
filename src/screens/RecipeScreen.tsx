@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { ArrowLeft, Heart, Clock, Gauge, Users, Minus, Plus, ShoppingCart, CalendarPlus, Star, Play, Lightbulb, Pencil, Trash2, ExternalLink, Camera, ImagePlus, X } from 'lucide-react'
+import { ArrowLeft, Heart, Clock, Gauge, Users, Minus, Plus, ShoppingCart, CalendarPlus, Star, Play, Lightbulb, Pencil, Trash2, ExternalLink, Camera, ImagePlus, X, Youtube, Sparkles, Loader2 } from 'lucide-react'
 import type { Recipe } from '../lib/types'
 import { DIFF, catLabel } from '../lib/types'
 import { loadRecipe } from '../lib/data'
@@ -9,7 +9,7 @@ import { db, setSetting } from '../lib/db'
 import { fmtIng, fmtMin, todayLocal } from '../lib/format'
 import { addRecipeToShopping } from '../lib/shopping'
 import { useDemoted } from '../components/hooks'
-import { isMine } from '../lib/mine'
+import { importFrom, isMine } from '../lib/mine'
 import { delPhoto, processPhoto, putPhoto } from '../lib/photos'
 
 const SLOTS = ['Śniadanie', 'II śniadanie', 'Obiad', 'Podwieczorek', 'Kolacja']
@@ -23,6 +23,7 @@ export default function RecipeScreen() {
   const [planOpen, setPlanOpen] = useState(false)
   const [date, setDate] = useState(todayLocal())
   const [slot, setSlot] = useState('Obiad')
+  const [fill, setFill] = useState<{ busy: boolean; err: string }>({ busy: false, err: '' })
   const fav = useLiveQuery(() => db.favs.get(id), [id])
   const rating = useLiveQuery(() => db.ratings.get(id), [id])
   const demoted = useDemoted()
@@ -37,6 +38,19 @@ export default function RecipeScreen() {
   if (r === null) return <div className="page"><button className="iconbtn" onClick={() => nav(-1)}><ArrowLeft /></button><p>Nie znaleziono przepisu.</p></div>
   const f = serv / r.serv
   const sig = r.tags.includes('signature') && !demoted.has(r.id)
+  const noSteps = r.steps.length === 0
+  // przepis z kanału, w którym autor spisał tylko składniki: kroki z filmu na żądanie (AI tylko dla tego jednego przepisu)
+  const fillSteps = async () => {
+    setFill({ busy: true, err: '' })
+    try {
+      const { draft } = await importFrom({ url: r.src })
+      if (!draft.steps.length) throw new Error('W filmie nie udało się odczytać kroków. Spróbuj ponownie za chwilę.')
+      const m = await db.mine.get(id)
+      if (m) await db.mine.put({ ...m, steps: draft.steps, tip: m.tip ?? draft.tip ?? null })
+      setR(await loadRecipe(id) ?? r)
+      setFill({ busy: false, err: '' }); flash('Kroki uzupełnione z filmu')
+    } catch (e: any) { setFill({ busy: false, err: e.message || 'Nie udało się uzupełnić kroków.' }) }
+  }
   const setRating = (stars: number) => db.ratings.put({ id, stars, note: rating?.note ?? '', cooked: rating?.cooked ?? true, at: Date.now() })
   const toggleSig = async () => { const s = new Set(demoted); s.has(id) ? s.delete(id) : s.add(id); await setSetting('demoted', [...s]) }
   return (
@@ -71,7 +85,7 @@ export default function RecipeScreen() {
         </div>
       )}
       {isMine(id) && /^https?:\/\//.test(r.src) && <p className="muted small"><a className="srclink" href={r.src} target="_blank" rel="noreferrer"><ExternalLink size={13} /> Źródło przepisu</a></p>}
-      <Link className="btn gold wide" to={`/cook/${encodeURIComponent(id)}?s=${serv}`}><Play size={18} /> Gotuj krok po kroku</Link>
+      {!noSteps && <Link className="btn gold wide" to={`/cook/${encodeURIComponent(id)}?s=${serv}`}><Play size={18} /> Gotuj krok po kroku</Link>}
       <div className="actions">
         <button className="btn ghost" onClick={async () => { await addRecipeToShopping(r, serv); flash('Dodano do listy zakupów') }}><ShoppingCart size={16} /> Do zakupów</button>
         <button className="btn ghost" onClick={() => setPlanOpen(o => !o)}><CalendarPlus size={16} /> Do planu</button>
@@ -94,7 +108,16 @@ export default function RecipeScreen() {
       </section>
       <section className="section">
         <div className="section-h"><h2>Przygotowanie</h2></div>
-        <ol className="steps">{r.steps.map((s, i) => <li key={i}>{s}</li>)}</ol>
+        {noSteps ? (
+          <div className="nosteps">
+            <p>Autor spisał w opisie tylko składniki – sposób przygotowania pokazuje w filmie.</p>
+            {/^https?:\/\//.test(r.src) && <a className="btn ghost wide" href={r.src} target="_blank" rel="noreferrer"><Youtube size={18} /> Obejrzyj film</a>}
+            {/^https?:\/\//.test(r.src) && (fill.busy
+              ? <div className="loadbox"><Loader2 className="spin" size={22} /><div><b>Oglądam film i spisuję kroki…</b><small>Zwykle 20 do 60 sekund.</small></div></div>
+              : <button className="btn gold wide" onClick={fillSteps}><Sparkles size={18} /> Uzupełnij kroki z filmu</button>)}
+            {fill.err && <p className="errnote">{fill.err}</p>}
+          </div>
+        ) : <ol className="steps">{r.steps.map((s, i) => <li key={i}>{s}</li>)}</ol>}
         {r.tip && <div className="tip"><Lightbulb size={18} /><p>{r.tip}</p></div>}
       </section>
       <section className="section">

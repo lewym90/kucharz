@@ -113,7 +113,8 @@ export default function AddRecipe() {
     const ing = ingTxt.split('\n').map(lineToIng).filter(Boolean) as Draft['ing']
     const steps = stepTxt.split(/\n+/).map(s => s.trim()).filter(Boolean)
     if (!draft.title.trim()) { setErr('Wpisz tytuł przepisu.'); return }
-    if (ing.length < 1 || steps.length < 1) { setErr('Dodaj przynajmniej jeden składnik i jeden krok.'); return }
+    if (ing.length < 1) { setErr('Dodaj przynajmniej jeden składnik.'); return }
+    if (steps.length < 1 && !(editId && draft.src)) { setErr('Dodaj przynajmniej jeden krok.'); return }
     const id = await saveMine({ ...draft, ing, steps }, editId ?? undefined)
     if (photoDirty) { if (photo) await putPhoto(id, photo); else await delPhoto(id) }
     nav('/przepis/' + encodeURIComponent(id), { replace: true })

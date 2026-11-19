@@ -202,3 +202,4 @@ label.btn{cursor:pointer}
 .devlist{margin:12px 0;display:grid;gap:8px}.devlist h3{font-size:15px;margin:0;color:var(--gold2);font-family:system-ui,-apple-system,sans-serif;font-weight:600}
 .dev{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
 .dev>div{flex:1;display:grid}.dev small{color:var(--mut)}.dev .link{color:#d98a7a}
+.nosteps{display:grid;gap:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--r);padding:14px}.nosteps p{margin:0}
