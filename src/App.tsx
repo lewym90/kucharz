@@ -16,6 +16,7 @@ import Onboarding from './screens/Onboarding'
 import { getSetting, setSetting } from './lib/db'
 import { leftOf, stopAlarm, useTimers } from './lib/timerStore'
 import { autoRepair, syncChannel } from './lib/channel'
+import { startAutoSync } from './lib/sync'
 
 export default function App() {
   const [ready, setReady] = useState(false)
@@ -34,6 +35,7 @@ export default function App() {
     const tick = () => { if (document.visibilityState === 'visible') syncChannel() }
     tick(); const t = setInterval(tick, 4000); document.addEventListener('visibilitychange', tick)
     const r = setTimeout(autoRepair, 5000) // naprawa przepisów z kanałów pobranych starszą wersją
+    startAutoSync() // synchronizacja z innymi urządzeniami (jeśli to urządzenie jest połączone)
     return () => { clearInterval(t); clearTimeout(r); document.removeEventListener('visibilitychange', tick) }
   }, [])
   const hideNav = loc.pathname.startsWith('/cook/')

@@ -196,3 +196,9 @@ label.btn{cursor:pointer}
 .chhead .actions{margin:0}
 .chnote{margin-top:8px}.chnote .link{padding:0;font-size:14px;text-decoration:underline}
 .warnbox{display:flex;gap:8px;align-items:flex-start}.warnbox>div{display:grid;gap:8px}.warnbox .btn.small{padding:8px 12px;font-size:14px;justify-self:start}
+.syncbox .fld{display:grid;gap:6px;margin:8px 0}.syncbox .fld span{font-size:14px;color:var(--mut)}
+.pwrow{display:flex;gap:8px;align-items:center}.pwrow .urlin{flex:1;margin:0}
+.syncstat{display:flex;gap:8px;align-items:flex-start;margin:4px 0 10px}.syncstat svg{flex:none;margin-top:3px;color:var(--gold)}
+.devlist{margin:12px 0;display:grid;gap:8px}.devlist h3{font-size:15px;margin:0;color:var(--gold2);font-family:system-ui,-apple-system,sans-serif;font-weight:600}
+.dev{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.dev>div{flex:1;display:grid}.dev small{color:var(--mut)}.dev .link{color:#d98a7a}

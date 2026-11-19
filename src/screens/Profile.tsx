@@ -4,6 +4,7 @@ import { Download, Upload, ChevronRight, Info, FileText } from 'lucide-react'
 import { exportBackup, importBackup, getSetting, setSetting } from '../lib/db'
 import { todayLocal } from '../lib/format'
 import { DEFAULT_IMPORT_URL, pingServer } from '../lib/mine'
+import { SyncPanel } from '../components/SyncPanel'
 
 export default function Profile() {
   const file = useRef<HTMLInputElement>(null)
@@ -26,7 +27,7 @@ export default function Profile() {
   }
   const doImport = async (f?: File) => {
     if (!f) return
-    try { await importBackup(await f.text()); setMsg('Kopia wczytana. Odśwież widok, aby zobaczyć dane.') } catch (e: any) { setMsg('Błąd: ' + e.message) }
+    try { await importBackup(await f.text()); setMsg('Kopia wczytana i dołożona do danych na tym urządzeniu.') } catch (e: any) { setMsg('Błąd: ' + e.message) }
   }
   return (
     <div className="page">
@@ -36,8 +37,9 @@ export default function Profile() {
         <Link className="row" to="/zakupy"><span>Lista zakupów</span><ChevronRight size={18} /></Link>
         <Link className="row" to="/zrodla"><span><FileText size={16} /> Źródła i licencje</span><ChevronRight size={18} /></Link>
       </div>
+      <SyncPanel />
       <section className="section"><div className="section-h"><h2>Kopia zapasowa</h2></div>
-        <p className="muted">Ulubione, oceny, notatki, plan, lista zakupów i lodówka są zapisane tylko w tej przeglądarce. Zrób kopię do pliku, aby przenieść je na inne urządzenie.</p>
+        <p className="muted">Kopia do pliku: przepisy, zdjęcia, ulubione, oceny, notatki, plan, lista zakupów i lodówka. Wczytanie kopii dokłada jej zawartość do tego, co jest na urządzeniu – niczego nie kasuje.</p>
         <div className="actions"><button className="btn gold" onClick={doExport}><Download size={16} /> Eksportuj</button>
           <button className="btn ghost" onClick={() => file.current?.click()}><Upload size={16} /> Importuj</button></div>
         <input ref={file} type="file" accept="application/json" hidden onChange={e => doImport(e.target.files?.[0])} />
@@ -55,7 +57,7 @@ export default function Profile() {
           location.reload()
         }}>Wymuś aktualizację aplikacji</button>
         <div className="verline"><span>Zbudowana</span><b>{__BUILD__}</b></div>
-        <p className="muted"><Info size={14} /> Książka Kucharska działa offline, bez kont, bez reklam i bez sztucznej inteligencji w czasie działania. Wszystkie dane zostają na Twoim urządzeniu.</p></section>
+        <p className="muted"><Info size={14} /> Książka Kucharska działa offline, bez kont, bez reklam i bez sztucznej inteligencji w czasie działania. Dane są na Twoim urządzeniu, a jeśli włączysz synchronizację – także na Twoim serwerze, wspólne dla połączonych urządzeń.</p></section>
     </div>
   )
 }

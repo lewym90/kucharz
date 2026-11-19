@@ -10,6 +10,7 @@ export type Hist = { id: string; at: number }
 export type Setting = { k: string; v: any }
 export type Mine = Recipe & { at: number; ch?: string; edited?: boolean }
 export type PhotoRow = { id: string; data: string }
+export type SyncMeta = { k: string; h: string }
 export type Collection = { id: string; name: string; rids: string[]; url?: string; at?: number; fixV?: number }
 
 class KDB extends Dexie {
@@ -24,6 +25,7 @@ class KDB extends Dexie {
   mine!: Table<Mine, string>
   photos!: Table<PhotoRow, string>
   thumbs!: Table<PhotoRow, string>
+  syncmeta!: Table<SyncMeta, string>
   constructor() {
     super('ksiazka-kucharska')
     this.version(1).stores({
@@ -31,6 +33,7 @@ class KDB extends Dexie {
     })
     this.version(2).stores({ mine: 'id,at' })
     this.version(3).stores({ photos: 'id', thumbs: 'id' })
+    this.version(4).stores({ syncmeta: 'k' })
   }
 }
 export const db = new KDB()
@@ -46,10 +49,15 @@ export async function exportBackup(): Promise<string> {
   for (const t of TABLES) out[t] = await (db as any)[t].toArray()
   return JSON.stringify(out)
 }
+/** Wczytuje kopię, DOKŁADAJĄC ją do tego, co jest na urządzeniu (nic nie jest kasowane; przy tym samym przepisie wygrywa kopia). */
 export async function importBackup(json: string) {
   const d = JSON.parse(json)
   if (d.app !== 'ksiazka-kucharska') throw new Error('To nie jest kopia zapasowa Książki Kucharskiej.')
   await db.transaction('rw', TABLES.map(t => (db as any)[t]), async () => {
-    for (const t of TABLES) { await (db as any)[t].clear(); if (Array.isArray(d[t])) await (db as any)[t].bulkPut(d[t]) }
+    for (const t of TABLES) {
+      if (!Array.isArray(d[t])) continue
+      if (t === 'settings') { for (const s of d[t]) if (!['sync', 'channelJob'].includes(s.k)) await db.settings.put(s); continue }
+      await (db as any)[t].bulkPut(d[t])
+    }
   })
 }

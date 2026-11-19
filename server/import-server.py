@@ -1441,6 +1441,195 @@ def job_status(job):
     return {k: job.get(k) for k in ('id', 'url', 'name', 'key', 'state', 'phase', 'total', 'checked', 'found', 'later', 'later_done', 'error')}
 
 
+# ───────────────────────── synchronizacja między wybranymi urządzeniami ─────────────────────────
+# Jedno hasło = jedna „kuchnia”. Urządzenie wpisuje hasło raz i dostaje własny klucz (token), hasło nie jest nigdzie zapisywane.
+# Każdy wpis (przepis, zdjęcie, ulubione, ocena, plan, zakupy, lodówka, zakładka kanału) ma czas zmiany – wygrywa nowsza zmiana.
+# Usunięcie to osobny wpis („nagrobek”), więc znika tylko to, co ktoś naprawdę usunął. Codzienna kopia bazy, 30 dni wstecz.
+import sqlite3, hashlib, secrets
+SYNC_DB = os.environ.get('SYNC_DB', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sync.db'))
+SYNC_TABLES = {'mine', 'photos', 'thumbs', 'favs', 'ratings', 'plan', 'shop', 'pantry', 'colls'}
+sync_lock = threading.Lock()
+join_hits = defaultdict(deque)
+_sdb = None
+
+
+def sdb():
+    global _sdb
+    if _sdb is None:
+        c = sqlite3.connect(SYNC_DB, check_same_thread=False, timeout=30)
+        c.execute('PRAGMA journal_mode=WAL')
+        c.executescript("""
+            CREATE TABLE IF NOT EXISTS kitchens(id TEXT PRIMARY KEY, created REAL);
+            CREATE TABLE IF NOT EXISTS devices(id TEXT PRIMARY KEY, kitchen TEXT, name TEXT, token_hash TEXT UNIQUE, created REAL, seen REAL);
+            CREATE TABLE IF NOT EXISTS records(kitchen TEXT, tbl TEXT, key TEXT, val TEXT, u INTEGER, dev TEXT, seq INTEGER,
+                                               PRIMARY KEY(kitchen, tbl, key));
+            CREATE INDEX IF NOT EXISTS rec_seq ON records(kitchen, seq);
+            CREATE TABLE IF NOT EXISTS counter(id INTEGER PRIMARY KEY CHECK(id = 1), seq INTEGER);
+            INSERT OR IGNORE INTO counter(id, seq) VALUES(1, 0);
+        """)
+        c.commit()
+        _sdb = c
+    return _sdb
+
+
+def kitchen_id(pw):
+    return hashlib.pbkdf2_hmac('sha256', pw.encode('utf-8'), b'kucharz-sync-v1', 200_000).hex()[:40]
+
+
+def sync_auth(token):
+    if not token:
+        raise Fail('auth', 'To urządzenie nie jest połączone z synchronizacją.')
+    h = hashlib.sha256(token.encode()).hexdigest()
+    with sync_lock:
+        row = sdb().execute('SELECT id, kitchen FROM devices WHERE token_hash=?', (h,)).fetchone()
+        if not row:
+            raise Fail('auth', 'To urządzenie zostało odłączone od synchronizacji. Wpisz hasło jeszcze raz.')
+        sdb().execute('UPDATE devices SET seen=? WHERE id=?', (time.time(), row[0]))
+        sdb().commit()
+    return row[1], row[0]
+
+
+def devices_of(kitchen, me=None):
+    rows = sdb().execute('SELECT id, name, created, seen FROM devices WHERE kitchen=? ORDER BY created', (kitchen,)).fetchall()
+    return [{'id': r[0], 'name': r[1], 'created': r[2], 'seen': r[3], 'me': r[0] == me} for r in rows]
+
+
+def sync_join(body, ip):
+    now = time.time()
+    q = join_hits[ip]
+    while q and now - q[0] > 3600:
+        q.popleft()
+    if len(q) >= 10:
+        raise Fail('limit', 'Za dużo prób hasła. Spróbuj za godzinę.')
+    q.append(now)
+    pw = str(body.get('password') or '')
+    if len(pw) < 6:
+        raise Fail('weak', 'Hasło musi mieć co najmniej 6 znaków.')
+    name = re.sub(r'\s+', ' ', str(body.get('device') or 'Urządzenie')).strip()[:40] or 'Urządzenie'
+    kid = kitchen_id(pw)
+    with sync_lock:
+        c = sdb()
+        exists = c.execute('SELECT 1 FROM kitchens WHERE id=?', (kid,)).fetchone()
+        if not exists:
+            if not body.get('create'):
+                raise Fail('no_kitchen', 'Nie ma jeszcze synchronizacji z takim hasłem.')
+            c.execute('INSERT INTO kitchens(id, created) VALUES(?, ?)', (kid, now))
+        token = secrets.token_urlsafe(32)
+        did = secrets.token_urlsafe(9)
+        c.execute('INSERT INTO devices(id, kitchen, name, token_hash, created, seen) VALUES(?,?,?,?,?,?)',
+                  (did, kid, name, hashlib.sha256(token.encode()).hexdigest(), now, now))
+        c.commit()
+        return {'token': token, 'device': did, 'created': not exists, 'devices': devices_of(kid, did)}
+
+
+def sync_pull(kitchen, since):
+    out, size, last = [], 0, since
+    with sync_lock:
+        rows = sdb().execute('SELECT tbl, key, val, u, dev, seq FROM records WHERE kitchen=? AND seq>? ORDER BY seq LIMIT 3000',
+                             (kitchen, since)).fetchall()
+        top = sdb().execute('SELECT seq FROM counter WHERE id=1').fetchone()[0]
+    for t, k, v, u, d, sq in rows:
+        size += len(v or '') + len(k) + 60
+        if out and size > 4_000_000:
+            break
+        out.append({'t': t, 'k': k, 'v': json.loads(v) if v is not None else None, 'u': u, 'd': d})
+        last = sq
+    return {'records': out, 'last': last, 'more': len(out) < len(rows) or len(rows) == 3000, 'top': top}
+
+
+def sync_push(kitchen, dev, records):
+    if not isinstance(records, list) or len(records) > 5000:
+        raise Fail('json', 'Błędne dane synchronizacji.')
+    acc, newer, nsize = 0, [], 0
+    with sync_lock:
+        c = sdb()
+        seq = c.execute('SELECT seq FROM counter WHERE id=1').fetchone()[0]
+        for r in records:
+            t, k, u = r.get('t'), str(r.get('k') or ''), r.get('u')
+            if t not in SYNC_TABLES or not k or len(k) > 300 or not isinstance(u, (int, float)):
+                continue
+            v = r.get('v')
+            val = None if v is None else json.dumps(v, ensure_ascii=False, separators=(',', ':'))
+            if val is not None and len(val) > 6_000_000:
+                continue
+            ex = c.execute('SELECT u, val FROM records WHERE kitchen=? AND tbl=? AND key=?', (kitchen, t, k)).fetchone()
+            if ex and not (u > ex[0]):
+                # na serwerze jest nowsza (albo ta sama) wersja – odsyłamy ją, żeby urządzenie ją przyjęło
+                nsize += len(ex[1] or '')
+                if nsize < 8_000_000:
+                    newer.append({'t': t, 'k': k, 'v': json.loads(ex[1]) if ex[1] is not None else None, 'u': ex[0]})
+                continue
+            seq += 1
+            c.execute('INSERT OR REPLACE INTO records(kitchen, tbl, key, val, u, dev, seq) VALUES(?,?,?,?,?,?,?)',
+                      (kitchen, t, k, val, int(u), dev, seq))
+            acc += 1
+        c.execute('UPDATE counter SET seq=? WHERE id=1', (seq,))
+        c.commit()
+    return {'accepted': acc, 'last': seq, 'newer': newer}
+
+
+def sync_backups():
+    """Codzienna kopia bazy synchronizacji (30 dni wstecz) w folderze backups obok serwera."""
+    d = os.path.join(os.path.dirname(SYNC_DB), 'backups')
+    while True:
+        time.sleep(60)
+        try:
+            if os.path.exists(SYNC_DB):
+                os.makedirs(d, exist_ok=True)
+                f = os.path.join(d, 'sync-%s.db' % time.strftime('%Y-%m-%d'))
+                if not os.path.exists(f):
+                    with sync_lock:
+                        dst = sqlite3.connect(f)
+                        sdb().backup(dst)
+                        dst.close()
+                for n in os.listdir(d):
+                    p = os.path.join(d, n)
+                    if n.startswith('sync-') and time.time() - os.path.getmtime(p) > 31 * 86400:
+                        os.remove(p)
+        except Exception:
+            pass
+        time.sleep(3540)
+
+
+def sync_get(self, path):
+    try:
+        qs = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query)
+        kitchen, dev = sync_auth(self.headers.get('X-Sync-Token'))
+        if path == '/sync/pull':
+            return self.send(200, dict(ok=True, **sync_pull(kitchen, int((qs.get('since') or ['0'])[0]))))
+        if path == '/sync/devices':
+            with sync_lock:
+                return self.send(200, {'ok': True, 'devices': devices_of(kitchen, dev)})
+    except Fail as e:
+        return self.send(401 if e.code == 'auth' else 422, {'ok': False, 'code': e.code, 'error': e.msg})
+    return self.send(404, {'ok': False, 'error': 'nie znaleziono'})
+
+
+def sync_post(self, path):
+    n = int(self.headers.get('Content-Length') or 0)
+    if n < 0 or n > 30_000_000:
+        return self.send(413, {'ok': False, 'code': 'size', 'error': 'Za duża paczka danych.'})
+    try:
+        body = json.loads(self.rfile.read(n)) if n else {}
+        if path == '/sync/join':
+            ip = (self.headers.get('X-Forwarded-For') or self.client_address[0]).split(',')[0].strip()
+            return self.send(200, dict(ok=True, **sync_join(body, ip)))
+        kitchen, dev = sync_auth(self.headers.get('X-Sync-Token'))
+        if path == '/sync/push':
+            return self.send(200, dict(ok=True, **sync_push(kitchen, dev, body.get('records'))))
+        if path in ('/sync/revoke', '/sync/leave'):
+            target = dev if path == '/sync/leave' else str(body.get('device') or '')
+            with sync_lock:
+                sdb().execute('DELETE FROM devices WHERE id=? AND kitchen=?', (target, kitchen))
+                sdb().commit()
+                return self.send(200, {'ok': True, 'devices': devices_of(kitchen, dev) if path == '/sync/revoke' else []})
+    except Fail as e:
+        return self.send(401 if e.code == 'auth' else 429 if e.code == 'limit' else 422, {'ok': False, 'code': e.code, 'error': e.msg})
+    except (ValueError, json.JSONDecodeError):
+        return self.send(400, {'ok': False, 'code': 'json', 'error': 'Błędne dane.'})
+    return self.send(404, {'ok': False, 'error': 'nie znaleziono'})
+
+
 # ───────────────────────── HTTP ─────────────────────────
 class H(BaseHTTPRequestHandler):
     def log_message(self, *a):
@@ -1451,7 +1640,7 @@ class H(BaseHTTPRequestHandler):
         if o in ALLOW_ORIGINS or (o.startswith('http://localhost') and 'localhost' in ''.join(ALLOW_ORIGINS + ['localhost'])):
             self.send_header('Access-Control-Allow-Origin', o)
             self.send_header('Vary', 'Origin')
-            self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+            self.send_header('Access-Control-Allow-Headers', 'Content-Type, X-Sync-Token')
             self.send_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
 
     def send(self, code, obj):
@@ -1469,8 +1658,10 @@ class H(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
+        if urllib.parse.urlparse(self.path).path.startswith('/sync/'):
+            return sync_get(self, urllib.parse.urlparse(self.path).path)
         if urllib.parse.urlparse(self.path).path in ('/health', '/zdrowie'):
-            return self.send(200, {'ok': True, 'v': 7, 'features': ['parser-v2', 'komentarze', 'zdjecia', 'lodowka', 'zdjecie-dania', 'kanal', 'strona', 'instagram-zapas'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
+            return self.send(200, {'ok': True, 'v': 8, 'features': ['synchronizacja', 'parser-v2', 'komentarze', 'zdjecia', 'lodowka', 'zdjecie-dania', 'kanal', 'strona', 'instagram-zapas'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
         m = re.match(r'^/channel/([\w-]+)(/recipes)?$', urllib.parse.urlparse(self.path).path)
         if m:
             job = jobs.get(m.group(1))
@@ -1486,6 +1677,8 @@ class H(BaseHTTPRequestHandler):
 
     def do_POST(self):
         path = urllib.parse.urlparse(self.path).path
+        if path.startswith('/sync/'):
+            return sync_post(self, path)
         if path == '/channel':
             n = int(self.headers.get('Content-Length') or 0)
             try:
@@ -1531,4 +1724,5 @@ class H(BaseHTTPRequestHandler):
 if __name__ == '__main__':
     print('kucharz-import na 127.0.0.1:%d, Gemini: %s' % (PORT, 'tak' if GEMINI_KEY else 'nie'), flush=True)
     threading.Thread(target=ytdlp_selfupdate, daemon=True).start()
+    threading.Thread(target=sync_backups, daemon=True).start()
     ThreadingHTTPServer(('127.0.0.1', PORT), H).serve_forever()
