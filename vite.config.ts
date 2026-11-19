@@ -32,7 +32,8 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,png,webp,json}'],
+        globPatterns: ['**/*.{js,css,html,png,webp,json}', '**/*latin*.woff2'],
+        globIgnores: ['**/*cyrillic*', '**/*vietnamese*'],
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         navigateFallback: 'index.html',
         skipWaiting: true,

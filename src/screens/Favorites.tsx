@@ -8,6 +8,7 @@ import { ChannelProgress } from '../components/ChannelPanel'
 import { db } from '../lib/db'
 import { fold } from '../lib/keys'
 import { deleteChannel, isSocialSource, startChannel, useChannelJob } from '../lib/channel'
+import { PageHero, UI } from '../components/Gold'
 
 const PAGE = 40
 export default function Favorites() {
@@ -42,7 +43,7 @@ export default function Favorites() {
   const remove = async () => { if (ch && confirm(`Usunąć „${ch.name}” i wszystkie jego przepisy (${ch.count}) z telefonu?`)) { await deleteChannel(ch.key); setTab('mine') } }
   return (
     <div className="page">
-      <h1 className="ptitle">Moja kuchnia</h1>
+      <PageHero title={<>Moja <em>kuchnia</em></>} sub="Twoje przepisy, kanały i ulubione." img={UI('h-moje.webp')} />
       <div className="chips"><button className={tab === 'mine' ? 'on' : ''} onClick={() => setTab('mine')}>Moje przepisy ({mine.length})</button>
         {channels.map(c => <button key={c.key} className={chKey === c.key ? 'on' : ''} onClick={() => { setTab('ch:' + c.key); setQ(''); setLimit(PAGE) }}>{isSocialSource(c.url) ? <Tv size={15} /> : <Globe size={15} />} {c.name} ({c.count})</button>)}
         <button className={tab === 'fav' ? 'on' : ''} onClick={() => setTab('fav')}>Ulubione ({favs.length})</button>

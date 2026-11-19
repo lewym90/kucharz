@@ -12,6 +12,7 @@ import { cookable } from '../lib/fridge'
 import { dept } from '../lib/shopping'
 import { fold, isStaple, labelAndKey } from '../lib/keys'
 import { createFromFridge } from '../lib/mine'
+import { PageHero, UI } from '../components/Gold'
 
 const GROUPS = ['Warzywa i owoce', 'Nabiał i jajka', 'Mięso i wędliny', 'Ryby i owoce morza', 'Pieczywo i produkty sypkie', 'Przyprawy i sosy', 'Napoje i inne', 'Inne']
 const TYPES: { id: string; label: string }[] = [{ id: '', label: 'Wszystko' }, ...CATS.map(c => ({ id: c.id, label: c.label.replace(/^Śniadania$/, 'Śniadanie').replace(/^Obiady$/, 'Obiad').replace(/^Kolacje$/, 'Kolacja').replace(/^Zupy$/, 'Zupa').replace(/^Makarony$/, 'Makaron').replace(/^Sałatki$/, 'Sałatka').replace(/^Przekąski$/, 'Przekąska').replace(/^Ciasta$/, 'Ciasto').replace(/^Desery$/, 'Deser').replace(/^Napoje$/, 'Napój').replace(/^Drinki$/, 'Drink').replace(/^Sosy$/, 'Sos') }))]
@@ -100,7 +101,7 @@ export default function Fridge() {
 
   return (
     <div className="page fridge">
-      <h1 className="ptitle">Moja lodówka</h1>
+      <PageHero title={<>Moja <em>lodówka</em></>} img={UI('h-lodowka.webp')} />
       <p className="muted">Zaznacz wszystko, co masz w domu. Pokażę tylko dania, na które masz komplet składników. Sól, pieprz, woda, olej, oliwa i cukier liczą się zawsze.</p>
       <div className="searchbar"><Search size={18} /><input value={q} onChange={e => setQ(e.target.value)} placeholder="Szukaj składnika, np. jajka, pieczarki…" />{q && <button className="iconbtn" aria-label="Wyczyść" onClick={() => setQ('')}><X size={16} /></button>}</div>
       {sugg.length > 0 && <div className="sugg">{sugg.map(c => <button key={c.k} className={haveSet.has(c.k) ? 'on' : ''} onClick={() => addFromSearch(c)}>{haveSet.has(c.k) && <Check size={13} />} {c.l}</button>)}</div>}

@@ -5,6 +5,7 @@ import { exportBackup, importBackup, getSetting, setSetting } from '../lib/db'
 import { todayLocal } from '../lib/format'
 import { DEFAULT_IMPORT_URL, pingServer } from '../lib/mine'
 import { SyncPanel } from '../components/SyncPanel'
+import { PageHero, UI } from '../components/Gold'
 
 export default function Profile() {
   const file = useRef<HTMLInputElement>(null)
@@ -31,7 +32,7 @@ export default function Profile() {
   }
   return (
     <div className="page">
-      <h1 className="ptitle">Profil</h1>
+      <PageHero title={<>Pro<em>fil</em></>} sub="Ustawienia, synchronizacja i kopie zapasowe." img={UI('h-profil.webp')} />
       <div className="list">
         <Link className="row" to="/plan"><span>Planer posiłków</span><ChevronRight size={18} /></Link>
         <Link className="row" to="/zakupy"><span>Lista zakupów</span><ChevronRight size={18} /></Link>

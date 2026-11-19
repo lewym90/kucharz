@@ -6,6 +6,7 @@ import { useIndex } from '../components/hooks'
 import { db } from '../lib/db'
 import { loadRecipe } from '../lib/data'
 import { addRecipeToShopping } from '../lib/shopping'
+import { PageHero, UI } from '../components/Gold'
 
 const SLOTS = ['Śniadanie', 'II śniadanie', 'Obiad', 'Podwieczorek', 'Kolacja']
 const DAYS = ['nd', 'pn', 'wt', 'śr', 'cz', 'pt', 'sb']
@@ -31,7 +32,7 @@ export default function Planner() {
   }
   return (
     <div className="page">
-      <h1 className="ptitle">Planer</h1>
+      <PageHero title={<>Planer <em>posiłków</em></>} sub="Zaplanuj tydzień i jednym ruchem wrzuć go do zakupów." img={UI('h-planer.webp')} />
       <div className="weeknav"><button className="iconbtn" onClick={() => shift(-7)}><ChevronLeft /></button>
         <b>{days[0].toLocaleDateString('pl-PL', { day: 'numeric', month: 'short' })} – {days[6].toLocaleDateString('pl-PL', { day: 'numeric', month: 'short' })}</b>
         <button className="iconbtn" onClick={() => shift(7)}><ChevronRight /></button></div>

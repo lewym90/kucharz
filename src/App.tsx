@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Route, Routes, useNavigate, useLocation } from 'react-router-dom'
-import { Home as HomeIcon, Compass, Plus, BookMarked, User, Timer } from 'lucide-react'
+import { Home as HomeIcon, Compass, Bookmark, User, Timer } from 'lucide-react'
+import { GoldDefs, Medallion } from './components/Gold'
 import Home from './screens/Home'
 import Library from './screens/Library'
 import RecipeScreen from './screens/RecipeScreen'
@@ -42,8 +43,10 @@ export default function App() {
   if (splash || !ready) return <div className="splash"><img src={import.meta.env.BASE_URL + 'img/splash.webp'} alt="Książka Kucharska" /></div>
   if (onboard) return <Onboarding onDone={() => { setSetting('onboarded', true); setOnboard(false); nav('/') }} />
   return (
-    <div className="app">
-      <main className="main">
+    <div className={'app' + (hideNav ? ' nonav' : '') + (loc.pathname === '/' ? ' ishome' : '')}>
+      <GoldDefs />
+      <div className="bgl" aria-hidden="true" />
+      <main className="main" key={loc.pathname}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/odkrywaj" element={<Library />} />
@@ -68,11 +71,14 @@ export default function App() {
       })()}
       {!hideNav && (
         <nav className="tabbar">
-          <NavLink to="/" end><HomeIcon size={22} /><span>Start</span></NavLink>
-          <NavLink to="/odkrywaj"><Compass size={22} /><span>Odkrywaj</span></NavLink>
-          <NavLink to="/dodaj" className="plus" aria-label="Dodaj przepis z linku"><Plus size={28} /></NavLink>
-          <NavLink to="/ulubione"><BookMarked size={22} /><span>Moje</span></NavLink>
-          <NavLink to="/profil"><User size={22} /><span>Profil</span></NavLink>
+          <div className="tabbar-in">
+            <NavLink to="/" end><HomeIcon size={25} strokeWidth={1.6} /><span>Start</span></NavLink>
+            <NavLink to="/odkrywaj"><Compass size={25} strokeWidth={1.6} /><span>Odkrywaj</span></NavLink>
+            <span className="tb-gap" />
+            <NavLink to="/ulubione"><Bookmark size={25} strokeWidth={1.6} /><span>Moje</span></NavLink>
+            <NavLink to="/profil"><User size={25} strokeWidth={1.6} /><span>Profil</span></NavLink>
+          </div>
+          <NavLink to="/dodaj" className="tb-center" aria-label="Dodaj przepis"><Medallion size={74} /></NavLink>
         </nav>
       )}
     </div>

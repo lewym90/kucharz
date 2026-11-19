@@ -7,6 +7,7 @@ import { PhotoPair, delPhoto, processPhoto, putPhoto, shrinkForUpload } from '..
 import { Draft, emptyDraft, importFrom, ingToLine, lineToIng, saveMine, toDraft } from '../lib/mine'
 import { isChannelUrl, isFacebookProfile, isSiteUrl, startChannel, useChannelJob } from '../lib/channel'
 import { ChannelProgress } from '../components/ChannelPanel'
+import { PageHero, UI } from '../components/Gold'
 
 type Mode = 'link' | 'text' | 'photo' | 'channel' | 'manual'
 type Shot = { mime: string; data: string; preview: string }
@@ -36,7 +37,7 @@ export default function AddRecipe() {
     try { await startChannel(u); setMode('channel') } catch (e: any) { setErr(e.message || 'Nie udało się zacząć pobierania.') }
     setBusy(false)
   }
-  const [mode, setMode] = useState<Mode>('link')
+  const [mode, setMode] = useState<Mode>(sp.get('tryb') === 'zdjecia' ? 'photo' : sp.get('tryb') === 'kanal' ? 'channel' : 'link')
   const [url, setUrl] = useState(sp.get('u') ?? '')
   const [text, setText] = useState('')
   const [busy, setBusy] = useState(false)
@@ -124,7 +125,7 @@ export default function AddRecipe() {
   if (draft) {
     return (
       <div className="page addrec">
-        <h1 className="ptitle">{editId ? 'Edytuj przepis' : 'Sprawdź przepis'}</h1>
+        <PageHero title={editId ? <>Edytuj <em>przepis</em></> : <>Sprawdź <em>przepis</em></>} img={UI('h-dodaj.webp')} />
         {!editId && how && <p className="importnote"><Sparkles size={15} /> {how.startsWith('ai-') ? 'Przepis przygotowany' : 'Wczytano'} {HOW[how] ?? 'z linku'}. Przejrzyj i popraw, zanim zapiszesz.</p>}
         {!editId && warn && <div className="errnote warnbox"><AlertCircle size={15} /><div>{warn}
           {mode === 'link' && url && <button className="btn ghost small" onClick={() => { setDraft(null); if (autoPhoto) { setPhoto(null); setPhotoDirty(false); setAutoPhoto(false) } run() }}><RotateCcw size={15} /> Spróbuj ponownie</button>}</div></div>}
@@ -164,7 +165,7 @@ export default function AddRecipe() {
   const elapsed = busy ? Math.round((Date.now() - started.current) / 1000) : 0
   return (
     <div className="page addrec">
-      <h1 className="ptitle">Dodaj przepis</h1>
+      <PageHero title={<>Dodaj <em>przepis</em></>} sub="Z linku, ze zdjęć albo cały kanał naraz." img={UI('h-dodaj.webp')} />
       <div className="chips wrap">
         <button className={mode === 'link' ? 'on' : ''} onClick={() => { setMode('link'); setErr('') }}><Link2 size={15} /> Z linku</button>
         <button className={mode === 'photo' ? 'on' : ''} onClick={() => { setMode('photo'); setErr('') }}><Images size={15} /> Ze zdjęć</button>

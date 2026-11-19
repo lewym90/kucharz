@@ -11,6 +11,7 @@ import { addRecipeToShopping } from '../lib/shopping'
 import { useDemoted } from '../components/hooks'
 import { importFrom, isMine } from '../lib/mine'
 import { delPhoto, processPhoto, putPhoto } from '../lib/photos'
+import { catImg } from '../components/RecipeCard'
 
 const SLOTS = ['Śniadanie', 'II śniadanie', 'Obiad', 'Podwieczorek', 'Kolacja']
 export default function RecipeScreen() {
@@ -55,7 +56,8 @@ export default function RecipeScreen() {
   const toggleSig = async () => { const s = new Set(demoted); s.has(id) ? s.delete(id) : s.add(id); await setSetting('demoted', [...s]) }
   return (
     <div className="page recipe">
-      <div className={'rhead' + (photo ? ' withphoto' : '')} style={photo ? { backgroundImage: `linear-gradient(180deg,rgba(10,10,11,.35) 0%,rgba(10,10,11,.15) 35%,rgba(10,10,11,.92) 100%),url(${photo.data})` } : undefined}>
+      <div className={'rhead withphoto' + (photo ? '' : ' catph')}>
+        <span className="rhead-img" style={{ backgroundImage: `url(${photo ? photo.data : catImg(r.cat)})` }} />
         <div className="rtop">
           <button className="iconbtn glass" onClick={() => nav(-1)} aria-label="Wróć"><ArrowLeft size={20} /></button>
           <button className={'iconbtn glass' + (fav ? ' on' : '')} onClick={() => fav ? db.favs.delete(id) : db.favs.put({ id, at: Date.now() })} aria-label="Ulubione"><Heart size={20} fill={fav ? 'currentColor' : 'none'} /></button>

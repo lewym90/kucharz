@@ -4,6 +4,7 @@ import { Plus, Trash2 } from 'lucide-react'
 import { db } from '../lib/db'
 import { DEPTS, dept } from '../lib/shopping'
 import { fmtIng } from '../lib/format'
+import { PageHero, UI } from '../components/Gold'
 
 export default function Shopping() {
   const items = useLiveQuery(() => db.shop.toArray(), []) ?? []
@@ -15,8 +16,7 @@ export default function Shopping() {
   }
   return (
     <div className="page">
-      <h1 className="ptitle">Lista zakupów</h1>
-      <p className="muted">{done} z {total} produktów</p>
+      <PageHero title={<>Lista <em>zakupów</em></>} sub={`${done} z ${total} produktów w koszyku`} img={UI('h-zakupy.webp')} />
       <form className="searchbar" onSubmit={e => { e.preventDefault(); add() }}><input value={name} onChange={e => setName(e.target.value)} placeholder="Dodaj produkt…" /><button className="iconbtn" type="submit"><Plus size={18} /></button></form>
       {DEPTS.map(d => { const di = items.filter(i => i.dept === d); if (!di.length) return null; return (
         <section key={d} className="section"><div className="section-h"><h2>{d} ({di.length})</h2></div>

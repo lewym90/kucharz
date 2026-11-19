@@ -4,10 +4,11 @@ import { fold } from '../lib/keys'
 import { isMine } from '../lib/mine'
 import { Search, SlidersHorizontal } from 'lucide-react'
 import { useIndex, useDemoted } from '../components/hooks'
-import { RecipeCard } from '../components/RecipeCard'
+import { RecipeCard, catImg } from '../components/RecipeCard'
 import { CATS, DIFF } from '../lib/types'
 import { loadSearch } from '../lib/data'
 import { FILTERS } from '../lib/filters'
+import { PageHero, UI } from '../components/Gold'
 
 const TIMES = [10, 20, 30, 45, 60, 999]
 const DIETS: [string, string][] = [['wegetariańskie', 'Wege'], ['wegańskie', 'Wegańskie'], ['bezglutenowe', 'Bez glutenu']]
@@ -86,7 +87,7 @@ export default function Library() {
   const onSearch = (v: string) => { setQ(v); set({ q: v }) }
   return (
     <div className="page">
-      <h1 className="ptitle">{cat ? CATS.find(c => c.id === cat)?.label : 'Odkrywaj'}</h1>
+      <PageHero title={cat ? CATS.find(c => c.id === cat)?.label : <>Odkry<em>waj</em></>} sub={cat ? undefined : 'Wszystkie przepisy w jednym miejscu.'} img={cat ? catImg(cat) : UI('h-odkrywaj.webp')} />
       <div className="searchbar"><Search size={18} />
         <input value={q} onChange={e => onSearch(e.target.value)} placeholder="Danie, składnik, kuchnia…" />
         <button className="iconbtn" onClick={() => setOpen(o => !o)} aria-label="Filtry"><SlidersHorizontal size={18} /></button>

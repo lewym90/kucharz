@@ -10,21 +10,17 @@ export function RecipeCard({ r, badge, demoted }: { r: IndexItem; badge?: string
   const sig = r.tags.includes('signature') && !demoted
   const th = useThumb(r.id)
   return (
-    <Link to={`/przepis/${encodeURIComponent(r.id)}`} className="card">
-      <div className="card-top">
+    <Link to={`/przepis/${encodeURIComponent(r.id)}`} className="card rcard">
+      <span className={'rc-img' + (th ? '' : ' cat')} style={{ backgroundImage: `url(${th || img(r.cat)})` }} />
+      <div className="rc-body">
         <span className="catlbl">{catLabel(r.cat)}{r.id.startsWith('mine:') ? ' · moje' : ''}</span>
-        {badge ? <span className="pct">{badge}</span> : sig ? <span className="sig"><Star size={12} fill="currentColor" /> Signature</span> : null}
-      </div>
-      <div className={'card-body' + (th ? ' hasimg' : '')}>
-        <div className="cb-text">
-          <h3>{r.title}</h3>
-          <div className="meta">
-            <span><Clock size={13} /> {fmtMin(r.min)}{r.rest ? ` + ${fmtMin(r.rest)}` : ''}</span>
-            <span><Gauge size={13} /> {DIFF[r.diff]}</span>
-          </div>
+        <h3>{r.title}</h3>
+        <div className="meta">
+          <span><Clock size={13} /> {fmtMin(r.min)}{r.rest ? ` + ${fmtMin(r.rest)}` : ''}</span>
+          <span><Gauge size={13} /> {DIFF[r.diff]}</span>
         </div>
-        {th && <img className="cb-img" src={th} alt="" loading="lazy" />}
       </div>
+      {badge ? <span className="pct">{badge}</span> : sig ? <span className="sig"><Star size={12} fill="currentColor" /> Signature</span> : null}
     </Link>
   )
 }

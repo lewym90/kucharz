@@ -4,7 +4,20 @@ import { HashRouter } from 'react-router-dom'
 import { registerSW } from 'virtual:pwa-register'
 import App from './App'
 import { hasTimers } from './lib/timerStore'
+import '@fontsource/playfair-display/latin-ext-500.css'
+import '@fontsource/playfair-display/latin-ext-600.css'
+import '@fontsource/playfair-display/latin-500.css'
+import '@fontsource/playfair-display/latin-600.css'
+import '@fontsource/playfair-display/latin-500-italic.css'
 import './styles.css'
+import './theme.css'
+
+// grafiki motywu (public/img/ui) – podpinane tylko, gdy plik istnieje
+for (const [v, f] of [['--ui-bg', 'bg.webp'], ['--ui-gold', 'gold.webp'], ['--ui-medal', 'medal.webp'], ['--ui-cook', 'h-gotowanie.webp']]) {
+  const im = new Image()
+  im.onload = () => { document.documentElement.style.setProperty(v, `url(${im.src})`); if (v === '--ui-medal') document.documentElement.classList.add('has-medal') }
+  im.src = `${import.meta.env.BASE_URL}img/ui/${f}`
+}
 
 const updateSW = registerSW({
   immediate: true,
