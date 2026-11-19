@@ -521,6 +521,10 @@ ZASADY:
 - Wszystko po polsku (przetłumacz, jeśli źródło jest w innym języku). Nazwy składników w mianowniku liczby pojedynczej lub mnogiej, krótkie, bez ilości, np. "mąka pszenna", "jajka", "pierś z kurczaka".
 - Jednostki metryczne. Przelicz cups/oz/lb na g lub ml, a szklankę na 250 ml. Dozwolone jednostki: %(units)s. Gdy składnik liczy się na sztuki, użyj "szt.".
 - Kroki: pełne, zrozumiałe zdania w trybie rozkazującym, w kolejności wykonania. Zachowaj temperatury i czasy z materiału. Połącz drobne urywki w sensowne kroki.
+- Krok to wyłącznie czynność kucharska (kroić, smażyć, mieszać, piec, podawać). Uwagi autora, pozdrowienia, porady zdrowotne, opowieści, zachęty („pamiętajcie…”, „dajcie znać…”) NIE są krokami – pomiń je albo przenieś jedną najważniejszą do tip.
+- Składnik to wyłącznie produkt spożywczy. NIE są składnikami: nagłówki części przepisu (np. „Spód”, „Masa”, „Sos”, „Topping”, „Do podania”), tytuły, numery odcinków, reklamy i polecenia aplikacji lub sklepów, linki, hasztagi, kody rabatowe, wartości odżywcze (kcal, białko, tłuszcz, węglowodany), czas i liczba porcji. Gdy ten sam produkt jest w kilku częściach, dopisz część w nawiasie, np. „cukier (do masy)”.
+- Ilość zawsze do qty i unit, nigdy w nazwie: „czosnek – 2 duże ząbki” → name „czosnek”, qty 2, unit „ząbek”; „łyżka miodu” → name „miód”, qty 1, unit „łyżka”; „mieszanka warzyw – 1 opak.” → qty 1, unit „opakowanie” (jeśli nie ma takiej jednostki na liście, zostaw unit null i dopisz „(1 opakowanie)” do nazwy). Gdy podano i gramy, i sztuki, weź gramy, a sztuki daj w nawiasie w nazwie.
+- Gdy materiałem jest film: obejrzyj go w całości i spisz WSZYSTKIE czynności, które autor wykonuje lub mówi (także te, których nie ma w opisie), razem ze składnikami pokazanymi na ekranie. Ilości z opisu i napisów na ekranie mają pierwszeństwo przed szacowaniem z obrazu.
 - minutes: łączny czas z materiału; jeśli go nie ma, oszacuj rozsądnie. difficulty: 1 (bardzo łatwe) do 4 (trudne). servings: liczba porcji z materiału, a gdy brak, oszacuj.
 - category wybierz z listy. tags tylko z: %(tags)s (tylko jeśli naprawdę pasują).
 - summary: jedno lub dwa zdania opisu dania. cuisine: np. polska, włoska, azjatycka.
@@ -532,13 +536,15 @@ MATERIAŁ (%(kind)s):
 """
 
 
-def gemini_call(contents_parts, schema=True, tools=None, temperature=0.15, timeout=120):
+def gemini_call(contents_parts, schema=True, tools=None, temperature=0.15, timeout=120, extra=None):
     """Jedno wywołanie Gemini z kolejnymi modelami na liście. Zwraca (dict albo tekst, cała odpowiedź)."""
     if not GEMINI_KEY:
         raise Fail('no_key', 'Serwer nie ma klucza Gemini.')
     cfg = {'temperature': temperature}
     if schema:
         cfg.update({'responseMimeType': 'application/json', 'responseSchema': SCHEMA})
+    if extra:
+        cfg.update(extra)
     body = {'contents': [{'parts': contents_parts}], 'generationConfig': cfg}
     if tools:
         body['tools'] = tools
@@ -563,9 +569,9 @@ def gemini_call(contents_parts, schema=True, tools=None, temperature=0.15, timeo
     raise Fail('gemini', 'Gemini nie odpowiedział (%s).' % last)
 
 
-def gemini(parts, kind):
+def gemini(parts, kind, timeout=120, extra=None):
     head = PROMPT % {'units': ', '.join(UNITS), 'tags': ', '.join(TAGS), 'kind': kind}
-    return gemini_call([{'text': head}] + parts)[0]
+    return gemini_call([{'text': head}] + parts, timeout=timeout, extra=extra)[0]
 
 
 # ───────────────────────── film ─────────────────────────
@@ -602,6 +608,50 @@ def ig_embed(url):
                 t = '\n'.join(lines[1:])
             out['caption'] = t.strip()
     return out if (out['caption'] or out['image']) else None
+
+
+def yt_id(url):
+    m = re.search(r'(?:youtube\.com/(?:watch\?(?:.*&)?v=|shorts/|live/|embed/|v/)|youtu\.be/)([\w-]{11})', url)
+    return m.group(1) if m else None
+
+
+def yt_page(vid):
+    """Opis, tytuł, autor i długość filmu prosto ze strony YouTube (szybciej niż yt-dlp i działa, gdy yt-dlp jest blokowany)."""
+    req = urllib.request.Request('https://www.youtube.com/watch?v=%s&hl=pl&persist_hl=1' % vid, headers={
+        'User-Agent': UA, 'Accept-Language': 'pl,en;q=0.8', 'Cookie': 'CONSENT=YES+cb; SOCS=CAI'})
+    try:
+        with urllib.request.urlopen(req, timeout=15) as r:
+            htm = r.read(4_000_000).decode('utf-8', 'replace')
+    except Exception:
+        return None
+    def jstr(key):
+        m = re.search(r'"%s":"((?:[^"\\]|\\.)*)"' % key, htm)
+        try:
+            return json.loads('"' + m.group(1) + '"') if m else ''
+        except Exception:
+            return ''
+    out = {'caption': jstr('shortDescription').strip(), 'title': (meta(htm, 'og:title') or jstr('title')).strip(), 'author': jstr('author').strip(), 'duration': None}
+    m = re.search(r'"lengthSeconds":"(\d+)"', htm)
+    if m:
+        out['duration'] = int(m.group(1))
+    return out if (out['caption'] or out['title']) else None
+
+
+def yt_watch(vid, ctx, dur):
+    """Gemini ogląda film z YouTube bezpośrednio z linku (serwer niczego nie pobiera). Zwraca przepis albo None."""
+    part = {'file_data': {'file_uri': 'https://www.youtube.com/watch?v=' + vid, 'mime_type': 'video/*'}}
+    extra = None
+    if dur and dur > 600:
+        extra = {'mediaResolution': 'MEDIA_RESOLUTION_LOW'}
+    if dur and dur > 2100:
+        part['video_metadata'] = {'fps': 0.2}
+    if dur and dur > 4 * 3600:
+        return None
+    parts = [part]
+    if ctx:
+        parts.append({'text': 'Opis filmu i komentarze autora (składniki i ilości z opisu są wiarygodne – użyj ich; kroki i brakujące składniki weź z filmu):\n' + ctx[:8000]})
+    g = gemini(parts, 'film z YouTube (obraz, napisy na ekranie i mowa) razem z opisem filmu', timeout=200, extra=extra)
+    return g if g.get('found') else None
 
 
 def ig_meta_caption(d):
@@ -807,15 +857,26 @@ def do_import(body):
     if social:
         ig = 'instagram' in host
         site = 'Instagram' if ig else 'TikTok' if 'tiktok' in host else 'YouTube' if ('youtube' in host or 'youtu.be' in host) else 'Facebook'
-        info = ytdlp_info(url)
+        yt = yt_id(url) if site == 'YouTube' else None
+        if yt:
+            url = 'https://www.youtube.com/watch?v=' + yt
+            pg = yt_page(yt)
+            if pg:
+                caption, title, dur = pg['caption'], pg['title'], pg['duration']
+                info = {'id': yt, 'channel': pg['author'], 'title': title, 'duration': dur}
+                thumbs = ['https://i.ytimg.com/vi/%s/maxresdefault.jpg' % yt, 'https://i.ytimg.com/vi/%s/hqdefault.jpg' % yt]
+        if not caption:
+            info = ytdlp_info(url) or info
         if info is None and ig:
             time.sleep(3)
             info = ytdlp_info(url)  # Instagram często odmawia tylko na chwilę
-        if info:
+        if info and info.get('description') is not None and not caption:
             caption = (info.get('description') or '').strip()
-            title = (info.get('title') or '').strip()
-            dur = info.get('duration')
-            thumbs = video_thumbs(info)
+            title = (info.get('title') or '').strip() or title
+            dur = info.get('duration') or dur
+            thumbs = video_thumbs(info) or thumbs
+        if yt and not thumbs:
+            thumbs = ['https://i.ytimg.com/vi/%s/hqdefault.jpg' % yt]
         if ig and (not caption or not thumbs):
             emb = ig_embed(url)  # strona osadzenia posta: pełny opis i okładka bez logowania
             if emb:
@@ -855,7 +916,18 @@ def do_import(body):
                 except Fail:
                     pass
         watched = False
-        if GEMINI_KEY:
+        if GEMINI_KEY and yt:
+            # YouTube: AI ogląda film prosto z linku – całość, także długie filmy
+            try:
+                g = yt_watch(yt, (title + '\n' + caption).strip(), dur)
+                watched = True
+                if g:
+                    n = norm_recipe(g, url, 'film+gemini')
+                    if valid(n) and (not cap_r or len(n['steps']) >= len(cap_r['steps'])):
+                        return with_image(n, thumbs)
+            except Fail:
+                watched = False
+        if GEMINI_KEY and not watched:
             media = download_media(url, dur)
             if not media and ig:
                 time.sleep(3)
@@ -1068,444 +1140,6 @@ def create_recipe(body):
     if last:
         return last
     raise Fail('no_recipe', 'Nie udało się ułożyć przepisu. Spróbuj jeszcze raz.')
-
-
-# ───────────────────────── cały kanał (bez AI) ─────────────────────────
-# Serwer tylko pobiera listę filmów i ich opisy (yt-dlp), a przepisy wyciągają reguły (heuristic) – bez Gemini.
-# Bierzemy wyłącznie PEŁNE przepisy spisane przez autora: w opisie filmu, w jego komentarzu albo na jego stronie (schema.org).
-CH_MAX = int(os.environ.get('CHANNEL_MAX', '1000'))
-CH_PER_DAY = int(os.environ.get('CHANNEL_PER_DAY', '12'))
-jobs = {}
-ch_day = deque()
-PROMO = re.compile(r'https?://|www\.|(^|\s)[#@]\w|subskryb|subscri|obserwuj|follow\b|patronit|kod rabat|rabat|discount|sponsor|affiliat|wspó[łl]prac|newsletter|merch|playlist|zapraszam na|instagram|facebook|tiktok|e-?mail|kontakt|business|biznes', re.I)
-TIMESTAMP = re.compile(r'^\s*\(?\d{1,2}:\d{2}(?::\d{2})?\)?\s')
-SKIP_HOSTS = ('amazon.', 'allegro.', 'linktr.ee', 'patronite.', 'buycoffee', 'buymeacoffee', 'spotify.', 'apple.com', 'google.', 'paypal.', 'zrzutka', 'shop', 'sklep', 'merch', 'patreon.', 'ko-fi.', 'discord.', 'twitch.')
-CAT_RULES = [
-    ('drink', r'\b(drink|koktajl alkohol|cocktail|mojito|margarit|negroni|spritz|martini|daiquiri|nalewk|grzaniec|mulled wine)'),
-    ('zupa', r'\b(zup|krem z |rosół|rosol|barszcz|żurek|zurek|chłodnik|chlodnik|soup|bisque|ramen|pho\b|chowder|gazpacho)'),
-    ('ciasto', r'\b(ciast|sernik|tort|babk|muffin|brownie|szarlotk|drożdżów|piernik|keks|tart[aey]?\b|cake|cookie|ciastek|ciasteczk|cheesecake|bread|chleb|bułk|rogal|croissant)'),
-    ('deser', r'\b(deser|lody|tiramisu|panna cotta|mus\b|budyń|budyn|pudding|dessert|ice cream|sorbet|crème|creme brulee|kisiel)'),
-    ('salatka', r'\b(sałatk|salatk|salad|surówk|surowk|coleslaw)'),
-    ('makaron', r'\b(makaron|spaghetti|pasta\b|penne|tagliatelle|lasagn|carbonara|gnocchi|noodle|kluski|pierogi|ravioli)'),
-    ('sos', r'\b(sos\b|sauce|dressing|pesto|dip\b|majonez|aioli|salsa)'),
-    ('napoj', r'\b(smoothie|lemoniad|lemonade|kawa\b|coffee|latte|herbat|kompot|koktajl|shake|napój|napoj)'),
-    ('sniadanie', r'\b(śniadan|sniadan|breakfast|omlet|jajecznic|owsiank|oatmeal|pancake|naleśnik|nalesnik|gofr|granola|szakszuk|shakshuk|tost)'),
-    ('przekaska', r'\b(przekąsk|przekask|snack|appetizer|hummus|chips|frytk|nachos|bruschett|tapas|zapiekank|pizza|burger|tortill|kanapk|sandwich)'),
-    ('kolacja', r'\b(kolacj|dinner)'),
-]
-
-
-def guess_cat(text):
-    t = text.lower()
-    for c, rx in CAT_RULES:
-        if re.search(rx, t):
-            return c
-    return 'obiad'
-
-
-def clean_social(text):
-    out = []
-    for l in (text or '').replace('\r', '').split('\n'):
-        if TIMESTAMP.match(l) or PROMO.search(l):
-            continue
-        out.append(l)
-    return '\n'.join(out)
-
-
-def full_recipe(title, text, allow_no_steps=True):
-    """Przepis z tekstu (bez AI). Pełny: min. 3 składniki i 2 kroki. Gdy autor wypisał tylko składniki (min. 3 z ilościami),
-    a sposób przygotowania jest w filmie – przepis ze składnikami i znacznikiem no_steps (aplikacja pokaże film i „Uzupełnij kroki”)."""
-    t = clean_social(text)
-    h = heuristic(t, title, allow_no_steps=allow_no_steps)
-    if not h or len(h['ingredients']) < 3:
-        return None
-    if len(h['steps']) >= 2:
-        return h
-    if not allow_no_steps or sum(1 for i in h['ingredients'] if i.get('qty') is not None) < 3:
-        return None
-    h['steps'] = []
-    h['no_steps'] = True
-    return h
-
-
-def rules_from_page(url, title):
-    htm = http_get(url, limit=2_000_000, timeout=15)
-    ld = find_recipe_ld(htm)
-    if not ld:
-        return None, []
-    txt, ni, ns = ld_to_text(ld)
-    if ni < 3 or ns < 2:
-        return None, []
-    h = heuristic(txt, str(ld.get('name') or title))
-    return h, [urllib.parse.urljoin(url, u) for u in ld_images(ld)]
-
-
-def channel_key(info, url):
-    k = info.get('channel_id') or info.get('uploader_id') or info.get('channel') or url
-    return re.sub(r'[^\w@.-]+', '-', str(k))[:80]
-
-
-def list_channel(url, job):
-    host = (urllib.parse.urlparse(url).hostname or '').lower()
-    if any(h in host for h in ('facebook.com', 'fb.com', 'fb.watch')):
-        raise Fail('login', 'Facebook nie pokazuje listy postów strony ani profilu bez zalogowania, więc całości nie da się pobrać. Pojedyncze posty z Facebooka dodasz z linku albo ze zrzutów ekranu.')
-    if 'instagram.com' in host:
-        raise Fail('login', 'Instagram nie pokazuje listy postów bez zalogowania, więc całego profilu nie da się pobrać. Dodawaj pojedyncze posty z linku albo ze zrzutów ekranu.')
-    tabs = [url]
-    if 'youtube.com' in host and 'list=' not in url:
-        base = re.sub(r'/(videos|shorts|streams|featured|playlists|community|about|search.*)/?$', '', url.split('?')[0].rstrip('/'))
-        tabs = [base + '/videos', base + '/shorts']
-    seen, out = set(), []
-    for t in tabs:
-        try:
-            r = subprocess.run([YTDLP, '--flat-playlist', '-J', '--no-warnings', '--socket-timeout', '20', '--playlist-end', str(CH_MAX), t],
-                               capture_output=True, text=True, timeout=600)
-        except subprocess.TimeoutExpired:
-            continue
-        if r.returncode != 0 or not r.stdout.strip():
-            continue
-        j = json.loads(r.stdout)
-        if not job.get('name'):
-            nm = j.get('channel') or j.get('uploader') or re.sub(r'\s*[-–]\s*(Videos|Shorts|Filmy|Wideo)\s*$', '', j.get('title') or '')
-            job['name'] = (nm or '').strip()[:60]
-            job['key'] = channel_key(j, url)
-        for e in j.get('entries') or []:
-            vid = e.get('id')
-            u = ('https://www.youtube.com/watch?v=%s' % vid) if ('youtube' in host and vid) else (e.get('url') or e.get('webpage_url'))
-            if u and u not in seen:
-                seen.add(u)
-                out.append((vid or u, u))
-            if len(out) >= CH_MAX:
-                break
-    if not out:
-        raise Fail('no_list', 'Nie udało się pobrać listy filmów z tego kanału. Sprawdź link (np. https://www.youtube.com/@nazwa).')
-    job['name'] = job.get('name') or host
-    job['key'] = job.get('key') or re.sub(r'[^\w@.-]+', '-', url)[:80]
-    return out
-
-
-def ch_add(job, h, info, url, imgs=()):
-    vid = str(info.get('id') or url)
-    r = norm_recipe(h, url, 'kanal')
-    if h.get('no_steps'):
-        r['steps'], r['no_steps'] = [], True  # sposób przygotowania jest tylko w filmie
-    r['summary'] = r['summary'].rstrip(' :')
-    r['title'] = (str(info.get('title') or '').strip() or r['title'])[:140]
-    r['category'] = guess_cat(r['title'] + ' ' + r['summary'])
-    r['vid'] = re.sub(r'[^\w-]', '', vid)[:40]
-    thumbs = list(imgs)
-    if 'youtube' in url and info.get('id'):
-        thumbs = ['https://i.ytimg.com/vi/%s/hqdefault.jpg' % info['id']] + thumbs
-    thumbs += [t for t in video_thumbs(info) if 'maxres' not in t][:2]
-    with_image(r, thumbs)
-    job['recipes'].append(r)
-    job['found'] = len(job['recipes'])
-
-
-def ch_check(job, info, later):
-    url = info.get('webpage_url') or info.get('original_url') or ''
-    title = str(info.get('title') or '')
-    desc = str(info.get('description') or '')
-    h = full_recipe(title, title + '\n' + desc)
-    if h and not h.get('no_steps'):
-        return ch_add(job, h, info, url)
-    partial = h
-    for lk in re.findall(r'https?://[^\s)>\]]+', desc)[:6]:
-        hh = (urllib.parse.urlparse(lk).hostname or '').lower()
-        if not hh or any(s.rstrip('.') in hh for s in SOCIAL) or any(x in hh for x in SKIP_HOSTS):
-            continue
-        try:
-            h, imgs = rules_from_page(lk, title)
-            if h:
-                return ch_add(job, h, info, url, imgs)
-        except Exception:
-            pass
-    later.append((info, partial))  # dalej: komentarz autora (może mieć kroki); jeśli nie – przepis ze składnikami
-
-
-def run_channel(job):
-    try:
-        job['phase'] = 'lista'
-        vids = list_channel(job['url'], job)
-        job['total'] = len(vids)
-        job['phase'] = 'opisy'
-        d = tempfile.mkdtemp(prefix='kch')
-        later = []
-        try:
-            parts = [vids[i::2] for i in range(2)]
-            procs = []
-            for n, part in enumerate(parts):
-                if not part:
-                    continue
-                f = os.path.join(d, 'l%d.txt' % n)
-                open(f, 'w').write('\n'.join(u for _, u in part))
-                procs.append(subprocess.Popen([YTDLP, '-j', '--skip-download', '--ignore-errors', '--no-warnings', '--ignore-no-formats-error',
-                                               '--socket-timeout', '20', '--sleep-requests', '0.3', '-a', f],
-                                              stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True))
-
-            def reader(pr):
-                for line in pr.stdout:
-                    if job.get('cancel'):
-                        pr.kill()
-                        break
-                    try:
-                        info = json.loads(line)
-                    except Exception:
-                        continue
-                    job['checked'] += 1
-                    try:
-                        ch_check(job, info, later)
-                    except Exception:
-                        pass
-                pr.wait()
-            ths = [threading.Thread(target=reader, args=(pr,), daemon=True) for pr in procs]
-            for t in ths:
-                t.start()
-            for t in ths:
-                t.join()
-        finally:
-            shutil.rmtree(d, ignore_errors=True)
-        job['checked'] = job['total']
-        # przepis w komentarzu autora (np. przypiętym) – tylko dla filmów bez przepisu w opisie
-        job['phase'] = 'komentarze'
-        job['later'] = len(later)
-        later.sort(key=lambda x: x[1] is None)  # najpierw filmy, w których są już składniki
-        for n, (info, partial) in enumerate(later):
-            if job.get('cancel'):
-                break
-            job['later_done'] = n + 1
-            url = info.get('webpage_url') or ''
-            h = None
-            if n < 300:
-                try:
-                    cm = author_comments(url, info, max_comments=20)
-                    if cm:
-                        h = full_recipe(str(info.get('title') or ''), str(info.get('description') or '') + '\n' + '\n\n'.join(cm))
-                except Exception:
-                    pass
-            if h and (not h.get('no_steps') or not partial):
-                ch_add(job, h, info, url)
-            elif partial:
-                ch_add(job, partial, info, url)
-        job['state'] = 'done'
-        job['phase'] = 'gotowe'
-    except Fail as e:
-        job['state'], job['error'] = 'error', e.msg
-    except Exception as e:
-        job['state'], job['error'] = 'error', 'Błąd serwera (%s).' % type(e).__name__
-    finally:
-        job['ended'] = time.time()
-
-
-# ───────────── cała strona internetowa z przepisami (bez AI) ─────────────
-SITE_MAX = int(os.environ.get('SITE_MAX', '3000'))
-NOT_RECIPE = re.compile(r'/(tag|tags|category|categories|kategori\w*|author|autor|page|strona|wp-content|wp-json|feed|comment|koszyk|cart|sklep|shop|product|kontakt|contact|polityka|privacy|regulamin|search|szukaj)(/|$)|\?(s|p|replytocom)=|\.(jpe?g|png|gif|webp|svg|pdf|zip|mp4|mp3|css|js|xml)(\?|$)', re.I)
-CRAWL_SKIP = re.compile(r'/(wp-content|wp-json|wp-admin|feed|koszyk|cart|my-account|moje-konto|login|logowanie)(/|$)|\?(s|replytocom|share)=|\.(jpe?g|png|gif|webp|svg|pdf|zip|mp4|mp3|css|js|xml)(\?|$)', re.I)
-MAP_SKIP = re.compile(r'(tag|categor|kategori|author|autor|page-sitemap|attachment|product|image|video|taxonom|user|wp-sitemap-users|wp-sitemap-taxonomies)', re.I)
-
-
-def site_host(u):
-    return re.sub(r'^www\.', '', (urllib.parse.urlparse(u).hostname or '').lower())
-
-
-def site_sitemap_urls(root, host, job):
-    cands = []
-    try:
-        cands += re.findall(r'(?im)^\s*sitemap:\s*(\S+)', http_get(root + '/robots.txt', limit=200_000, timeout=15))
-    except Exception:
-        pass
-    cands += [root + '/sitemap_index.xml', root + '/wp-sitemap.xml', root + '/sitemap.xml', root + '/post-sitemap.xml', root + '/recipe-sitemap.xml']
-    seen, urls, queue = set(), [], []
-    for c in cands:
-        if c not in queue:
-            queue.append(c)
-    while queue and len(seen) < 80 and len(urls) < SITE_MAX * 2 and not job.get('cancel'):
-        sm = queue.pop(0)
-        if sm in seen:
-            continue
-        seen.add(sm)
-        try:
-            x = http_get(sm, limit=15_000_000, timeout=25)
-        except Exception:
-            continue
-        locs = [html.unescape(l) for l in re.findall(r'<loc>\s*(?:<!\[CDATA\[)?\s*(.*?)\s*(?:\]\]>)?\s*</loc>', x, re.S)]
-        if re.search(r'<sitemapindex', x, re.I):
-            subs = [l for l in locs if not MAP_SKIP.search(l.rsplit('/', 1)[-1])]
-            subs.sort(key=lambda l: 0 if re.search(r'recip|przepis|post', l, re.I) else 1)
-            queue = subs + queue
-        else:
-            urls += [l for l in locs if site_host(l) == host and not NOT_RECIPE.search(l)]
-        job['phase'] = 'lista'
-        job['total'] = len(urls)
-    out, s2 = [], set()
-    for u in urls:
-        u = u.split('#')[0]
-        if u not in s2 and u.rstrip('/') != root:
-            s2.add(u)
-            out.append(u)
-    return out[:SITE_MAX]
-
-
-def site_recipe(job, url, htm):
-    ld = find_recipe_ld(htm)
-    if not ld:
-        return
-    txt, ni, ns = ld_to_text(ld)
-    if ni < 3 or ns < 2:
-        return
-    title = html.unescape(str(ld.get('name') or meta(htm, 'og:title') or '')).strip()
-    h = heuristic(txt, title)
-    if not h or len(h['ingredients']) < 3 or len(h['steps']) < 2:
-        return
-    r = norm_recipe(h, url, 'strona-kanal')
-    r['title'] = (title or r['title'])[:140]
-    r['summary'] = html.unescape(re.sub(r'<[^>]+>', ' ', str(ld.get('description') or ''))).strip()[:400] or r['summary']
-    kw = ' '.join(str(x) for x in ([ld.get('recipeCategory')] + [ld.get('keywords')]) if x)
-    r['category'] = guess_cat(r['title'] + ' ' + kw)
-    cu = ld.get('recipeCuisine')
-    r['cuisine'] = (', '.join(cu) if isinstance(cu, list) else str(cu or ''))[:40]
-    import hashlib
-    r['vid'] = hashlib.md5(url.encode()).hexdigest()[:12]
-    og = meta(htm, 'og:image', 'og:image:secure_url')
-    with_image(r, [urllib.parse.urljoin(url, u) for u in ld_images(ld)] + ([urllib.parse.urljoin(url, og)] if og else []))
-    with job['lock']:
-        if url not in job['seen_recipes']:
-            job['seen_recipes'].add(url)
-            job['recipes'].append(r)
-            job['found'] = len(job['recipes'])
-
-
-def page_links(base, htm, host):
-    out = []
-    for h in re.findall(r'<a\s[^>]*href=["\']([^"\'#]+)', htm, re.I):
-        u = urllib.parse.urljoin(base, html.unescape(h)).split('#')[0]
-        if u.startswith('http') and site_host(u) == host and not CRAWL_SKIP.search(u):
-            out.append(u)
-    return out
-
-
-def run_site(job):
-    try:
-        url = job['url']
-        p = urllib.parse.urlparse(url)
-        root, host = '%s://%s' % (p.scheme, p.netloc), site_host(url)
-        job['phase'] = 'lista'
-        try:
-            home = http_get(url, limit=2_000_000, timeout=20)
-        except Fail as e:
-            raise Fail('fetch', 'Nie mogę otworzyć tej strony. Sprawdź adres.')
-        nm = meta(home, 'og:site_name')
-        if not nm and p.path not in ('', '/'):
-            try:
-                rh = http_get(root + '/', limit=1_000_000, timeout=15)
-                nm = meta(rh, 'og:site_name') or (re.search(r'(?is)<title[^>]*>(.*?)</title>', rh) or [None, ''])[1].split('|')[0].split(' - ')[0].strip()
-            except Exception:
-                pass
-        job['name'] = (html.unescape(nm or '') or host)[:60]
-        job['key'] = host
-        whole = p.path in ('', '/')
-        urls = site_sitemap_urls(root, host, job) if whole else []
-        job['phase'] = 'strony'
-        job['total'] = len(urls)
-        if whole and urls:
-            # mapa strony: sprawdzamy każdą podstronę
-            it = iter(urls)
-            def worker():
-                while not job.get('cancel'):
-                    with job['lock']:
-                        u = next(it, None)
-                    if u is None:
-                        return
-                    try:
-                        site_recipe(job, u, http_get(u, limit=3_000_000, timeout=20))
-                    except Exception:
-                        pass
-                    with job['lock']:
-                        job['checked'] += 1
-                    time.sleep(0.15)
-            ths = [threading.Thread(target=worker, daemon=True) for _ in range(4)]
-            for t in ths:
-                t.start()
-            for t in ths:
-                t.join()
-        else:
-            # brak mapy strony albo link do działu: przechodzimy po linkach (do 3 kliknięć od podanej strony)
-            seen, queue = {url}, [(url, 0)]
-            job['total'] = 1
-            while queue and job['checked'] < SITE_MAX and not job.get('cancel'):
-                batch, queue = queue[:4], queue[4:]
-                res = {}
-                def fetch(u):
-                    try:
-                        res[u] = http_get(u, limit=3_000_000, timeout=20)
-                    except Exception:
-                        res[u] = ''
-                ths = [threading.Thread(target=fetch, args=(u,), daemon=True) for u, _ in batch]
-                for t in ths:
-                    t.start()
-                for t in ths:
-                    t.join()
-                for u, d in batch:
-                    htm = res.get(u) or ''
-                    job['checked'] += 1
-                    if not htm:
-                        continue
-                    try:
-                        site_recipe(job, u, htm)
-                    except Exception:
-                        pass
-                    if d < 3:
-                        for l in page_links(u, htm, host):
-                            if l not in seen and len(seen) < SITE_MAX:
-                                seen.add(l)
-                                queue.append((l, d + 1))
-                job['total'] = len(seen)
-                time.sleep(0.15)
-        job['checked'] = job['total'] = max(job['checked'], job['total'])
-        if not job['recipes'] and not job.get('cancel'):
-            raise Fail('no_recipe', 'Na tej stronie nie znalazłem przepisów zapisanych w standardowym formacie (schema.org). Pojedyncze przepisy dodasz z linku.')
-        job['state'], job['phase'] = 'done', 'gotowe'
-    except Fail as e:
-        job['state'], job['error'] = 'error', e.msg
-    except Exception as e:
-        job['state'], job['error'] = 'error', 'Błąd serwera (%s).' % type(e).__name__
-    finally:
-        job['ended'] = time.time()
-
-
-def start_channel(body):
-    url = (body.get('url') or '').strip()
-    if not re.match(r'^https?://', url):
-        url = 'https://' + url
-    check_url(url)
-    h0 = (urllib.parse.urlparse(url).hostname or '').lower()
-    if any(x in h0 for x in ('facebook.com', 'fb.com', 'fb.watch', 'instagram.com')):
-        list_channel(url, {})  # od razu zwraca czytelny komunikat (Facebook/Instagram wymagają logowania)
-    now = time.time()
-    for k in [k for k, j in jobs.items() if now - j['started'] > 48 * 3600]:
-        jobs.pop(k, None)
-    for j in jobs.values():
-        if j['state'] == 'running':
-            if j['url'] == url:
-                return j
-            raise Fail('busy', 'Serwer pobiera już inny kanał (%s). Spróbuj, gdy skończy.' % (j.get('name') or j['url']))
-    while ch_day and now - ch_day[0] > 86400:
-        ch_day.popleft()
-    if len(ch_day) >= CH_PER_DAY:
-        raise Fail('limit', 'Na dziś wystarczy kanałów. Spróbuj jutro.')
-    ch_day.append(now)
-    jid = base64.urlsafe_b64encode(os.urandom(9)).decode()
-    job = {'id': jid, 'url': url, 'name': '', 'key': '', 'state': 'running', 'phase': 'start', 'total': 0, 'checked': 0, 'found': 0,
-           'later': 0, 'later_done': 0, 'recipes': [], 'error': '', 'started': now, 'lock': threading.Lock(), 'seen_recipes': set()}
-    jobs[jid] = job
-    host = (urllib.parse.urlparse(url).hostname or '').lower()
-    social = any(host == x.rstrip('.') or host.endswith('.' + x.rstrip('.')) for x in SOCIAL)
-    threading.Thread(target=run_channel if social else run_site, args=(job,), daemon=True).start()
-    return job
-
-
-def job_status(job):
-    return {k: job.get(k) for k in ('id', 'url', 'name', 'key', 'state', 'phase', 'total', 'checked', 'found', 'later', 'later_done', 'error')}
 
 
 # ───────────────────────── synchronizacja między wybranymi urządzeniami ─────────────────────────
@@ -1728,18 +1362,7 @@ class H(BaseHTTPRequestHandler):
         if urllib.parse.urlparse(self.path).path.startswith('/sync/'):
             return sync_get(self, urllib.parse.urlparse(self.path).path)
         if urllib.parse.urlparse(self.path).path in ('/health', '/zdrowie'):
-            return self.send(200, {'ok': True, 'v': 9, 'features': ['parser-v3', 'synchronizacja', 'parser-v2', 'komentarze', 'zdjecia', 'lodowka', 'zdjecie-dania', 'kanal', 'strona', 'instagram-zapas'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
-        m = re.match(r'^/channel/([\w-]+)(/recipes)?$', urllib.parse.urlparse(self.path).path)
-        if m:
-            job = jobs.get(m.group(1))
-            if not job:
-                return self.send(404, {'ok': False, 'code': 'no_job', 'error': 'Serwer nie ma już tego zadania (np. po restarcie). Pobierz kanał jeszcze raz.'})
-            if m.group(2):
-                qs = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query)
-                a = max(0, int((qs.get('from') or ['0'])[0]))
-                n = min(30, max(1, int((qs.get('n') or ['12'])[0])))
-                return self.send(200, {'ok': True, 'from': a, 'recipes': job['recipes'][a:a + n], 'count': len(job['recipes'])})
-            return self.send(200, {'ok': True, 'job': job_status(job)})
+            return self.send(200, {'ok': True, 'v': 10, 'features': ['youtube-ai', 'synchronizacja', 'komentarze', 'zdjecia', 'lodowka', 'zdjecie-dania', 'instagram-zapas'], 'gemini': bool(GEMINI_KEY), 'ytdlp': bool(shutil.which(YTDLP) or os.path.exists(YTDLP)), 'ffmpeg': bool(shutil.which('ffmpeg'))})
         self.send(404, {'ok': False, 'error': 'nie znaleziono'})
 
     def do_POST(self):
@@ -1747,14 +1370,7 @@ class H(BaseHTTPRequestHandler):
         if path.startswith('/sync/'):
             return sync_post(self, path)
         if path == '/channel':
-            n = int(self.headers.get('Content-Length') or 0)
-            try:
-                body = json.loads(self.rfile.read(n)) if 0 < n < 10000 else {}
-                return self.send(200, {'ok': True, 'job': job_status(start_channel(body))})
-            except Fail as e:
-                return self.send(409 if e.code == 'busy' else 429 if e.code == 'limit' else 422, {'ok': False, 'code': e.code, 'error': e.msg})
-            except Exception as e:
-                return self.send(400, {'ok': False, 'code': 'json', 'error': 'Błędne dane (%s).' % type(e).__name__})
+            return self.send(410, {'ok': False, 'code': 'gone', 'error': 'Pobieranie całych kanałów zostało wyłączone. Dodawaj przepisy pojedynczymi linkami.'})
         if path not in ('/import', '/create'):
             return self.send(404, {'ok': False, 'error': 'nie znaleziono'})
         ip = (self.headers.get('X-Forwarded-For') or self.client_address[0]).split(',')[0].strip()

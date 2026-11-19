@@ -58,7 +58,7 @@ export async function importFrom(input: ImportInput): Promise<{ draft: Draft; ho
   const base = await serverBase()
   let res: Response
   try {
-    res = await fetch(base + '/import', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input), signal: AbortSignal.timeout(170000) })
+    res = await fetch(base + '/import', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input), signal: AbortSignal.timeout(300000) })
   } catch (e: any) {
     if (input.text && !input.images) { const d = parseText(input.text); if (d) return { draft: d, how: 'offline' } }
     throw new Error(e?.name === 'TimeoutError' ? 'Import trwał za długo. Spróbuj ponownie.' : 'Brak połączenia z serwerem importu. Sprawdź internet albo adres serwera w Profilu.')

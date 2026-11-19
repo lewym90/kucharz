@@ -5,11 +5,10 @@ import { CATS } from '../lib/types'
 import { db } from '../lib/db'
 import { PhotoPair, delPhoto, processPhoto, putPhoto, shrinkForUpload } from '../lib/photos'
 import { Draft, emptyDraft, importFrom, ingToLine, lineToIng, saveMine, toDraft } from '../lib/mine'
-import { isChannelUrl, isFacebookProfile, isSiteUrl, startChannel, useChannelJob } from '../lib/channel'
-import { ChannelProgress } from '../components/ChannelPanel'
+import { isChannelUrl, isFacebookProfile } from '../lib/channel'
 import { PageHero, UI } from '../components/Gold'
 
-type Mode = 'link' | 'text' | 'photo' | 'channel' | 'manual'
+type Mode = 'link' | 'text' | 'photo' | 'manual'
 type Shot = { mime: string; data: string; preview: string }
 const STEPS_LOADING = ['Pobieram stronę lub film…', 'Czytam opis i komentarz autora…', 'Słucham, co mówi autor…', 'Układam składniki i kroki…', 'Przeliczam jednostki na polskie…']
 const STEPS_PHOTO = ['Wysyłam zdjęcia…', 'Czytam tekst ze zrzutów…', 'Łączę składniki i kroki…', 'Przeliczam jednostki na polskie…']
@@ -29,15 +28,7 @@ export default function AddRecipe() {
   const [extras, setExtras] = useState<string[]>((loc.state as any)?.extras ?? [])
   const [shots, setShots] = useState<Shot[]>([])
   const [reading, setReading] = useState(false)
-  const [chUrl, setChUrl] = useState('')
-  const chJob = useChannelJob()
-  const chRunning = !!chJob && !chJob.dismissed && chJob.job?.state === 'running'
-  const runChannel = async (u: string) => {
-    setErr(''); setBusy(true)
-    try { await startChannel(u); setMode('channel') } catch (e: any) { setErr(e.message || 'Nie udało się zacząć pobierania.') }
-    setBusy(false)
-  }
-  const [mode, setMode] = useState<Mode>(sp.get('tryb') === 'zdjecia' ? 'photo' : sp.get('tryb') === 'kanal' ? 'channel' : 'link')
+  const [mode, setMode] = useState<Mode>(sp.get('tryb') === 'zdjecia' ? 'photo' : 'link')
   const [url, setUrl] = useState(sp.get('u') ?? '')
   const [text, setText] = useState('')
   const [busy, setBusy] = useState(false)
@@ -165,30 +156,21 @@ export default function AddRecipe() {
   const elapsed = busy ? Math.round((Date.now() - started.current) / 1000) : 0
   return (
     <div className="page addrec">
-      <PageHero title={<>Dodaj <em>przepis</em></>} sub="Z linku, ze zdjęć albo cały kanał naraz." img={UI('h-dodaj.webp')} />
+      <PageHero title={<>Dodaj <em>przepis</em></>} sub="Z linku do filmu, posta lub strony, ze zdjęć albo z tekstu." img={UI('h-dodaj.webp')} />
       <div className="chips wrap">
         <button className={mode === 'link' ? 'on' : ''} onClick={() => { setMode('link'); setErr('') }}><Link2 size={15} /> Z linku</button>
         <button className={mode === 'photo' ? 'on' : ''} onClick={() => { setMode('photo'); setErr('') }}><Images size={15} /> Ze zdjęć</button>
-        <button className={mode === 'channel' ? 'on' : ''} onClick={() => { setMode('channel'); setErr('') }}><Tv size={15} /> Kanał lub strona</button>
         <button className={mode === 'text' ? 'on' : ''} onClick={() => { setMode('text'); setErr('') }}><FileText size={15} /> Tekst</button>
         <button onClick={startManual}><PencilLine size={15} /> Ręcznie</button>
       </div>
       {mode === 'link' && (
         <>
-          <p className="muted">Skopiuj link do posta, filmu lub strony z przepisem (Instagram, TikTok, Facebook, YouTube, bloga) i wklej tutaj. Aplikacja przeczyta opis, pierwszy komentarz autora i sam film. Jeśli nie wyjdzie, zrób zrzuty ekranu i użyj zakładki „Ze zdjęć”.</p>
+          <p className="muted">Skopiuj link do posta, filmu lub strony z przepisem (Instagram, TikTok, Facebook, YouTube, bloga) i wklej tutaj. Jeśli w opisie jest pełny przepis, aplikacja weźmie go z opisu, a jeśli nie – AI obejrzy film i spisze składniki i kroki. Jeśli nie wyjdzie, zrób zrzuty ekranu i użyj zakładki „Ze zdjęć”.</p>
           <input className="urlin" inputMode="url" autoCapitalize="none" autoCorrect="off" placeholder="https://…" value={url} onChange={e => setUrl(e.target.value)} disabled={busy} />
         </>
       )}
-      {mode === 'link' && (isChannelUrl(url) || isSiteUrl(url) || isFacebookProfile(url)) && !busy && (
-        <div className="importnote chnote"><Tv size={15} /> <span>{isSiteUrl(url) ? 'To link do całej strony lub działu z przepisami.' : 'To link do całego kanału lub profilu.'} <button className="link" onClick={() => { setChUrl(url.trim()); runChannel(url.trim()) }}>Pobierz wszystkie przepisy</button></span></div>
-      )}
-      {mode === 'channel' && (
-        <>
-          <p className="muted">Wklej link do kanału YouTube (np. https://www.youtube.com/@nazwa), profilu TikTok albo dowolnej strony z przepisami (cały serwis albo jeden dział, np. „/przepisy/zupy”). Bez AI: aplikacja zapisze tylko pełne przepisy – z filmów te spisane przez autora w opisie, w jego komentarzu albo na jego stronie, a ze stron te zapisane w standardowym formacie przepisu (ma go większość blogów kulinarnych). Przepisy trafią do osobnej zakładki z nazwą kanału lub strony w „Moje”.</p>
-          <p className="muted small">Instagram i Facebook nie pozwalają pobrać całego profilu bez logowania – posty z nich dodawaj pojedynczo z linku albo ze zrzutów.</p>
-          <ChannelProgress />
-          {!chRunning && <input className="urlin" inputMode="url" autoCapitalize="none" autoCorrect="off" placeholder="https://www.youtube.com/@… albo https://strona.pl" value={chUrl} onChange={e => setChUrl(e.target.value)} disabled={busy} />}
-        </>
+      {mode === 'link' && (isChannelUrl(url) || isFacebookProfile(url)) && !busy && (
+        <div className="importnote chnote"><Tv size={15} /> <span>To link do całego kanału lub profilu. Wklej link do jednego filmu albo posta z przepisem.</span></div>
       )}
       {mode === 'photo' && (
         <>
@@ -208,8 +190,7 @@ export default function AddRecipe() {
       )}
       {err && <p className="errnote"><AlertCircle size={15} /> {err}</p>}
       {err && !busy && mode === 'link' && /\S/.test(url) && <button className="btn ghost wide" onClick={run}><RotateCcw size={17} /> Spróbuj ponownie</button>}
-      {mode === 'channel' ? (!chRunning && <button className="btn gold wide" disabled={busy || !/\S/.test(chUrl)} onClick={() => runChannel(chUrl)}>{busy ? <Loader2 className="spin" size={18} /> : <Tv size={18} />} Pobierz wszystkie przepisy</button>)
-      : busy ? (
+      {busy ? (
         <div className="loadbox"><Loader2 className="spin" size={22} /><div><b>{(mode === 'photo' ? STEPS_PHOTO : STEPS_LOADING)[phase]}</b>
           <small>{mode === 'photo' ? 'Zwykle 10 do 40 sekund.' : elapsed > 25 ? 'Film trwa dłużej niż strona, to normalne. Jeszcze chwila…' : 'Zwykle 5 do 40 sekund.'}</small></div></div>
       ) : (

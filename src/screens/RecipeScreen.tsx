@@ -9,7 +9,7 @@ import { db, setSetting } from '../lib/db'
 import { fmtIng, fmtMin, todayLocal } from '../lib/format'
 import { addRecipeToShopping } from '../lib/shopping'
 import { useDemoted } from '../components/hooks'
-import { importFrom, isMine } from '../lib/mine'
+import { importFrom, isMine, toRecipe } from '../lib/mine'
 import { delPhoto, processPhoto, putPhoto } from '../lib/photos'
 import { catImg } from '../components/RecipeCard'
 
@@ -40,17 +40,22 @@ export default function RecipeScreen() {
   const f = serv / r.serv
   const sig = r.tags.includes('signature') && !demoted.has(r.id)
   const noSteps = r.steps.length === 0
-  // przepis z kanału, w którym autor spisał tylko składniki: kroki z filmu na żądanie (AI tylko dla tego jednego przepisu)
+  // przepis z linku (np. stary z kanału): AI jeszcze raz czyta opis i ogląda film, a potem podmienia składniki i kroki
   const fillSteps = async () => {
+    const m0 = await db.mine.get(id)
+    if (m0?.edited && !confirm('Ten przepis był przez Ciebie edytowany. AI ułoży go od nowa z filmu i opisu, a Twoje zmiany znikną. Kontynuować?')) return
     setFill({ busy: true, err: '' })
     try {
       const { draft } = await importFrom({ url: r.src })
       if (!draft.steps.length) throw new Error('W filmie nie udało się odczytać kroków. Spróbuj ponownie za chwilę.')
       const m = await db.mine.get(id)
-      if (m) await db.mine.put({ ...m, steps: draft.steps, tip: m.tip ?? draft.tip ?? null })
+      if (m) {
+        const n = toRecipe({ ...draft, src: m.src }, id)
+        await db.mine.put({ ...m, ...n, title: draft.title.trim() ? n.title : m.title, edited: false })
+      }
       setR(await loadRecipe(id) ?? r)
-      setFill({ busy: false, err: '' }); flash('Kroki uzupełnione z filmu')
-    } catch (e: any) { setFill({ busy: false, err: e.message || 'Nie udało się uzupełnić kroków.' }) }
+      setFill({ busy: false, err: '' }); flash('Przepis ułożony od nowa z filmu')
+    } catch (e: any) { setFill({ busy: false, err: e.message || 'Nie udało się ułożyć przepisu z filmu.' }) }
   }
   const setRating = (stars: number) => db.ratings.put({ id, stars, note: rating?.note ?? '', cooked: rating?.cooked ?? true, at: Date.now() })
   const toggleSig = async () => { const s = new Set(demoted); s.has(id) ? s.delete(id) : s.add(id); await setSetting('demoted', [...s]) }
@@ -87,6 +92,10 @@ export default function RecipeScreen() {
         </div>
       )}
       {isMine(id) && /^https?:\/\//.test(r.src) && <p className="muted small"><a className="srclink" href={r.src} target="_blank" rel="noreferrer"><ExternalLink size={13} /> Źródło przepisu</a></p>}
+      {isMine(id) && !noSteps && /^https?:\/\//.test(r.src) && (fill.busy
+        ? <div className="loadbox"><Loader2 className="spin" size={22} /><div><b>Oglądam film i układam przepis od nowa…</b><small>Zwykle 30 sekund do 2 minut.</small></div></div>
+        : <button className="btn ghost wide" onClick={fillSteps}><Sparkles size={17} /> Ułóż przepis od nowa z AI</button>)}
+      {!noSteps && fill.err && <p className="errnote">{fill.err}</p>}
       {!noSteps && <Link className="btn gold wide" to={`/cook/${encodeURIComponent(id)}?s=${serv}`}><Play size={18} /> Gotuj krok po kroku</Link>}
       <div className="actions">
         <button className="btn ghost" onClick={async () => { await addRecipeToShopping(r, serv); flash('Dodano do listy zakupów') }}><ShoppingCart size={16} /> Do zakupów</button>
@@ -112,11 +121,11 @@ export default function RecipeScreen() {
         <div className="section-h"><h2>Przygotowanie</h2></div>
         {noSteps ? (
           <div className="nosteps">
-            <p>Autor spisał w opisie tylko składniki – sposób przygotowania pokazuje w filmie.</p>
+            <p>W opisie nie ma sposobu przygotowania – autor pokazuje go w filmie. AI może obejrzeć film i spisać cały przepis.</p>
             {/^https?:\/\//.test(r.src) && <a className="btn ghost wide" href={r.src} target="_blank" rel="noreferrer"><Youtube size={18} /> Obejrzyj film</a>}
             {/^https?:\/\//.test(r.src) && (fill.busy
-              ? <div className="loadbox"><Loader2 className="spin" size={22} /><div><b>Oglądam film i spisuję kroki…</b><small>Zwykle 20 do 60 sekund.</small></div></div>
-              : <button className="btn gold wide" onClick={fillSteps}><Sparkles size={18} /> Uzupełnij kroki z filmu</button>)}
+              ? <div className="loadbox"><Loader2 className="spin" size={22} /><div><b>Oglądam film i spisuję przepis…</b><small>Zwykle 30 sekund do 2 minut.</small></div></div>
+              : <button className="btn gold wide" onClick={fillSteps}><Sparkles size={18} /> Spisz przepis z filmu (AI)</button>)}
             {fill.err && <p className="errnote">{fill.err}</p>}
           </div>
         ) : <ol className="steps">{r.steps.map((s, i) => <li key={i}>{s}</li>)}</ol>}
